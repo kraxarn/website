@@ -246,8 +246,11 @@ function toggleOlderChanges()
 	}
 }
 
+function setBackground() {
+	document.body.style.background = `url(/img/bg/${Math.floor(new Date().getHours()/2)}.webp})`
+}
+setBackground()
+
 </script>
-
 </body>
-
 </html>
