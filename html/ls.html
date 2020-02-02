@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <title>{{.path}}</title>
+    <link rel="stylesheet" type="text/css" href="/css/ls.css">
+</head>
+
+<body>
+    <p>
+        {{$path := .path}}
+        $ ls -lh {{$path}}
+    </p>
+    <table>
+        <tr>
+            <th>Size</th>
+            <th>Date Modified</th>
+            <th>Name</th>
+        </tr>
+        {{range .dir}}
+            <tr>
+                {{if .IsDirectory}}
+                    <td class="fileSize">-</td>
+                    <td>{{.DateModified}}</td>
+                    <td><a href="{{$path}}/{{.Name}}">{{.Name}}/</a></td>
+                {{else}}
+                    <td class="fileSize">{{.Size | formatFileSize}}</td>
+                    <td>{{.DateModified}}</td>
+                    <td><a href="{{$path}}/{{.Name}}">{{.Name}}</a></td>
+                {{end}}
+            </tr>
+        {{end}}
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<html>
+<head>
+	<title>{{.errorCode}}</title>
+	<link rel="stylesheet" type="text/css" href="/css/fonts.css">
+	<link rel="stylesheet" type="text/css" href="/css/error.css">
+</head>
+
+<body>
+
+<video autoplay loop muted id="bgvid" src="/img/bg/error.webm"></video>
+
+<div id="center">
+	<span id="title">{{.errorCode}}</span> <br>
+	<span id="subTitle">{{.path}}<br>{{.errorMessage}}</span>
+</div>
+
+<div id="credit"> Art by R-no71 </div>
+
+</body>
+</html>

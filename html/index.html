@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> Home Page </title>
+	<link rel="stylesheet" type="text/css" href="css/fonts.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<!-- TODO: No icon, assume browser will use /favicon.ico -->
+	<style>
+	body {
+		background: #000000;
+	}
+	</style>
+</head>
+
+<body>
+
+<!-- TODO: Remove login box for now -->
+
+<!-- TODO: Load video with js to make it load last -->
+<video autoplay loop muted id="bgvid" poster="img/bg/minimal_poster.png" src="img/bg/minimal.webm"> </video>
+
+<!-- Snow particles! -->
+<!--
+<div id="particles-js"> </div>
+<script src="/js/particles.min.js"> </script>
+<script>
+	particlesJS.load('particles-js', '/js/particlesjs-config.json')
+</script>
+-->
+
+<div id="warningBrowser" class="warning"> <b> Warning! </b> <br> It seems like you're using an old browser, consider updating or getting a better browser. </div>
+
+<ul id="panel">
+	<img id="logo" src="img/logo_v7_lightblue.webp" onclick="toggleLogo()">
+	<li class="rotLeft"		onclick="location.href='servers';"	onmouseenter="ShowInfo('myServers')"	onmouseleave="HideInfo('myServers')"	ontouchstart="ShowInfo('myServers')"	ontouchend="HideInfo('myServers')">		My Servers </li>
+	<div class="panelSpacer"> </div>
+	<li class="rotRight"	onclick="location.href='apps';"		onmouseenter="ShowInfo('myApps')"		onmouseleave="HideInfo('myApps')"		ontouchstart="ShowInfo('myApps')"		ontouchend="HideInfo('myApps')">		My Apps </li>
+	<div class="panelSpacer"> </div>
+	<li class="rotLeft"		onclick="location.href='files';"	onmouseenter="ShowInfo('fileUploader')"	onmouseleave="HideInfo('fileUploader')"	ontouchstart="ShowInfo('fileUploader')"	ontouchend="HideInfo('fileUploader')">	File Uploader </li>
+	<div class="panelSpacer"> </div>
+	<li class="rotRight"	onclick="location.href='steam';"	onmouseenter="ShowInfo('steam')"		onmouseleave="HideInfo('steam')"		ontouchstart="ShowInfo('steam')"		ontouchend="HideInfo('steam')">			Steam </li>
+	<div class="panelSpacer"> </div>
+	<li class="rotRight"	onclick="location.href='api';"		onmouseenter="ShowInfo('api')"			onmouseleave="HideInfo('api')"			ontouchstart="ShowInfo('api')"			ontouchend="HideInfo('api')">			API </li>
+	<div class="panelSpacer"> </div>
+	<li class="rotRight"	onclick=""							onmouseenter="ShowInfo('privacy')"		onmouseleave="HideInfo('privacy')"		ontouchstart="ShowInfo('privacy')"		ontouchend="HideInfo('privacy')">		Privacy </li>
+	<!-- <li class="rotLeft"		onclick="location.href='user';"		onmouseenter="ShowInfo('users')"		onmouseleave="HideInfo('users')"		ontouchstart="ShowInfo('users')"		ontouchend="HideInfo('users')">			Users </li> -->
+</ul>
+
+<div id="infoLeft">
+	<span id="infoTextLeft"> </span>
+</div>
+
+<div id="infoRight">
+	<span id="infoTextRight"> </span>
+</div>
+
+<div id="debug" onclick="toggleDebug();">
+	<p>
+		<b> Version RC 11 </b> <br>
+		<!-- <span id="debugUserAgent"> [UserAgent] </span> -->
+	</p>
+</div>
+
+<div id="changelog">
+	<span class="changelogTitle"> RC 11.10 </span>
+	<ul>
+		<li> Fixed panel background issue on older browsers like Edge </li>
+		<li> Now hides older changes by default </li>
+		<li> Added button to show all changes </li>
+	</ul>
+	<span class="changelogTitle"> RC 11.9 </span>
+	<ul>
+		<li> Added some social links </li>
+		<li> Added a 'Do not track' check </li>
+		<li> New design on buttons </li>
+		<li> Button tooltips are now centered </li>
+		<li> You can now click the logo to change it </li>
+	</ul>
+	<span class="changelogTitle"> RC 11.8 </span>
+	<ul>
+		<li> Added 'Privacy' button </li>
+	</ul>
+	<div id="olderChanges">
+		<span class="changelogTitle"> RC 11.7 </span>
+		<ul>
+			<li> Softly removed 'Users' button </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.6 </span>
+		<ul>
+			<li> Removed manual https redirect </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.5 </span>
+		<ul>
+			<li> Updated logo to match the new font </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.4 </span>
+		<ul>
+			<li> Updated logo </li>
+			<li> Reduced opacity of logo to 80% </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.3 </span>
+		<ul>
+			<li> Added time limited background </li>
+			<li> Updated background poster </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.2 </span>
+		<ul>
+			<li> Background is now 720p@60fps </li>
+			<li> Updated logo </li>
+			<li> Removed debug box </li>
+			<li> Moved user agent </li>
+		</ul>
+		<span class="changelogTitle"> RC 11.1 </span>
+		<ul>
+			<li> Added touch support </li>
+			<li> Disabled text selection </li>
+		</ul>
+	</div>
+
+	<p onclick="toggleOlderChanges()" id="showChanges"> Show all changes </p>
+
+</div>
+
+<div id="browserInfo">
+	<span id="debugUserAgent"> [UserAgent] </span>
+	<br>
+	<span id="debugDoNotTrack"> [DoNotTrack] </span>
+	<table>
+	</table>
+</div>
+
+<table id="links">
+	<tr>
+		<td onclick="location.href = 'https://github.com/kraxarn'" id="linkGithub"/>
+		<td onclick="location.href = 'https://twitter.com/kraxarn'" id="linkTwitter"/>
+		<td onclick="location.href = 'https://steamcommunity.com/id/kraxarn/'" id="linkSteam"/>
+		<td onclick="location.href = 'https://t.me/Kraxie'" id="linkTelegram"/>
+	</tr>
+</table>
+
+<script src="js/info.js"> </script>
+
+<span id="browser" onclick="toggleDebug();"> </span>
+<script src="js/CheckBrowserBeta.js"> </script>
+<script>
+/* Vars */
+var showDebug = false;
+var debug = document.getElementById('debug');
+var changelog = document.getElementById('changelog');
+var browserInfo = document.getElementById('browserInfo');
+var text = info;
+
+/* Browser checking */
+switch(browser) {
+	case "Chrome":
+	case "Firefox":
+	case "Vivaldi":
+	case "Opera":
+		var support = "full support.";
+		break;
+	case "Internet Explorer":
+		var support = "partial support, no music, video, background or fonts.";
+		break;
+	case "Edge":
+	case "Safari":
+	case "Silk":
+		var support = "partial support, no music, video or background.";
+		break;
+	default:
+		var support = "unknown support.";
+		break;
+}
+if (browser == "Firefox" || browser == "Chrome" || browser == "Vivaldi") {
+	var support = "full support.";
+}
+
+document.getElementById('browser').textContent = "You're running " + browser + " " + browserVer + " with " + support;
+document.getElementById('debugUserAgent').textContent = navigator.userAgent;
+
+document.getElementById('debugDoNotTrack').textContent = `Do not track: ${navigator.doNotTrack == 1 ? "Enabled" : "Disabled"}`
+
+/* HTTPS check */
+// This is handled by the web server now
+/*
+if (window.location.protocol == "http:") {
+	try {
+		location.href = "https://web.kraxarn.com";
+	} catch(err) {
+		alert("Your browser doesn't support HTTPS, staying on HTTP...");
+	}
+}
+*/
+
+/* Debug toggle */
+function toggleDebug() {
+	if (showDebug) {
+		//debug.style.transform = 'translate(-50%, 100%)';
+		changelog.style.transform = 'translate(100%, 0)';
+		browserInfo.style.transform = 'translate(-50%, -150%)';
+		showDebug = false;
+	} else {
+		//debug.style.transform = 'translate(-50%, 0%)';
+		changelog.style.transform = 'translate(-25%, 0)';
+		browserInfo.style.transform = 'translate(-50%, 100%)';
+		showDebug = true;
+	}
+}
+
+/* Browser warning */
+if (!supportOgg || !supportWebm) {
+	document.getElementById('warningBrowser').style.display = "block";
+}
+
+/* Check if late at night */
+if (new Date().getHours() < 6) {
+	document.getElementById('bgvid').src = "img/bg/gaming.webm"
+}
+
+/* Info */
+function GetInfoSide(info) {
+	switch (info) {
+		case "myServers":
+		case "fileUploader":
+		case "api":
+			return "right"
+			break
+
+		case "myApps":
+		case "steam":
+		case "users":
+		case "privacy":
+			return "left"
+			break
+
+		default:
+			alert("Error: Unexpected info switch! :(")
+			return "unknown"
+			break
+
+	}
+}
+
+function ShowInfo(info) {
+	//console.log("ShowInfo: " + info);
+
+	var side = GetInfoSide(info)
+	if (side == "left") {
+		document.getElementById("infoLeft").textContent = text[info]
+		document.getElementById("infoLeft").style.transform = "translate(-402px, -50%)" // -392 -92
+
+	} else if (side == "right") {
+		document.getElementById("infoRight").textContent = text[info]
+		document.getElementById("infoRight").style.transform = "translate(168px, -50%)" // 136 -92
+	}
+}
+
+function HideInfo(info) {
+	var side = GetInfoSide(info)
+	if (side == "left") {
+		document.getElementById("infoLeft").textContent = ""
+		document.getElementById("infoLeft").style.transform = "translate(-50%, -50%)" // -50% -92
+
+	} else if (side == "right") {
+		document.getElementById("infoRight").textContent = ""
+		document.getElementById("infoRight").style.transform = "translate(-50%, -50%)" // -50% -92
+	}
+}
+
+function toggleLogo()
+{
+	if (logo.src.includes("logo_v7"))
+	{
+		// Using new logo, switch to old one
+		logo.src = "img/logo_v5.webp"
+	}
+	else
+	{
+		// Using old logo, switch to new one
+		logo.src = "img/logo_v7_lightblue.webp"
+	}
+}
+
+function getRandomLogo()
+{
+	switch (Math.floor(Math.random() * 5))
+	{
+		case 0: return "v5"
+		case 1: return "v7"
+		case 2: return "v7_indigo"
+		case 3: return "v7_lightblue"
+		case 4: return "v7_purple"
+	}
+}
+
+function toggleOlderChanges()
+{
+	if (olderChanges.style.display == "none" || olderChanges.style.display == "")
+	{
+		// Hidden, show them
+		olderChanges.style.display = "block"
+		showChanges.textContent = "Show latest changes"
+	}
+	else
+	{
+		// Already shown, hide them
+		olderChanges.style.display = "none"
+		showChanges.textContent = "Show all changes"
+	}
+}
+
+</script>
+
+</body>
+
+</html>
