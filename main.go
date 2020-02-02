@@ -34,10 +34,13 @@ func FormatFileSize(size int64) string {
 }
 
 func main() {
+	// Create router and add some middleware
+	// (using .Default directly generates a warning)
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
+	// Setup some html functions
 	router.SetFuncMap(template.FuncMap{
 		"dateNow": func() string {
 			return time.Now().String()
@@ -45,6 +48,7 @@ func main() {
 		"formatFileSize": FormatFileSize,
 	})
 
+	// Add all files in html folder as templates
 	router.LoadHTMLGlob("html/*.html")
 
 	// Add all folders and files in static folder
@@ -58,6 +62,7 @@ func main() {
 		}
 	}
 
+	// Show index when loading root
 	router.GET("", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "index.html", nil)
 	})
@@ -79,6 +84,7 @@ func main() {
 		context.Redirect(http.StatusFound, "/")
 	})
 
+	// Start listening on port 8080
 	if err := router.Run(":8080"); err != nil {
 		fmt.Println(err)
 	}
