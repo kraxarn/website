@@ -69,9 +69,7 @@ func main() {
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
-	if err != nil {
-		fmt.Println("warning: failed to read 'files' directory:", err)
-	} else {
+	if err == nil {
 		for _, file := range fileFiles {
 			router.GET(fmt.Sprintf("%v/*file", file.Name()), func(context *gin.Context) {
 				HandleList(context)
