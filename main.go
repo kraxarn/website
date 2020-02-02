@@ -86,11 +86,16 @@ func main() {
 
 	router.LoadHTMLGlob("html/*.html")
 
-	router.Static("fonts", "static/fonts")
-	router.Static("img",   "static/img")
-	router.Static("js",    "static/js")
-	router.Static("css",   "static/css")
-	router.StaticFile("favicon.ico", "static/favicon.ico")
+	// Add all folders and files in static folder
+	staticFiles, _ := ioutil.ReadDir("static")
+	for _, file := range staticFiles {
+		path := fmt.Sprintf("static/%v", file.Name())
+		if file.IsDir() {
+			router.Static(file.Name(), path)
+		} else {
+			router.StaticFile(file.Name(), path)
+		}
+	}
 
 	router.GET("", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "index.html", nil)
