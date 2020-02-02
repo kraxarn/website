@@ -105,12 +105,9 @@ func main() {
 		HandleList(context)
 	})
 
+	// When page is not found, redirect page to home
 	router.NoRoute(func(context *gin.Context) {
-		context.HTML(http.StatusNotFound, "error.html", gin.H{
-			"errorCode": http.StatusNotFound,
-			"errorMessage": "could not be found",
-			"path": context.Request.URL.Path,
-		})
+		context.Redirect(http.StatusFound, "/")
 	})
 
 	if err := router.Run(":8080"); err != nil {
