@@ -97,9 +97,17 @@ func main() {
 		context.HTML(http.StatusOK, "index.html", nil)
 	})
 
-	router.GET("minecraft/*file", func(context *gin.Context) {
-		HandleList(context)
-	})
+	// Add all folders in files
+	fileFiles, err := ioutil.ReadDir("files")
+	if err != nil {
+		fmt.Println("warning: failed to read 'files' directory:", err)
+	} else {
+		for _, file := range fileFiles {
+			router.GET(fmt.Sprintf("%v/*file", file.Name()), func(context *gin.Context) {
+				HandleList(context)
+			})
+		}
+	}
 
 	// When page is not found, redirect page to home
 	router.NoRoute(func(context *gin.Context) {
