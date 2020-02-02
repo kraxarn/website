@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -56,12 +55,9 @@ func List(path string) []FileInfo {
 }
 
 func HandleList(context *gin.Context) {
-	file := context.Param("file")
-	if strings.HasSuffix(file, "/") {
-		file = file[:len(file)-1]
-	}
-	path := context.FullPath()
-	path = path[:len(path)-6] + file
+	path := filepath.Join(
+		context.FullPath()[:len(context.FullPath())-5],
+		context.Param("file"))
 	if IsFile(path) {
 		context.File(filepath.Join("files", path))
 	} else {
