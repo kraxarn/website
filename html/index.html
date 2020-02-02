@@ -15,24 +15,10 @@
 
 <body>
 
-<!-- TODO: Remove login box for now -->
-
-<!-- TODO: Load video with js to make it load last -->
-<video autoplay loop muted id="bgvid" poster="img/bg/minimal_poster.png" src="img/bg/minimal.webm"> </video>
-
-<!-- Snow particles! -->
-<!--
-<div id="particles-js"> </div>
-<script src="/js/particles.min.js"> </script>
-<script>
-	particlesJS.load('particles-js', '/js/particlesjs-config.json')
-</script>
--->
-
 <div id="warningBrowser" class="warning"> <b> Warning! </b> <br> It seems like you're using an old browser, consider updating or getting a better browser. </div>
 
 <ul id="panel">
-	<img id="logo" src="img/logo_v7_lightblue.webp" onclick="toggleLogo()">
+	<img id="logo" src="/img/logo_v7_lightblue.webp" onclick="toggleLogo()">
 	<li class="rotLeft"		onclick="location.href='servers';"	onmouseenter="ShowInfo('myServers')"	onmouseleave="HideInfo('myServers')"	ontouchstart="ShowInfo('myServers')"	ontouchend="HideInfo('myServers')">		My Servers </li>
 	<div class="panelSpacer"> </div>
 	<li class="rotRight"	onclick="location.href='apps';"		onmouseenter="ShowInfo('myApps')"		onmouseleave="HideInfo('myApps')"		ontouchstart="ShowInfo('myApps')"		ontouchend="HideInfo('myApps')">		My Apps </li>
