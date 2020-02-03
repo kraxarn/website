@@ -96,8 +96,8 @@ body {
 }
 
 #browser {
+	font-size: 0.9em;
 	position: fixed;
-	font-family: Light;
 	color: rgb(200, 200, 200);
 	opacity: 0.6;
 	bottom: 2%;
@@ -106,8 +106,8 @@ body {
 }
 
 #changelog, #browserInfo {
+	font-size: 0.9em;
 	position: fixed;
-	font-family: Light;
 	color: rgba(200, 200, 200, 0.4);
 	top: 2%;
 	right: 0;
