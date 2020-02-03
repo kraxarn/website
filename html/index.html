@@ -8,6 +8,8 @@
 
 <body>
 
+<div id="background"></div>
+
 <div id="warningBrowser" class="warning"> <b> Warning! </b> <br> It seems like you're using an old browser, consider updating or getting a better browser. </div>
 
 <ul id="panel">
@@ -200,7 +202,7 @@ function toggleOlderChanges() {
 }
 
 function setBackground() {
-	document.body.style.backgroundImage = `url("/img/bg/${Math.floor(new Date().getHours() / 2)}.webp")`
+	document.getElementById("background").style.backgroundImage = `url("/img/bg/${Math.floor(new Date().getHours() / 2)}.webp")`
 }
 setBackground()
 
