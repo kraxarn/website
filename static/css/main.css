@@ -77,7 +77,7 @@ body {
 }
 
 #panel li:hover {
-	text-shadow: 0px 0px 12px #cfd8dc;
+	text-shadow: 0 0 12px #cfd8dc;
 }
 
 #debug {
@@ -123,7 +123,6 @@ body {
 
 #changelog p {
 	text-align: center;
-	font-family: Regular;
 	margin-top: 32px;
 	cursor: pointer;
 }
@@ -172,12 +171,11 @@ body {
 /* Classes */
 
 .warning {
-	font-family: Regular;
 	width: 512px;
 	padding: 8px;
 	text-align: center;
 	background-color: rgba(250, 10, 10, 0.6);
-	border-radius: 0px 0px 8px 8px;
+	border-radius: 0 0 8px 8px;
 	border: 2px solid black;
 	position: fixed;
 	top: 0;
