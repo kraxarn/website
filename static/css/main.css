@@ -16,22 +16,12 @@ body {
 	list-style-type: none;
 	display: inline-block;
 	position: fixed;
-
 	margin: 0;
 	padding: 18px;
-	/* left: -2px; */
-	/* border-radius: 0px 20px 20px 0px; */
-
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	/* -webkit-backface-visibility: hidden; Why is this here again? */
-
-	/* % or px? */
-	/* width: 10%; */
 	width: 256px;
-
-	/* New Design */
 	background-color: rgba(38, 50, 56, 0.7);
 	border-radius: 12px;
 	color: #b0bec5;
@@ -39,26 +29,12 @@ body {
 }
 
 #panel li {
-	/*
-	border-radius: 5px;
-	border: 0px solid black;
-	box-shadow: 0px 0px 14px rgba(20, 20, 20, 0.5);
-	*/
 	font-size: 14px;
-	/* padding: 6px; */
 	cursor: pointer;
-
 	margin: 4px 0px 4px 0px;
 	text-align: center;
 	padding: 8px;
-
 	transition: all 0.3s ease-in-out;
-
-	/*
-	background-color: rgba(175, 175, 175, 0.6);
-	color: rgb(10, 10, 10);
-	*/
-
 	/* Disable selection, fix when standard */
 	user-select: none;
 	-webkit-user-select: none;
@@ -84,46 +60,26 @@ body {
 
 #infoLeft, #infoRight {
 	position: fixed;
-	/* padding: 8px; */
 	font-family: Light;
-
-	/*
-	border-radius: 5px;
-	box-shadow: 0px 0px 14px rgba(20, 20, 20, 0.5);
-	background-color: rgba(175, 175, 175, 0.8);
-	color: rgb(10, 10, 10);
-	*/
-
 	color: rgba(200, 200, 200, 0.8);
-
-
-	/* height: 254px; */ /* 364px for full, 270px for menu only */
-	width: 240px; /* TODO: Change this */
+	width: 240px;
 	left: 50%;
 	top: 50%;
-
 	transform: translate(-50%, -50%);
 }
 
 #infoLeft {
-	/* TODO: Do this better */
-	/* transform: translate(-392px, -92px); */ /* 8px spacing */
-	/* transform: translate(-50%, -92px); */
 	z-index: -5;
 	transition: 0.3s ease-in-out;
 }
 
 #infoRight {
-	/* TODO: Do this better */
-	/* transform: translate(-50%, -92px); */ /* 8px spacing */
 	z-index: -5;
 	transition: 0.3s ease-in-out;
 }
 
 #panel li:hover {
-	/* box-shadow: 0px 0px 28px rgba(200, 200, 200, 0.7); */
 	text-shadow: 0px 0px 12px #cfd8dc;
-	/* background-color: rgba(200, 200, 200, 0.7); */
 }
 
 #debug {
@@ -137,7 +93,6 @@ body {
 	padding-left: 2%;
 	transform: translate(-50%, 100%);
 	border-radius: 20px 20px 0px 0px;
-
 	transition: 0.5s ease-in-out;
 }
 
@@ -158,7 +113,6 @@ body {
 	top: 2%;
 	right: 0;
 	transform: translate(100%, 0);
-
 	transition: 0.5s ease-in-out;
 }
 
@@ -186,7 +140,6 @@ body {
 	top: 0;
 	transform: translate(-50%, -150%);
 	text-align: center;
-
 	transition: 0.4s ease-in-out;
 }
 
@@ -227,11 +180,9 @@ body {
 	width: 512px;
 	padding: 8px;
 	text-align: center;
-
 	background-color: rgba(250, 10, 10, 0.6);
 	border-radius: 0px 0px 8px 8px;
 	border: 2px solid black;
-
 	position: fixed;
 	top: 0;
 	left: 50%;
