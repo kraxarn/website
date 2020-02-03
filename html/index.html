@@ -36,7 +36,7 @@
 
 <div id="debug" onclick="toggleDebug();">
 	<p>
-		<b> Version RC 11.90 </b> <br>
+		<b> Version v12.0-alpha.1 </b> <br>
 	</p>
 </div>
 
@@ -69,170 +69,129 @@
 	</tr>
 </table>
 
-<script src="js/info.js"> </script>
-
-<span id="browser" onclick="toggleDebug();"> </span>
-<script src="js/CheckBrowserBeta.js"> </script>
+<script src="/js/info.js"></script>
+<span id="browser" onclick="toggleDebug();"></span>
+<script src="/js/browser.js"></script>
 <script>
 /* Vars */
-var showDebug = false;
-var debug = document.getElementById('debug');
-var changelog = document.getElementById('changelog');
-var browserInfo = document.getElementById('browserInfo');
-var text = info;
+let showDebug = false
+const debug = document.getElementById('debug')
+const changelog = document.getElementById('changelog')
+const browserInfo = document.getElementById('browserInfo')
+const text = info
 
 /* Browser checking */
+let support
 switch(browser) {
 	case "Chrome":
 	case "Firefox":
 	case "Vivaldi":
 	case "Opera":
-		var support = "full support.";
-		break;
+		support = "full support."
+		break
 	case "Internet Explorer":
-		var support = "partial support, no music, video, background or fonts.";
-		break;
+		support = "partial support, no music, video, background or fonts."
+		break
 	case "Edge":
 	case "Safari":
 	case "Silk":
-		var support = "partial support, no music, video or background.";
+		support = "partial support, no music, video or background."
 		break;
 	default:
-		var support = "unknown support.";
+		support = "unknown support."
 		break;
 }
-if (browser == "Firefox" || browser == "Chrome" || browser == "Vivaldi") {
-	var support = "full support.";
+if (browser === "Firefox" || browser === "Chrome" || browser === "Vivaldi") {
+	support = "full support."
 }
 
-document.getElementById('browser').textContent = "You're running " + browser + " " + browserVer + " with " + support;
+document.getElementById('browser').textContent = `You're running ${browser} ${browserVer} with ${support}`
 document.getElementById('debugUserAgent').textContent = navigator.userAgent;
 
-document.getElementById('debugDoNotTrack').textContent = `Do not track: ${navigator.doNotTrack == 1 ? "Enabled" : "Disabled"}`
-
-/* HTTPS check */
-// This is handled by the web server now
-/*
-if (window.location.protocol == "http:") {
-	try {
-		location.href = "https://web.kraxarn.com";
-	} catch(err) {
-		alert("Your browser doesn't support HTTPS, staying on HTTP...");
-	}
-}
-*/
+document.getElementById('debugDoNotTrack').textContent = `Do not track: ${navigator.doNotTrack === "1" ? "Enabled" : "Disabled"}`
 
 /* Debug toggle */
 function toggleDebug() {
 	if (showDebug) {
-		//debug.style.transform = 'translate(-50%, 100%)';
-		changelog.style.transform = 'translate(100%, 0)';
-		browserInfo.style.transform = 'translate(-50%, -150%)';
-		showDebug = false;
+		changelog.style.transform = 'translate(100%, 0)'
+		browserInfo.style.transform = 'translate(-50%, -150%)'
+		showDebug = false
 	} else {
-		//debug.style.transform = 'translate(-50%, 0%)';
-		changelog.style.transform = 'translate(-25%, 0)';
-		browserInfo.style.transform = 'translate(-50%, 100%)';
-		showDebug = true;
+		changelog.style.transform = 'translate(-25%, 0)'
+		browserInfo.style.transform = 'translate(-50%, 100%)'
+		showDebug = true
 	}
 }
 
 /* Browser warning */
 if (!supportOgg || !supportWebm) {
-	document.getElementById('warningBrowser').style.display = "block";
+	document.getElementById('warningBrowser').style.display = "block"
 }
 
-/* Check if late at night */
-if (new Date().getHours() < 6) {
-	document.getElementById('bgvid').src = "img/bg/gaming.webm"
-}
-
-/* Info */
+/**
+ * Info
+ * @return {string}
+ */
 function GetInfoSide(info) {
 	switch (info) {
 		case "myServers":
 		case "fileUploader":
 		case "api":
 			return "right"
-			break
-
 		case "myApps":
 		case "steam":
 		case "users":
 		case "privacy":
 			return "left"
-			break
-
 		default:
 			alert("Error: Unexpected info switch! :(")
 			return "unknown"
-			break
-
 	}
 }
 
 function ShowInfo(info) {
-	//console.log("ShowInfo: " + info);
-
-	var side = GetInfoSide(info)
-	if (side == "left") {
+	const side = GetInfoSide(info)
+	if (side === "left") {
 		document.getElementById("infoLeft").textContent = text[info]
 		document.getElementById("infoLeft").style.transform = "translate(-402px, -50%)" // -392 -92
 
-	} else if (side == "right") {
+	} else if (side === "right") {
 		document.getElementById("infoRight").textContent = text[info]
 		document.getElementById("infoRight").style.transform = "translate(168px, -50%)" // 136 -92
 	}
 }
 
 function HideInfo(info) {
-	var side = GetInfoSide(info)
-	if (side == "left") {
+	const side = GetInfoSide(info)
+	if (side === "left") {
 		document.getElementById("infoLeft").textContent = ""
 		document.getElementById("infoLeft").style.transform = "translate(-50%, -50%)" // -50% -92
 
-	} else if (side == "right") {
+	} else if (side === "right") {
 		document.getElementById("infoRight").textContent = ""
 		document.getElementById("infoRight").style.transform = "translate(-50%, -50%)" // -50% -92
 	}
 }
 
-function toggleLogo()
-{
-	if (logo.src.includes("logo_v7"))
-	{
+function toggleLogo()  {
+	const logo = document.getElementById("logo")
+	if (logo.src.includes("logo_v7")) {
 		// Using new logo, switch to old one
 		logo.src = "img/logo_v5.webp"
-	}
-	else
-	{
+	} else {
 		// Using old logo, switch to new one
 		logo.src = "img/logo_v7_lightblue.webp"
 	}
 }
 
-function getRandomLogo()
-{
-	switch (Math.floor(Math.random() * 5))
-	{
-		case 0: return "v5"
-		case 1: return "v7"
-		case 2: return "v7_indigo"
-		case 3: return "v7_lightblue"
-		case 4: return "v7_purple"
-	}
-}
-
-function toggleOlderChanges()
-{
-	if (olderChanges.style.display == "none" || olderChanges.style.display == "")
-	{
+function toggleOlderChanges() {
+	const olderChanges = document.getElementById("olderChanges")
+	const showChanges  = document.getElementById("showChanges")
+	if (olderChanges.style.display === "none" || olderChanges.style.display === "") {
 		// Hidden, show them
 		olderChanges.style.display = "block"
 		showChanges.textContent = "Show latest changes"
-	}
-	else
-	{
+	} else {
 		// Already shown, hide them
 		olderChanges.style.display = "none"
 		showChanges.textContent = "Show all changes"
@@ -240,7 +199,7 @@ function toggleOlderChanges()
 }
 
 function setBackground() {
-	document.body.style.background = `url(/img/bg/${Math.floor(new Date().getHours()/2)}.webp})`
+	document.body.style.backgroundImage = `url("/img/bg/${Math.floor(new Date().getHours() % 12)}.webp")`
 }
 setBackground()
 
