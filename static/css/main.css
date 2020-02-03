@@ -6,13 +6,12 @@ body {
 	background-size: cover;
 	background-position: center center;
 	color: #f5f5f5;
-	font-family: Regular;
+	font-family: sans-serif;
 }
 
 /* Divs */
 
 #panel {
-	font-family: Regular;
 	list-style-type: none;
 	display: inline-block;
 	position: fixed;
