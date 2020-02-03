@@ -17,7 +17,6 @@ body {
 	background-position: center center;
 	opacity: 0.8;
 	filter: blur(4px);
-	animation: 30s ease-in-out infinite alternate backgroundZoom;
 }
 
 /* Divs */
@@ -213,13 +212,4 @@ body {
 ::selection {
 	color: rgba(200, 200, 200, 0.8);
 	background: rgba(20, 20, 20, 0.7);
-}
-
-@keyframes backgroundZoom {
-	from {
-		transform: scale(1.0);
-	}
-	to {
-		transform: scale(1.2);
-	}
 }
