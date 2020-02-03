@@ -58,9 +58,9 @@ body {
 }
 
 #infoLeft, #infoRight {
+	font-size: 0.9em;
+	color: #546e7a;
 	position: fixed;
-	font-family: Light;
-	color: rgba(200, 200, 200, 0.8);
 	width: 240px;
 	left: 50%;
 	top: 50%;
