@@ -2,7 +2,7 @@
 
 body {
 	background-color: #000000;
-	color: #f5f5f5;
+	color: #eeeeee;
 	font-family: sans-serif;
 }
 
@@ -52,7 +52,7 @@ body {
 
 #tabs a {
 	text-decoration: none;
-	color: #b0bec5;
+	color: #cfd8dc;
 	padding: 4px;
 }
 
