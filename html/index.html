@@ -12,20 +12,21 @@
 
 <div id="warningBrowser" class="warning"> <b> Warning! </b> <br> It seems like you're using an old browser, consider updating or getting a better browser. </div>
 
-<ul id="panel">
-	<img id="logo" src="/img/logo_v7_lightblue.webp" onclick="toggleLogo()">
-	<li class="rotLeft"		onclick="location.href='servers';"	onmouseenter="ShowInfo('myServers')"	onmouseleave="HideInfo('myServers')"	ontouchstart="ShowInfo('myServers')"	ontouchend="HideInfo('myServers')">		My Servers </li>
-	<div class="panelSpacer"> </div>
-	<li class="rotRight"	onclick="location.href='apps';"		onmouseenter="ShowInfo('myApps')"		onmouseleave="HideInfo('myApps')"		ontouchstart="ShowInfo('myApps')"		ontouchend="HideInfo('myApps')">		My Apps </li>
-	<div class="panelSpacer"> </div>
-	<li class="rotLeft"		onclick="location.href='files';"	onmouseenter="ShowInfo('fileUploader')"	onmouseleave="HideInfo('fileUploader')"	ontouchstart="ShowInfo('fileUploader')"	ontouchend="HideInfo('fileUploader')">	File Uploader </li>
-	<div class="panelSpacer"> </div>
-	<li class="rotRight"	onclick="location.href='steam';"	onmouseenter="ShowInfo('steam')"		onmouseleave="HideInfo('steam')"		ontouchstart="ShowInfo('steam')"		ontouchend="HideInfo('steam')">			Steam </li>
-	<div class="panelSpacer"> </div>
-	<li class="rotRight"	onclick="location.href='api';"		onmouseenter="ShowInfo('api')"			onmouseleave="HideInfo('api')"			ontouchstart="ShowInfo('api')"			ontouchend="HideInfo('api')">			API </li>
-	<div class="panelSpacer"> </div>
-	<li class="rotRight"	onclick=""							onmouseenter="ShowInfo('privacy')"		onmouseleave="HideInfo('privacy')"		ontouchstart="ShowInfo('privacy')"		ontouchend="HideInfo('privacy')">		Privacy </li>
-</ul>
+<div id="content">
+	<img id="logo" src="/img/logo_v7_lightblue.webp" alt="logo with text that's an image for no reason" onclick="toggleLogo()">
+	<ul id="tabs">
+		<li><a href="/servers">My Servers</a></li>
+		<li><a href="https://kraxarn.github.io">My GitHub page</a></li>
+	</ul>
+	<p>
+		Welcome to my website! My name is Kraxie (or kraxarn) and I am a software engineer from Sweden.<br/>
+		I mostly specialize in developing fast and efficient open source cross-platform software.
+		<br/> <br/>
+		This website is mostly just a playground for me to try out new things. There is really nothing
+		you can do here unless you came for a very specific purpose. In that case, see the above tabs for
+		the different pages available. Hopefully more tabs will be available as the website is further developed.
+	</p>
+</div>
 
 <div id="infoLeft">
 	<span id="infoTextLeft"> </span>
