@@ -30,6 +30,10 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	background-color: #212121bb;
+	padding: 18px;
+	border-radius: 12px;
+	box-shadow: 0 0 8px #212121bb;
 }
 
 #content p {
