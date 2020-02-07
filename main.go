@@ -67,6 +67,13 @@ func main() {
 		context.HTML(http.StatusOK, "index.html", nil)
 	})
 
+	// /servers
+	router.GET("servers/*app", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "servers.html", gin.H{
+			"infos": GetServerInfo(),
+		})
+	})
+
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
 	if err == nil {

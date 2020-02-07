@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <title>Servers</title>
+    <link rel="stylesheet" type="text/css" href="/css/ls.css">
+</head>
+<body>
+<p>
+    /usr/bin/servers -l
+</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Players</th>
+        <th>Link</th>
+    </tr>
+    {{range .infos}}
+        <tr>
+            <td>{{.Name}}</td>
+            {{if .Online}}
+                <td>{{.Players}}</td>
+                <td>{{.Link}}</td>
+            {{else}}
+                <td>-</td>
+                <td>-}</td>
+            {{end}}
+        </tr>
+    {{end}}
+</table>
+</body>
+</html>
