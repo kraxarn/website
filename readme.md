@@ -1,1 +1,2 @@
-my website is currently being rewritten from the ground up in go. the current main website does not reflect this source code.
+# [kraxarn.com](https://kraxarn.com)
+My website is currently being rewritten from the ground up in Go, so a lot of stuff is still missing.
