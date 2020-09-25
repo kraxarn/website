@@ -95,7 +95,7 @@ func main() {
 	})
 
 	// Start listening on port 8080
-	if err := router.Run("127.0.0.1:8080"); err != nil {
+	if err := router.Run("127.0.0.1:5000"); err != nil {
 		fmt.Println(err)
 	}
 }
