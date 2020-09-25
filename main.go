@@ -39,6 +39,7 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	token := config.NewToken()
 
 	// Setup some html functions
 	router.SetFuncMap(template.FuncMap{
@@ -73,6 +74,8 @@ func main() {
 			"infos": GetServerInfo(),
 		})
 	})
+
+	user.Route(router, &token)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
