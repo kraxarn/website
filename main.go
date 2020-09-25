@@ -57,11 +57,11 @@ func main() {
 	// Add all folders and files in static folder
 	staticFiles, _ := ioutil.ReadDir("static")
 	for _, file := range staticFiles {
-		path := fmt.Sprintf("static/%v", file.Name())
+		filePath := fmt.Sprintf("static/%v", file.Name())
 		if file.IsDir() {
-			router.Static(file.Name(), path)
+			router.Static(file.Name(), filePath)
 		} else {
-			router.StaticFile(file.Name(), path)
+			router.StaticFile(file.Name(), filePath)
 		}
 	}
 
