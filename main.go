@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/user"
 	"html/template"
 	"io/ioutil"
 	"net/http"
