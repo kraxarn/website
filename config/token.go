@@ -5,8 +5,6 @@ import (
 	"io/ioutil"
 	"math"
 	"math/rand"
-	"os"
-	"path"
 )
 
 type Token struct {
@@ -21,16 +19,7 @@ func NewToken() Token {
 }
 
 func getPath() string {
-	keyFile := "key.bin"
-
-	if dir, err := os.UserConfigDir(); err == nil {
-		keyPath := path.Join(dir, "kraxarn", "website")
-		if err := os.MkdirAll(keyPath, 0755); err == nil {
-			keyFile = path.Join(keyPath, keyFile)
-		}
-	}
-
-	return keyFile
+	return GetPath("key.bin")
 }
 
 func (token *Token) load() {
