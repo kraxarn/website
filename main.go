@@ -5,6 +5,7 @@ import (
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
+	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -79,6 +80,7 @@ func main() {
 	})
 
 	user.Route(router, &token)
+	yt.Route(router)
 	sponsor.Route(router)
 
 	// Add all folders in files
