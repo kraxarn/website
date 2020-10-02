@@ -21,15 +21,6 @@ func Route(router *gin.Engine) {
 			})
 			return
 		}
-
-		var results []map[string]interface{}
-		for _, time := range times {
-			results = append(results, map[string]interface{}{
-				"start": time.startTime,
-				"end":   time.endTime,
-			})
-		}
-
-		context.JSON(http.StatusOK, results)
+		context.JSON(http.StatusOK, times)
 	})
 }

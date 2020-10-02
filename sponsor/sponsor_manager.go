@@ -18,7 +18,8 @@ type Manager struct {
 }
 
 type Time struct {
-	startTime, endTime float64
+	StartTime float64 `json:"start"`
+	EndTime   float64 `json:"end"`
 }
 
 func NewManager() (Manager, error) {
@@ -81,7 +82,7 @@ func (manager *Manager) GetTimes(videoId string) ([]Time, error) {
 
 	for rows.Next() {
 		var time Time
-		err = rows.Scan(&time.startTime, &time.endTime)
+		err = rows.Scan(&time.StartTime, &time.EndTime)
 		if err != nil {
 			return times, err
 		}
