@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
 	"html/template"
 	"io/ioutil"
@@ -78,6 +79,7 @@ func main() {
 	})
 
 	user.Route(router, &token)
+	sponsor.Route(router)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
