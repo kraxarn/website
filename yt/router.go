@@ -26,4 +26,17 @@ func Route(router *gin.Engine) {
 
 		context.JSON(http.StatusOK, results)
 	})
+
+	router.GET("/yt/info/:id", func(context *gin.Context) {
+		info, err := info(context.Param("id"))
+
+		if err != nil {
+			context.JSON(http.StatusOK, map[string]interface{}{
+				"error": err,
+			})
+			return
+		}
+
+		context.JSON(http.StatusOK, info)
+	})
 }
