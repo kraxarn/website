@@ -38,10 +38,17 @@ func NewUserFromToken(tokenString string, tokenKey *config.Token) (*User, error)
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		user := new(User)
-		user.Name = claims["Name"].(string)
-		user.Avatar = uint32(claims["Avatar"].(float64))
-		if userId, err := uuid.Parse(claims["Id"].(string)); err == nil {
-			user.Id = userId
+
+		if userName, ok := claims["Name"].(string); ok {
+			user.Name = userName
+		}
+		if userAvatar, ok := claims["Avatar"].(float64); ok {
+			user.Avatar = uint32(userAvatar)
+		}
+		if userId, ok := claims["Id"].(string); ok {
+			if userUuid, err := uuid.Parse(userId); err == nil {
+				user.Id = userUuid
+			}
 		}
 
 		return user, nil
