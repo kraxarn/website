@@ -19,7 +19,7 @@ func Route(router *gin.Engine) {
 		results, err := search(q)
 		if err != nil {
 			context.JSON(http.StatusOK, map[string]interface{}{
-				"error": err,
+				"error": err.Error(),
 			})
 			return
 		}
@@ -32,7 +32,7 @@ func Route(router *gin.Engine) {
 
 		if err != nil {
 			context.JSON(http.StatusOK, map[string]interface{}{
-				"error": err,
+				"error": err.Error(),
 			})
 			return
 		}
