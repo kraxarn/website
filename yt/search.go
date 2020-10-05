@@ -11,6 +11,7 @@ type SearchResult struct {
 	Id          string `json:"id"`
 	Thumbnail   string `json:"thumbnail"`
 	Title       string `json:"title"`
+	Author      string `json:"author"`
 }
 
 type VideoThumbnailResponse struct {
@@ -19,6 +20,7 @@ type VideoThumbnailResponse struct {
 
 type SearchResponse struct {
 	Title           string
+	Author          string
 	VideoId         string
 	VideoThumbnails []VideoThumbnailResponse
 	Description     string
@@ -44,6 +46,7 @@ func search(query string) ([]SearchResult, error) {
 			Id:          response.VideoId,
 			Thumbnail:   response.VideoThumbnails[0].Url,
 			Title:       response.Title,
+			Author:      response.Author,
 		})
 	}
 
