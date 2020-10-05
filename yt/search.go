@@ -1,9 +1,11 @@
 package yt
 
 import (
-	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"regexp"
+	"strings"
 )
 
 type SearchResult struct {
@@ -26,27 +28,61 @@ type SearchResponse struct {
 	Description     string
 }
 
+func between(s, start, end string) (string, error) {
+	startIndex := strings.Index(s, start) + len(start)
+	if startIndex < 0 {
+		return "", fmt.Errorf("start not found in string")
+	}
+
+	endIndex := strings.Index(s[startIndex:], end) + startIndex
+	if endIndex < 0 {
+		return "", fmt.Errorf("end not found in string")
+	}
+
+	return s[startIndex:endIndex], nil
+}
+
+func betweenOrEmpty(s, start, end string) string {
+	match, err := between(s, start, end)
+	if err == nil {
+		return match
+	}
+	return ""
+}
+
 func search(query string) ([]SearchResult, error) {
-	result, err := http.Get(fmt.Sprintf("%s/api/v1/search?q=%s", invidiousPath, query))
+	result, err := http.Get(fmt.Sprintf("https://www.youtube.com/results?search_query=%s", query))
 	if err != nil {
 		return nil, err
 	}
-	defer result.Body.Close()
+	defer func() {
+		_ = result.Body.Close()
+	}()
 
-	var responses []SearchResponse
-	err = json.NewDecoder(result.Body).Decode(&responses)
+	bodyData, err := ioutil.ReadAll(result.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	body := string(bodyData)
+	data, err := between(body, "window[\"ytInitialData\"] = ", ";")
+	if err != nil {
+		return nil, err
+	}
+
+	expr, err := regexp.Compile("videoRenderer.*?serviceEndpoint")
 	if err != nil {
 		return nil, err
 	}
 
 	var results []SearchResult
-	for _, response := range responses {
+	for _, match := range expr.FindAllString(data, -1) {
 		results = append(results, SearchResult{
-			Description: response.Description,
-			Id:          response.VideoId,
-			Thumbnail:   response.VideoThumbnails[0].Url,
-			Title:       response.Title,
-			Author:      response.Author,
+			Author:      betweenOrEmpty(match, `"ownerText":{"runs":[{"text":"`, `","`),
+			Description: betweenOrEmpty(match, `descriptionSnippet":{"runs":[{"text":"`, `"}]},`),
+			Id:          betweenOrEmpty(match, `videoId":"`, `"`),
+			Thumbnail:   betweenOrEmpty(match, `"thumbnail":{"thumbnails":[{"url":"`, `"`),
+			Title:       betweenOrEmpty(match, `"title":{"runs":[{"text":"`, `"}]`),
 		})
 	}
 
