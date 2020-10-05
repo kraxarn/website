@@ -65,7 +65,7 @@ func search(query string) ([]SearchResult, error) {
 	}
 
 	body := string(bodyData)
-	data, err := between(body, "window[\"ytInitialData\"] = ", ";")
+	data, err := between(body, `window["ytInitialData"] = `, ";")
 	if err != nil {
 		return nil, err
 	}
@@ -79,8 +79,8 @@ func search(query string) ([]SearchResult, error) {
 	for _, match := range expr.FindAllString(data, -1) {
 		results = append(results, SearchResult{
 			Author:      betweenOrEmpty(match, `"ownerText":{"runs":[{"text":"`, `","`),
-			Description: betweenOrEmpty(match, `descriptionSnippet":{"runs":[{"text":"`, `"}]},`),
-			Id:          betweenOrEmpty(match, `videoId":"`, `"`),
+			Description: betweenOrEmpty(match, `"descriptionSnippet":{"runs":[{"text":"`, `"}]},`),
+			Id:          betweenOrEmpty(match, `"videoId":"`, `"`),
 			Thumbnail:   betweenOrEmpty(match, `"thumbnail":{"thumbnails":[{"url":"`, `"`),
 			Title:       betweenOrEmpty(match, `"title":{"runs":[{"text":"`, `"}]`),
 		})
