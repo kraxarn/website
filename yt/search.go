@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 )
@@ -51,7 +52,8 @@ func betweenOrEmpty(s, start, end string) string {
 }
 
 func search(query string) ([]SearchResult, error) {
-	result, err := http.Get(fmt.Sprintf("https://www.youtube.com/results?search_query=%s", query))
+	result, err := http.Get(fmt.Sprintf("https://www.youtube.com/results?search_query=%s",
+		url.QueryEscape(query)))
 	if err != nil {
 		return nil, err
 	}
