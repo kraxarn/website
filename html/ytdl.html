@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>YouTube Downloader</title>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/css/ytdl.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<div id="background"></div>
+
+<div id="content">
+	<h3>YouTube Downloader</h3>
+	<p>
+		Currently only supports audio. Downloads the highest quality available, probably opus.
+	</p>
+
+	<p id="error"></p>
+
+	<label for="url"></label>
+	<input id="url" name="url" type="text" placeholder="https://youtu.be/Yy0Uq4Qirhw"/>
+
+	<input id="download" type="button" value="Fully legal download">
+
+	<a id="downloadLink" download>Download</a>
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/ytdl.js"></script>
+
+</body>
+</html>
