@@ -82,6 +82,7 @@
 <script src="/js/info.js"></script>
 <span id="browser" onclick="toggleDebug();"></span>
 <script src="/js/browser.js"></script>
+<script src="/js/main.js"></script>
 <script>
 /* Vars */
 let showDebug = false
@@ -207,11 +208,6 @@ function toggleOlderChanges() {
 		showChanges.textContent = "Show all changes"
 	}
 }
-
-function setBackground() {
-	document.getElementById("background").style.backgroundImage = `url("/img/bg/${Math.floor(new Date().getHours() / 2)}.webp")`
-}
-setBackground()
 
 </script>
 </body>
