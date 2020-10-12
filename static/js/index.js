@@ -20,6 +20,7 @@ const toggleDebug = () => {
 		changelog.style.transform = "translate(-25%, 0)"
 		browserInfo.style.transform = "translate(-50%, 100%)"
 		showDebug = true
+		getChanges()
 	}
 }
 
@@ -50,4 +51,32 @@ const toggleOlderChanges = () => {
 		olderChanges.style.display = "none"
 		showChanges.textContent = "Show all changes"
 	}
+}
+
+const getChanges = () => {
+	const latest = getById("latestChanges")
+	const older = getById("olderChanges")
+
+	fetch("/changes")
+		.then(response => response.json())
+		.then(json => json.forEach((item, i) => (i === 0 ? latest : older).innerHTML = createChanges(item)))
+		.catch(err => latest.textContent = err)
+}
+
+const createChanges = json => {
+	const title = document.createElement("span")
+	title.className = "changelogTitle"
+	title.textContent = json.name
+
+	const ul = document.createElement("ul")
+	json["changes"].forEach(item => {
+		const li = document.createElement("li")
+		li.textContent = item
+		ul.appendChild(li)
+	})
+
+	const div = document.createElement("div")
+	div.appendChild(title)
+	div.appendChild(ul)
+	return div.outerHTML
 }

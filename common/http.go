@@ -1,6 +1,7 @@
 package common
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -22,4 +23,12 @@ func Get(url string) ([]byte, error) {
 	}
 
 	return data, nil
+}
+
+func GetJson(url string, data interface{}) error {
+	body, err := Get(url)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(body, data)
 }

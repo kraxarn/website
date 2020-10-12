@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
@@ -84,6 +85,14 @@ func main() {
 
 	router.GET("ytdl", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "ytdl.html", nil)
+	})
+
+	router.GET("changes", func(context *gin.Context) {
+		releases, err := common.GetVersions()
+		if !common.NewError(err).SendIfError(context) {
+			return
+		}
+		context.JSON(http.StatusOK, releases)
 	})
 
 	user.Route(router, &token)
