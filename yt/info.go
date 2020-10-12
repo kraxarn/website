@@ -40,11 +40,20 @@ func info(videoId string) (VideoInfo, error) {
 	for _, itf := range data["streamingData"].(map[string]interface{})["adaptiveFormats"].([]interface{}) {
 		data := itf.(map[string]interface{})
 
-		format := AdaptiveFormat{
-			Url:      data["url"].(string),
-			MimeType: data["mimeType"].(string),
-			Bitrate:  int(data["bitrate"].(float64)),
-			Quality:  data["quality"].(string),
+		format := AdaptiveFormat{}
+		if urlString, ok := data["url"].(string); ok {
+			format.Url = urlString
+		} else {
+			continue
+		}
+		if mimeType, ok := data["mimeType"].(string); ok {
+			format.MimeType = mimeType
+		}
+		if bitrate, ok := data["bitrate"].(float64); ok {
+			format.Bitrate = int(bitrate)
+		}
+		if quality, ok := data["quality"].(string); ok {
+			format.Quality = quality
 		}
 
 		if width, ok := data["width"].(float64); ok {
