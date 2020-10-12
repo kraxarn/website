@@ -79,6 +79,10 @@ func main() {
 		})
 	})
 
+	router.GET("ytdl", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "ytdl.html", nil)
+	})
+
 	user.Route(router, &token)
 	yt.Route(router)
 	sponsor.Route(router)

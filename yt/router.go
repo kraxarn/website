@@ -1,7 +1,9 @@
 package yt
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/kraxarn/website/common"
 	"net/http"
 )
 
@@ -31,12 +33,26 @@ func Route(router *gin.Engine) {
 		info, err := info(context.Param("id"))
 
 		if err != nil {
-			context.JSON(http.StatusOK, map[string]interface{}{
-				"error": err.Error(),
-			})
+			context.JSON(http.StatusOK, common.NewError(err))
 			return
 		}
 
 		context.JSON(http.StatusOK, info)
+	})
+
+	router.GET("/yt/audio/:id", func(context *gin.Context) {
+		info, err := info(context.Param("id"))
+		var data []byte
+
+		if err != nil {
+			fmt.Println("failed to fetch audio info:", err)
+		} else {
+			data, err = common.Get(info.Audio.Url)
+		}
+		if err != nil {
+			fmt.Println("failed to download audio:", err)
+		}
+
+		context.Data(http.StatusOK, "audio/opus", data)
 	})
 }
