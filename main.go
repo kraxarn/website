@@ -51,6 +51,9 @@ func main() {
 			return time.Now().String()
 		},
 		"formatFileSize": FormatFileSize,
+		"currentVersion": func() string {
+			return config.CurrentVersion
+		},
 	})
 
 	// Add all files in html folder as templates
