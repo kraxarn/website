@@ -1,9 +1,0 @@
-var info = {}
-
-info.myServers = "On this page you can see all my current servers that are on and the status of them. When you visit the page, they are updated in real time."
-info.myApps = "Here you can find the current programs and games I'm working on."
-info.fileUploader = "Here you can upload various files to my server and view files other users have uploaded. You can currently upload most music, video, image and archives, as long as it's under 30 mb in size. If you're going to be uploading larger stuff than that, you'll need to use my FTP server. I plan on making this uploader account bound, so you need to sign up for an account to be able to upload stuff. I have no date for when this will be done though."
-info.steam = "Here you can find everything Steam related and various testing stuff I've made with help of the Steam API. You can find various steam statistics and other info from your Steam user. You can also find all games I've been donated, although, it doesn't update in real time, so it needs to be updated automatically."
-info.api = "Here you can find various API calls you can do to get verious information about files uploaded and other stuff. The response can be in either JSON or PHP and no API key is required as of yet."
-info.users = "Here you can find what other users have made that have uploaded their stuff to my website. Keep in mind that I take no responsibility for anything on these sites."
-info.privacy = "Go GDPR! Seriously though, this website never directly collects any information about the users, so don't worry. To view all information collected about you, please visit an empty page."

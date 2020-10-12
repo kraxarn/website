@@ -1,69 +1,46 @@
 let showDebug = false
-const debug = document.getElementById('debug')
-const changelog = document.getElementById('changelog')
-const browserInfo = document.getElementById('browserInfo')
-const text = info
+const changelog = getById("changelog")
+const browserInfo = getById("browserInfo")
 
-/* Browser checking */
-let support
-switch(browser) {
-	case "Chrome":
-	case "Firefox":
-	case "Vivaldi":
-	case "Opera":
-		support = "full support."
-		break
-	case "Internet Explorer":
-		support = "partial support, no music, video, background or fonts."
-		break
-	case "Edge":
-	case "Safari":
-	case "Silk":
-		support = "partial support, no music, video or background."
-		break;
-	default:
-		support = "unknown support."
-		break;
+getById("debugUserAgent").textContent = navigator.userAgent
+getById("debugDoNotTrack").textContent = `Do not track: ${navigator.doNotTrack === "1" ? "Enabled" : "Disabled"}`
+
+const setBrowserInfo = () => {
+	const browser = getBrowserInfo()
+	getById("browser").textContent = `You're running ${browser.name} ${browser.version}`
 }
-if (browser === "Firefox" || browser === "Chrome" || browser === "Vivaldi") {
-	support = "full support."
-}
+setBrowserInfo()
 
-document.getElementById('browser').textContent = `You're running ${browser} ${browserVer} with ${support}`
-document.getElementById('debugUserAgent').textContent = navigator.userAgent;
-
-document.getElementById('debugDoNotTrack').textContent = `Do not track: ${navigator.doNotTrack === "1" ? "Enabled" : "Disabled"}`
-
-function toggleDebug() {
+const toggleDebug = () => {
 	if (showDebug) {
-		changelog.style.transform = 'translate(100%, 0)'
-		browserInfo.style.transform = 'translate(-50%, -150%)'
+		changelog.style.transform = "translate(100%, 0)"
+		browserInfo.style.transform = "translate(-50%, -150%)"
 		showDebug = false
 	} else {
-		changelog.style.transform = 'translate(-25%, 0)'
-		browserInfo.style.transform = 'translate(-50%, 100%)'
+		changelog.style.transform = "translate(-25%, 0)"
+		browserInfo.style.transform = "translate(-50%, 100%)"
 		showDebug = true
 	}
 }
 
-if (!supportOgg || !supportWebm) {
-	document.getElementById('warningBrowser').style.display = "block"
-}
-
-function toggleLogo()  {
-	const logo = document.getElementById("logo")
-	if (logo.src.includes("logo_v7")) {
-		// Using new logo, switch to old one
-		logo.src = "img/logo_v5.webp"
-	} else {
-		// Using old logo, switch to new one
-		logo.src = "img/logo_v7_lightblue.webp"
+const updateBrowserWarning = () => {
+	const supported = getBrowserMediaSupport()
+	if (!supported.ogg || !supported.webm) {
+		getById("warningBrowser").style.display = "block"
 	}
 }
+updateBrowserWarning()
 
-function toggleOlderChanges() {
+const toggleLogo = () => {
+	const logo = getById("logo")
+	logo.src = logo.src.includes("logo_v7")
+		? "img/logo_v5.webp"
+		: "img/logo_v7_lightblue.webp"
+}
+
+const toggleOlderChanges = () => {
 	const olderChanges = document.getElementById("olderChanges")
-	const showChanges  = document.getElementById("showChanges")
+	const showChanges = document.getElementById("showChanges")
 	if (olderChanges.style.display === "none" || olderChanges.style.display === "") {
 		// Hidden, show them
 		olderChanges.style.display = "block"
