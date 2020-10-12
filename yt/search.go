@@ -36,7 +36,7 @@ func between(s, start, end string) (string, error) {
 	}
 
 	endIndex := strings.Index(s[startIndex:], end) + startIndex
-	if endIndex < 0 {
+	if endIndex < startIndex {
 		return "", fmt.Errorf("end not found in string")
 	}
 
