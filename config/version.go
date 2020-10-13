@@ -1,3 +1,3 @@
 package config
 
-const CurrentVersion string = "12.2"
+const CurrentVersion string = "12.3"
