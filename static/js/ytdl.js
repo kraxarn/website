@@ -36,6 +36,10 @@ download.onclick = () => {
 	fetch(`/yt/info/${videoId}`)
 		.then(response => response.json())
 		.then(json => {
+			if (json.error) {
+				showError(json.error)
+				return
+			}
 			if (!json.audio.url) {
 				showError("No audio found to download")
 				return
