@@ -34,4 +34,5 @@ input[type=button] {
 
 input[type=button]:hover {
 	background-color: rgba(0, 0, 0, 0.5);
+	transition: background-color 100ms ease-in-out;
 }
