@@ -22,6 +22,7 @@ input[type=text] {
 	background-color: rgba(0, 0, 0, 0.2);
 	color: #f0f0f0;
 	padding: 12px;
+	box-sizing: border-box;
 }
 
 input[type=button] {
