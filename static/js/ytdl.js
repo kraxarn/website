@@ -7,6 +7,7 @@ const showError = msg => {
 	if (msg) {
 		getById("download").value = "Try again"
 	}
+	downloading = false
 }
 
 let downloading = false
