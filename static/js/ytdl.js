@@ -5,7 +5,7 @@ const showError = msg => {
 	error.textContent = msg
 	error.style.display = msg ? "block" : "none"
 	if (msg) {
-		getById("download").value = "Something went wrong"
+		getById("download").value = "Try again"
 	}
 }
 
@@ -15,7 +15,7 @@ const setDownloading = value => {
 	downloading = value
 	getById("download").value = value
 		? "Please wait..."
-		: "Download complete"
+		: "Downloading..."
 }
 
 download.onclick = () => {
