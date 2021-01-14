@@ -37,14 +37,14 @@
 	</p>
 </div>
 
-<div id="debug" onclick="toggleDebug()">
+<div id="debug" onclick="index.toggleDebug()">
 	v{{currentVersion}}
 </div>
 
 <div id="changelog">
 	<div id="latestChanges">Please wait...</div>
 	<div id="olderChanges"></div>
-	<p onclick="toggleOlderChanges()" id="showChanges"> Show all changes </p>
+	<p onclick="index.toggleOlderChanges()" id="showChanges"> Show all changes </p>
 </div>
 
 <div id="browserInfo">
@@ -70,11 +70,18 @@
 	</a>
 </div>
 
-<span id="browser" onclick="toggleDebug();"></span>
+<span id="browser" onclick="index.toggleDebug();"></span>
 
 <script src="/js/main.js"></script>
-<script src="/js/browser.js"></script>
-<script src="/js/index.js"></script>
+<script src="/js/BrowserMediaSupport.js"></script>
+<script src="/js/BrowserInfo.js"></script>
+<script src="/js/Index.js"></script>
+
+<script>
+	new BrowserMediaSupport()
+	new BrowserInfo()
+	const index = new Index()
+</script>
 
 </body>
 </html>
