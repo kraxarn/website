@@ -88,5 +88,3 @@ class Index {
 		return div.outerHTML
 	}
 }
-
-new Index()
