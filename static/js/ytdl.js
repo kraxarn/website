@@ -1,8 +1,6 @@
 class YtDl {
 	constructor() {
-		this.download = getById("download")
 		this.downloading = false
-		this.download.onclick = this.downloadClicked
 	}
 
 	showError(msg) {
@@ -68,5 +66,3 @@ class YtDl {
 		window.onload = () => this.setDownloading(false)
 	}
 }
-
-new YtDl()

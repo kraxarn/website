@@ -20,11 +20,15 @@
 
 	<label for="url"></label>
 	<input id="url" name="url" type="text" placeholder="YouTube URL"/>
-	<input id="download" type="button" value="Download">
+	<input id="download" type="button" value="Download" onclick="ytDl.downloadClicked()">
 </div>
 
 <script src="/js/main.js"></script>
 <script src="/js/ytdl.js"></script>
+
+<script>
+	const ytDl = new YtDl()
+</script>
 
 </body>
 </html>
