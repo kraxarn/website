@@ -1,9 +1,10 @@
 package yt
 
 type VideoInfo struct {
-	Title       string         `json:"title"`
-	Thumbnail   string         `json:"thumbnail"`
-	Video       AdaptiveFormat `json:"video"`
-	Audio       AdaptiveFormat `json:"audio"`
-	Description string         `json:"description"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Duration    int    `json:"duration"`
+	Thumbnail   string `json:"thumbnail"`
+	Audio       Format `json:"audio"`
+	Video       Format `json:"video"`
 }

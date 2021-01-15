@@ -3,91 +3,87 @@ package yt
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"net/url"
+	"os/exec"
 )
 
-func info(videoId string) (VideoInfo, error) {
-	result, err := http.Get(fmt.Sprintf("https://www.youtube.com/get_video_info?video_id=%[1]s&eurl=https://youtube.googleapis.com/v/%[1]s", videoId))
+func jsonInfo(videoId string) (map[string]interface{}, error) {
+	out, err := exec.Command("youtube-dl", "--print-json", "--simulate",
+		fmt.Sprintf("https://www.youtube.com/watch?v=%s", videoId)).Output()
 	if err != nil {
-		return VideoInfo{}, err
-	}
-	defer func() {
-		_ = result.Body.Close()
-	}()
-
-	bodyData, err := ioutil.ReadAll(result.Body)
-	if err != nil {
-		return VideoInfo{}, err
-	}
-	response, err := between(string(bodyData), "player_response=", "&")
-	if err != nil {
-		return VideoInfo{}, err
-	}
-	response, err = url.QueryUnescape(response)
-	if err != nil {
-		return VideoInfo{}, nil
+		return nil, err
 	}
 
 	var data map[string]interface{}
-	err = json.Unmarshal([]byte(response), &data)
+	if err = json.Unmarshal(out, &data); err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func info(videoId string) (VideoInfo, error) {
+	data, err := jsonInfo(videoId)
 	if err != nil {
 		return VideoInfo{}, err
 	}
 
-	var formats []AdaptiveFormat
-	for _, itf := range data["streamingData"].(map[string]interface{})["adaptiveFormats"].([]interface{}) {
+	info := VideoInfo{
+		Thumbnail: fmt.Sprintf("https://i.ytimg.com/vi/%s/maxresdefault.jpg", data["id"].(string)),
+		Video:     Format{},
+		Audio:     Format{},
+	}
+
+	if title, ok := data["title"].(string); ok {
+		info.Title = title
+	}
+	if description, ok := data["description"].(string); ok {
+		info.Description = description
+	}
+	if duration, ok := data["duration"].(float64); ok {
+		info.Duration = int(duration)
+	}
+
+	for _, itf := range data["requested_formats"].([]interface{}) {
 		data := itf.(map[string]interface{})
+		var format Format
 
-		format := AdaptiveFormat{}
-		if urlString, ok := data["url"].(string); ok {
-			format.Url = urlString
-		} else {
-			continue
+		if url, ok := data["url"].(string); ok {
+			format.Url = url
 		}
-		if mimeType, ok := data["mimeType"].(string); ok {
-			format.MimeType = mimeType
-		}
-		if bitrate, ok := data["bitrate"].(float64); ok {
-			format.Bitrate = int(bitrate)
-		}
-		if quality, ok := data["quality"].(string); ok {
-			format.Quality = quality
-		}
-
-		if width, ok := data["width"].(float64); ok {
+		if width, ok := data["width"].(int64); ok {
 			format.Width = int(width)
 		}
-		if height, ok := data["height"].(float64); ok {
+		if height, ok := data["height"].(int64); ok {
 			format.Height = int(height)
+		}
+		if quality, ok := data["format_note"].(string); ok {
+			format.Quality = quality
 		}
 		if fps, ok := data["fps"].(float64); ok {
 			format.Fps = int(fps)
 		}
-		if qualityLabel, ok := data["qualityLabel"].(string); ok {
-			format.QualityLabel = qualityLabel
+		if bitrate, ok := data["tbr"].(float64); ok {
+			format.AverageBitrate = bitrate
+		}
+		if sampleRate, ok := data["asr"].(float64); ok {
+			format.AudioSampleRate = int(sampleRate)
 		}
 
-		if averageBitrate, ok := data["averageBitrate"].(float64); ok {
-			format.AverageBitrate = int(averageBitrate)
+		if audioCodec, ok := data["acodec"].(string); ok && audioCodec != "none" {
+			// Audio specific
+			format.Codec = audioCodec
+			if bitrate, ok := data["abr"].(float64); ok {
+				format.Bitrate = int(bitrate)
+			}
+			info.Audio = format
+		} else if videoCodec, ok := data["vcodec"].(string); ok && videoCodec != "none" {
+			// Video specific
+			format.Codec = videoCodec
+			if bitrate, ok := data["vbr"].(float64); ok {
+				format.Bitrate = int(bitrate)
+			}
+			info.Video = format
 		}
-		if approxDurationMs, ok := data["approxDurationMs"].(string); ok {
-			format.ApproxDurationMs = approxDurationMs
-		}
-		if audioSampleRate, ok := data["audioSampleRate"].(string); ok {
-			format.AudioSampleRate = audioSampleRate
-		}
-
-		formats = append(formats, format)
 	}
 
-	details := data["videoDetails"].(map[string]interface{})
-	return VideoInfo{
-		Title:       details["title"].(string),
-		Thumbnail:   fmt.Sprintf("https://i.ytimg.com/vi/%s/maxresdefault.jpg", details["videoId"].(string)),
-		Video:       bestVideoFormat(formats),
-		Audio:       bestAudioFormat(formats),
-		Description: details["shortDescription"].(string),
-	}, nil
+	return info, nil
 }
