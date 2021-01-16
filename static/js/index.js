@@ -66,7 +66,11 @@ class Index {
 
 		fetch("/changes")
 			.then(response => response.json())
-			.then(json => json.forEach((item, i) => (i === 0 ? latest : older).innerHTML = this.createChanges(item)))
+			.then(json => {
+				latest.innerText = null
+				json.forEach((item, i) =>
+					(i === 0 ? latest : older).innerHTML += this.createChanges(item))
+			})
 			.catch(err => latest.textContent = err)
 	}
 
