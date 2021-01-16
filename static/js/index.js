@@ -64,6 +64,11 @@ class Index {
 		const latest = getById("latestChanges")
 		const older = getById("olderChanges")
 
+		// Changes were already fetched previously
+		if (older.textContent) {
+			return
+		}
+
 		fetch("/changes")
 			.then(response => response.json())
 			.then(json => {
