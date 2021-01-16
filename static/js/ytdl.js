@@ -63,6 +63,6 @@ class YtDl {
 		link.href = url
 		link.style.display = "block"
 		link.click()
-		window.onload = () => this.setDownloading(false)
+		this.setDownloading(false)
 	}
 }
