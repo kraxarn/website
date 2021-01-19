@@ -36,7 +36,7 @@ func (client *Client) Read() {
 	}()
 
 	client.connection.SetReadLimit(maxMessageSize)
-	client.connection.SetReadDeadline(time.Now().Add(pongWait))
+	_ = client.connection.SetReadDeadline(time.Now().Add(pongWait))
 	client.connection.SetPongHandler(func(appData string) error {
 		return client.connection.SetReadDeadline(time.Now().Add(pongWait))
 	})
@@ -66,23 +66,23 @@ func (client *Client) Write() {
 	for {
 		select {
 		case msg, ok := <-client.send:
-			client.connection.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = client.connection.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// Hub closed
-				client.connection.WriteMessage(websocket.CloseMessage, []byte{})
+				_ = client.connection.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 			writer, err := client.connection.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
 			}
-			writer.Write(msg)
+			_, _ = writer.Write(msg)
 
 			// Add queue
 			length := len(client.send)
 			for i := 0; i < length; i++ {
-				writer.Write(newline)
-				writer.Write(<-client.send)
+				_, _ = writer.Write(newline)
+				_, _ = writer.Write(<-client.send)
 			}
 
 			if err := writer.Close(); err != nil {
@@ -91,7 +91,7 @@ func (client *Client) Write() {
 			}
 
 		case <-ticker.C:
-			client.connection.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = client.connection.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := client.connection.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}
