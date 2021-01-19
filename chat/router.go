@@ -13,7 +13,7 @@ func Route(router *gin.Engine) {
 		id := context.Param("id")
 		hub, found := hubs[id]
 		if !found {
-			fmt.Printf("creating hub: \"%s\"", id)
+			fmt.Printf("creating hub: \"%s\"\n", id)
 			hub = NewHub()
 			hubs[id] = hub
 		}
