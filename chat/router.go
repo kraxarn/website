@@ -7,7 +7,7 @@ import (
 )
 
 func Route(router *gin.Engine) {
-	var hubs map[string]Hub
+	hubs := make(map[string]Hub)
 
 	router.GET("/chat/:id", func(context *gin.Context) {
 		id := context.Param("id")
