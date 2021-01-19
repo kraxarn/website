@@ -17,12 +17,14 @@ type Hub struct {
 }
 
 func NewHub() Hub {
-	return Hub{
+	hub := Hub{
 		clients:    make(map[*Client]bool),
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 	}
+	go hub.Run()
+	return hub
 }
 
 func (hub *Hub) Run() {
