@@ -8,7 +8,7 @@ import (
 )
 
 type Client struct {
-	// TODO: Why would a client need a hub
+	// Hub client belongs to
 	hub *Hub
 	// WebSocket connection
 	connection *websocket.Conn
