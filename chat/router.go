@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/kraxarn/website/common"
+	"net/http"
 )
 
 func Route(router *gin.Engine) {
 	hubs := make(map[string]Hub)
 
-	router.GET("/chat/:id", func(context *gin.Context) {
+	router.GET("/chat/hub/:id", func(context *gin.Context) {
 		id := context.Param("id")
 		hub, found := hubs[id]
 		if !found {
@@ -19,6 +21,18 @@ func Route(router *gin.Engine) {
 		}
 
 		hub.Serve(context.Writer, context.Request)
+	})
+
+	router.GET("/chat/info/:id", func(context *gin.Context) {
+		hub, found := hubs[context.Param("id")]
+		if !found {
+			context.JSON(http.StatusOK, common.NewError(fmt.Errorf("hub not found")))
+			return
+		}
+
+		context.JSON(http.StatusOK, map[string]interface{}{
+			"client_count": len(hub.clients),
+		})
 	})
 }
 
