@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/chat"
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
@@ -98,6 +99,7 @@ func main() {
 	user.Route(router, &token)
 	yt.Route(router)
 	sponsor.Route(router)
+	chat.Route(router)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
