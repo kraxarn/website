@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"net/http"
 )
@@ -44,19 +45,25 @@ func (manager *RouterManager) new(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, json)
 }
 
-func (manager *RouterManager) info(ctx *gin.Context) {
-	user, err := NewUserFromToken(ctx.PostForm("token"), manager.token)
+func (manager *RouterManager) userJson(token string) interface{} {
+	user, err := NewUserFromToken(token, manager.token)
 
-	var json map[string]interface{}
 	if err != nil {
-		json = map[string]interface{}{
-			"error": err.Error(),
-		}
-	} else {
-		json = map[string]interface{}{
-			"user": user.ToJson(),
-		}
+		return common.NewError(err)
 	}
+	return map[string]interface{}{
+		"user": user.ToJson(),
+	}
+}
 
-	ctx.JSON(http.StatusOK, json)
+func (manager *RouterManager) info(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, manager.userJson(ctx.PostForm("token")))
+}
+
+func (manager *RouterManager) whoAmI(ctx *gin.Context) {
+	if token, err := ctx.Cookie("user"); err != nil {
+		ctx.JSON(http.StatusOK, common.NewError(err))
+	} else {
+		ctx.JSON(http.StatusOK, manager.userJson(token))
+	}
 }

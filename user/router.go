@@ -22,6 +22,10 @@ func Route(router *gin.Engine, token *config.Token) {
 			http.MethodPost, "info", manager.info,
 			"Gets info about a user from token",
 		},
+		{
+			http.MethodGet, "whoami", manager.whoAmI,
+			"Gets info about the current user",
+		},
 	}
 
 	for _, handler := range manager.handlers {
