@@ -108,7 +108,7 @@ func main() {
 	yt.Route(router)
 	sponsor.Route(router)
 	chat.Route(router)
-	watch.Route(router)
+	watch.Route(router, &token)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")

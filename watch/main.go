@@ -3,6 +3,7 @@ package watch
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/user"
 	"net/http"
 )
@@ -14,7 +15,12 @@ func HtmlFiles() []string {
 	}
 }
 
-func Route(router *gin.Engine) {
+func Route(router *gin.Engine, token *config.Token) {
+	// Main state handler
+	watch := Watch{
+		token: token,
+	}
+
 	// Static files
 	for _, folder := range []string{
 		"css", "img", "js",
@@ -23,10 +29,8 @@ func Route(router *gin.Engine) {
 		router.Static(path, path)
 	}
 
-	// TEMP
-	currentUser := user.NewUser()
-
 	router.GET("/watch", func(context *gin.Context) {
+		currentUser := watch.getUser(context)
 		context.HTML(http.StatusOK, "watch.gohtml", gin.H{
 			"currentUser": currentUser,
 			"avatars":     user.AvatarValues,
@@ -34,6 +38,7 @@ func Route(router *gin.Engine) {
 	})
 
 	router.GET("/watch/room/:id", func(context *gin.Context) {
+		currentUser := watch.getUser(context)
 		context.HTML(http.StatusOK, "room.gohtml", gin.H{
 			"currentUser": currentUser,
 			"room":        context.Param("id"),
