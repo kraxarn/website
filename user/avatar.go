@@ -7,7 +7,7 @@ type Avatar struct {
 
 var AvatarValues = []Avatar{
 	{0x1f43b, "bear"},
-	{0x1f41, "boar"},
+	{0x1f417, "boar"},
 	{0x1f431, "cat"},
 	{0x1f414, "chicken"},
 	{0x1f42e, "cow"},
