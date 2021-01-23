@@ -40,6 +40,10 @@ var AvatarValues = []Avatar{
 var AvatarMap map[uint32]string
 
 func AvatarName(id uint32) string {
+	if AvatarMap == nil {
+		AvatarMap = make(map[uint32]string)
+	}
+
 	if len(AvatarMap) == 0 {
 		for _, value := range AvatarValues {
 			AvatarMap[value.Id] = value.Name
