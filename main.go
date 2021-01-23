@@ -11,6 +11,7 @@ import (
 	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -47,6 +48,9 @@ func main() {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	token := config.NewToken()
+
+	// For the number generator to generate different numbers
+	rand.Seed(time.Now().Unix())
 
 	// Setup some html functions
 	router.SetFuncMap(template.FuncMap{
