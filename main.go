@@ -7,6 +7,7 @@ import (
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
+	"github.com/kraxarn/website/watch"
 	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
@@ -59,7 +60,10 @@ func main() {
 	})
 
 	// Add all files in html folder as templates
-	router.LoadHTMLGlob("html/*.html")
+	router.LoadHTMLFiles(append([]string{
+		"html/index.html", "html/ls.html",
+		"html/servers.html", "html/ytdl.html",
+	}, watch.HtmlFiles()...)...)
 
 	// Add all folders and files in static folder
 	staticFiles, _ := ioutil.ReadDir("static")
@@ -100,6 +104,7 @@ func main() {
 	yt.Route(router)
 	sponsor.Route(router)
 	chat.Route(router)
+	watch.Route(router)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")

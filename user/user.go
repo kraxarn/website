@@ -65,6 +65,10 @@ func (user *User) AvatarName() string {
 	return AvatarName(user.Avatar)
 }
 
+func (user *User) AvatarPath() string {
+	return fmt.Sprintf("/img/avatar/%x.svg", user.Avatar)
+}
+
 func (user *User) ToToken(token *config.Token) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, user).SignedString(token.GetKey())
 }
