@@ -34,6 +34,13 @@ func Route(router *gin.Engine) {
 			"client_count": len(hub.clients),
 		})
 	})
+
+	router.GET("/chat/exists/:id", func(context *gin.Context) {
+		_, found := hubs[context.Param("id")]
+		context.JSON(http.StatusOK, map[string]interface{}{
+			"exists": found,
+		})
+	})
 }
 
 func handleWebsocket(context *gin.Context) {
