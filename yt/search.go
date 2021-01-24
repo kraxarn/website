@@ -88,5 +88,8 @@ func search(query string) ([]SearchResult, error) {
 		})
 	}
 
+	if results == nil {
+		return nil, fmt.Errorf("no results")
+	}
 	return results, nil
 }
