@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go/v4"
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/kraxarn/website/config"
 	"math/rand"
@@ -71,6 +72,16 @@ func (user *User) AvatarPath() string {
 
 func (user *User) ToToken(token *config.Token) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, user).SignedString(token.GetKey())
+}
+
+func (user *User) Refresh(context *gin.Context, token *config.Token) string {
+	if cookie, err := user.ToToken(token); err == nil && len(cookie) > 0 {
+		// 1 month
+		context.SetCookie("user", cookie, 2_629_800,
+			"/", config.GetDomain(), config.IsSecure(), true)
+		return cookie
+	}
+	return ""
 }
 
 func (user *User) ToJson() map[string]string {

@@ -20,14 +20,9 @@ func (watch *Watch) getUser(context *gin.Context) *user.User {
 	if currentUser == nil {
 		currentUser = user.NewUser()
 	}
-	if currentUser == nil {
-		return nil
+	if currentUser != nil {
+		currentUser.Refresh(context, watch.token)
 	}
 
-	// 1 month
-	if token, err := currentUser.ToToken(watch.token); err == nil {
-		context.SetCookie("user", token, 2_629_800,
-			"/", config.GetDomain(), config.IsSecure(), true)
-	}
 	return currentUser
 }
