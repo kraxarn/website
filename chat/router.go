@@ -5,10 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/kraxarn/website/common"
+	"github.com/kraxarn/website/config"
 	"net/http"
 )
 
-func Route(router *gin.Engine) {
+func Route(router *gin.Engine, token *config.Token) {
 	hubs := make(map[string]Hub)
 
 	router.GET("/chat/hub/:id", func(context *gin.Context) {
@@ -16,11 +17,11 @@ func Route(router *gin.Engine) {
 		hub, found := hubs[id]
 		if !found {
 			fmt.Printf("creating hub: \"%s\"\n", id)
-			hub = NewHub()
+			hub = NewHub(token)
 			hubs[id] = hub
 		}
 
-		hub.Serve(context.Writer, context.Request)
+		hub.Serve(context)
 	})
 
 	router.GET("/chat/info/:id", func(context *gin.Context) {
