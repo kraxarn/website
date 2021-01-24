@@ -22,23 +22,14 @@ getById("videoSearch").addEventListener("input", () => {
 })
 
 const search = (query, callback) => {
-	fetch("/api/search", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			q: query
-		})
+	get(`/yt/search?q=${query}`).then(json => {
+		if (json.error) {
+			showError(json.error)
+			callback(null)
+		} else {
+			callback(json)
+		}
 	})
-		.then(response => response.json())
-		.then(json => {
-			if (json.error) {
-				callback(null)
-			} else {
-				callback(json)
-			}
-		})
 }
 
 const addSearchResult = (thumbnailSrc, titleText, descriptionText, videoId) => {
