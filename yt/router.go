@@ -30,7 +30,7 @@ func Route(router *gin.Engine) {
 	})
 
 	router.GET("/yt/info/:id", func(context *gin.Context) {
-		info, err := info(context.Param("id"))
+		info, err := Info(context.Param("id"))
 
 		if err != nil {
 			context.JSON(http.StatusOK, common.NewError(err))
@@ -41,7 +41,7 @@ func Route(router *gin.Engine) {
 	})
 
 	router.GET("/yt/audio/:id", func(context *gin.Context) {
-		info, err := info(context.Param("id"))
+		info, err := Info(context.Param("id"))
 		var data []byte
 
 		if err != nil {
