@@ -67,7 +67,7 @@ func search(query string) ([]SearchResult, error) {
 	}
 
 	body := string(bodyData)
-	data, err := between(body, `window["ytInitialData"] = `, ";")
+	data, err := between(body, "ytInitialData", ";")
 	if err != nil {
 		return nil, err
 	}
