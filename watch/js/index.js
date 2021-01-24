@@ -80,6 +80,7 @@ const updateUserInfo = body =>
 			if (json.error) {
 				showError(json.error)
 			} else {
+				showError()
 				getById("avatar").src = `/img/avatar/${parseInt(json.user.avatar).toString(16)}.svg`
 				getById("nameInput").value = json.user.name
 			}
@@ -89,5 +90,5 @@ const updateUserInfo = body =>
 const showError = err => {
 	const error = getById("error")
 	error.textContent = `error: ${err}`
-	error.style.display = "block"
+	error.style.display = err ? "block" : "none"
 }
