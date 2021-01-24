@@ -145,7 +145,7 @@ const addQueueItem = (thumbnailSrc, titleText, videoId) => {
 	const title = document.createElement("h5")
 	// TODO: 60 is probably too long
 	if (titleText.length > 60) {
-		titleText = titleText.subString(0, 60) + "..."
+		titleText = titleText.substring(0, 60) + "..."
 	}
 	title.textContent = titleText
 	item.appendChild(title)
