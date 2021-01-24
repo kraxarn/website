@@ -68,7 +68,7 @@ const addSearchResult = (thumbnailSrc, titleText, descriptionText, videoId) => {
 	// Add queue container: Img
 	const queueImg = document.createElement("img")
 	queueImg.className = "queueImg"
-	queueImg.src = "/img/1f4e5.svg"
+	queueImg.src = "/img/status/1f4e5.svg"
 	queueImg.title = "Add to queue"
 	queueImg.onclick = () => addVideo(videoId, titleText)
 	searchResult.appendChild(queueImg)
@@ -108,7 +108,7 @@ const addComment = (type, message) => {
 	comment.className = "comment"
 
 	const img = document.createElement("img")
-	img.src = `/watch/img/${icon}.svg`
+	img.src = icon.startsWith("/") ? icon : `/img/status/${icon}.svg`
 	comment.appendChild(img)
 
 	const msg = document.createElement("span")
@@ -153,7 +153,7 @@ const addQueueItem = (thumbnailSrc, titleText, videoId) => {
 	// Remove button
 	const rem = document.createElement("img")
 	rem.className = "queueRemove"
-	rem.src = "/img/icon/remove.png"
+	rem.src = "/img/status/274c.svg"
 	item.appendChild(rem)
 
 	getById("queueContainer").appendChild(item)
