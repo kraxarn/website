@@ -194,7 +194,7 @@ socket.onopen = () => {
 	getById("commentEntry").disabled = false
 }
 
-socket.onmessage = event => {
+socket.onmessage = async event => {
 	const data = JSON.parse(event.data)
 	switch (data.type) {
 		case "message":
@@ -205,7 +205,7 @@ socket.onmessage = event => {
 			audio.currentTime = 0
 			video.src = data.video
 			audio.src = data.audio
-			audio.play()
+			await audio.play()
 			break
 	}
 }
