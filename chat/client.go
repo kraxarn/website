@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/kraxarn/website/user"
 	"time"
 )
 
@@ -14,13 +15,16 @@ type Client struct {
 	connection *websocket.Conn
 	// Buffer
 	send chan []byte
+	// Registered user
+	user *user.User
 }
 
-func NewClient(hub *Hub, connection *websocket.Conn) *Client {
+func NewClient(hub *Hub, connection *websocket.Conn, clientUser *user.User) *Client {
 	client := new(Client)
 
 	client.hub = hub
 	client.connection = connection
+	client.user = clientUser
 	client.send = make(chan []byte, 256)
 
 	client.hub.register <- client

@@ -107,7 +107,7 @@ func main() {
 	user.Route(router, &token)
 	yt.Route(router)
 	sponsor.Route(router)
-	chat.Route(router)
+	chat.Route(router, &token)
 	watch.Route(router, &token)
 
 	// Add all folders in files
