@@ -10,9 +10,9 @@ import (
 )
 
 type User struct {
-	Id     uuid.UUID
-	Name   string
-	Avatar uint32
+	Id     uuid.UUID `json:"id"`
+	Name   string    `json:"name"`
+	Avatar uint32    `json:"avatar"`
 }
 
 func NewUser() *User {
@@ -40,13 +40,13 @@ func NewUserFromToken(tokenString string, tokenKey *config.Token) (*User, error)
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		user := new(User)
 
-		if userName, ok := claims["Name"].(string); ok {
+		if userName, ok := claims["name"].(string); ok {
 			user.Name = userName
 		}
-		if userAvatar, ok := claims["Avatar"].(float64); ok {
+		if userAvatar, ok := claims["avatar"].(float64); ok {
 			user.Avatar = uint32(userAvatar)
 		}
-		if userId, ok := claims["Id"].(string); ok {
+		if userId, ok := claims["id"].(string); ok {
 			if userUuid, err := uuid.Parse(userId); err == nil {
 				user.Id = userUuid
 			}
@@ -76,12 +76,16 @@ func (user *User) ToToken(token *config.Token) (string, error) {
 
 func (user *User) Refresh(context *gin.Context, token *config.Token) string {
 	if cookie, err := user.ToToken(token); err == nil && len(cookie) > 0 {
-		// 1 month
-		context.SetCookie("user", cookie, 2_629_800,
-			"/", config.GetDomain(), config.IsSecure(), true)
+		user.RefreshWithToken(context, cookie)
 		return cookie
 	}
 	return ""
+}
+
+func (user *User) RefreshWithToken(context *gin.Context, token string) {
+	// 1 month
+	context.SetCookie("user", token, 2_629_800,
+		"/", config.GetDomain(), config.IsSecure(), true)
 }
 
 func (user *User) ToJson() map[string]string {
