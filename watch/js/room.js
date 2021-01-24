@@ -222,3 +222,5 @@ socket.onclose = () => {
 function addVideo(id, title) {
 	socket.send(`/video ${id}`)
 }
+
+const showError = err => addComment("error", err)
