@@ -20,7 +20,7 @@ func Route(router *gin.Engine, token *config.Token) {
 		},
 		{
 			http.MethodPost, "info", manager.info,
-			"Gets info about a user from token",
+			"Gets info about a user from token, or from stored cookie",
 		},
 		{
 			http.MethodGet, "whoami", manager.whoAmI,

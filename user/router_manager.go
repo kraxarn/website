@@ -45,6 +45,17 @@ func (manager *RouterManager) new(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, json)
 }
 
+func (manager *RouterManager) getUser(ctx *gin.Context) *User {
+	// From POST
+	token := ctx.PostForm("token")
+	// From cookie
+	if len(token) <= 0 {
+		token, _ = ctx.Cookie("user")
+	}
+	currentUser, _ := NewUserFromToken(token, manager.token)
+	return currentUser
+}
+
 func (manager *RouterManager) userJson(token string) interface{} {
 	user, err := NewUserFromToken(token, manager.token)
 
@@ -57,13 +68,10 @@ func (manager *RouterManager) userJson(token string) interface{} {
 }
 
 func (manager *RouterManager) info(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, manager.userJson(ctx.PostForm("token")))
-}
-
-func (manager *RouterManager) whoAmI(ctx *gin.Context) {
-	if token, err := ctx.Cookie("user"); err != nil {
-		ctx.JSON(http.StatusOK, common.NewError(err))
+	userInfo := manager.getUser(ctx)
+	if userInfo == nil {
+		ctx.JSON(http.StatusOK, common.NewError(fmt.Errorf("no user found")))
 	} else {
-		ctx.JSON(http.StatusOK, manager.userJson(token))
+		ctx.JSON(http.StatusOK, userInfo)
 	}
 }
