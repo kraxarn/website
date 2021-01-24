@@ -54,7 +54,10 @@ func (client *Client) Read() {
 			break
 		}
 		msg = bytes.TrimSpace(bytes.Replace(msg, newline, space, -1))
-		client.hub.broadcast <- msg
+		client.hub.broadcast <- ClientMessage{
+			Message: msg,
+			Sender:  client,
+		}
 	}
 }
 

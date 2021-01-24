@@ -9,11 +9,16 @@ import (
 	"strings"
 )
 
+type ClientMessage struct {
+	Message []byte
+	Sender  *Client
+}
+
 type Hub struct {
 	// Clients
 	clients map[*Client]bool
 	// Inbound message
-	broadcast chan []byte
+	broadcast chan ClientMessage
 	// Register requests
 	register chan *Client
 	// Unregister requests
@@ -25,7 +30,7 @@ type Hub struct {
 func NewHub(token *config.Token) Hub {
 	hub := Hub{
 		clients:    make(map[*Client]bool),
-		broadcast:  make(chan []byte),
+		broadcast:  make(chan ClientMessage),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		token:      token,
