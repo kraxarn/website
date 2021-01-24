@@ -187,7 +187,7 @@ entry.addEventListener("keypress", event => {
 	}
 })
 
-const socket = new WebSocket(`ws://${location.host}/chat/${RoomId}`)
+const socket = new WebSocket(`ws://${location.host}/chat/hub/${RoomId}`)
 
 socket.onopen = () => {
 	addComment("status", "Connected")
