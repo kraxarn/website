@@ -20,7 +20,7 @@ func jsonInfo(videoId string) (map[string]interface{}, error) {
 	return data, nil
 }
 
-func info(videoId string) (VideoInfo, error) {
+func Info(videoId string) (VideoInfo, error) {
 	data, err := jsonInfo(videoId)
 	if err != nil {
 		return VideoInfo{}, err
