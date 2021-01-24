@@ -1,9 +1,5 @@
-const baseUrl = "http://localhost:5000"
-
-const id = (elementId) => document.getElementById(elementId)
-
 const get = url => new Promise((resolve, reject) =>
-	fetch(`${baseUrl}${url}`, {
+	fetch(url, {
 		mode: "cors"
 	}).then(response => response.json())
 		.then(json => resolve(json))
@@ -13,7 +9,7 @@ const get = url => new Promise((resolve, reject) =>
 		}))
 
 const post = (url, data) => new Promise((resolve, reject) =>
-	fetch(`${baseUrl}${url}`, {
+	fetch(url, {
 		mode: "cors",
 		method: "POST",
 		headers: {
