@@ -34,7 +34,16 @@ getById("saveRoom").onclick = () => {
 	if (name.length < 3 || name.length > 16) {
 		return
 	}
-	location.href = `/watch/room/${name}`
+
+	get(`/chat/exists/${name}`)
+		.then(json => {
+			if (json["exists"]) {
+				showError("a room with that name already exists")
+			} else {
+				showError()
+				location.href = `/watch/room/${name}`
+			}
+		})
 }
 
 // Update avatar image
