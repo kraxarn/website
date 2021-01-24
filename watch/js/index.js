@@ -39,7 +39,7 @@ getById("saveRoom").onclick = () => {
 
 // Update avatar image
 const setAvatar = name => {
-	getById("avatar").src = `img/${name}.svg`
+	getById("avatar").src = `img/${parseInt(name).toString(16)}.svg`
 	getById("avatarSelect").style.display = "none"
 
 	updateUserInfo({
@@ -71,7 +71,8 @@ const updateUserInfo = body =>
 			if (json.error) {
 				showError(json.error)
 			} else {
-				console.log("Update successful")
+				getById("avatar").src = `/img/avatar/${parseInt(json.user.avatar).toString(16)}.svg`
+				getById("nameInput").value = json.user.name
 			}
 		})
 		.catch(err => showError(err))
