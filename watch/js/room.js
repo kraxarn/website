@@ -14,9 +14,10 @@ getById("videoSearch").addEventListener("input", () => {
 	search(query, callback => {
 		resetSearchResults()
 		videoSearch.disabled = false
-		callback.forEach(item => {
-			addSearchResult(item.thumbnail, item.title, item.description, item.id)
-		})
+		if (callback) {
+			callback.forEach(item =>
+				addSearchResult(item["thumbnail"], item["title"], item["description"], item["id"]))
+		}
 	})
 })
 
