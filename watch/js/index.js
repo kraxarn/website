@@ -30,11 +30,11 @@ getById("createRoom").onclick = () => {
 
 // Save room button
 getById("saveRoom").onclick = () => {
-	const name = getById("roomInput").value.replace(/\s/g, "").toLowerCase()
+	const name = getById("roomInput").value.replace(/\s/g, "-").toLowerCase()
 	if (name.length < 3 || name.length > 16) {
 		return
 	}
-	console.log("Room name: %s", name)
+	location.href = `/watch/room/${name}`
 }
 
 // Update avatar image
