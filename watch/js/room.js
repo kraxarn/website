@@ -1,7 +1,6 @@
-id("videoSearch").addEventListener("input", () =>
-{
+getById("videoSearch").addEventListener("input", () => {
 	// Get search query
-	const query = id("videoSearch").value
+	const query = getById("videoSearch").value
 
 	// Check is search is too short
 	if (query.length < 3) {
@@ -10,21 +9,18 @@ id("videoSearch").addEventListener("input", () =>
 	}
 
 	// Search
-	const videoSearch = id("videoSearch")
+	const videoSearch = getById("videoSearch")
 	videoSearch.disabled = true
-	search(query, callback =>
-	{
+	search(query, callback => {
 		resetSearchResults()
 		videoSearch.disabled = false
-		callback.forEach(item =>
-		{
+		callback.forEach(item => {
 			addSearchResult(item.thumbnail, item.title, item.description, item.id)
 		})
 	})
 })
 
-function search(query, callback)
-{
+const search = (query, callback) => {
 	fetch("/api/search", {
 		method: "POST",
 		headers: {
@@ -35,8 +31,7 @@ function search(query, callback)
 		})
 	})
 		.then(response => response.json())
-		.then(json =>
-		{
+		.then(json => {
 			if (json.error) {
 				callback(null)
 			} else {
@@ -45,8 +40,7 @@ function search(query, callback)
 		})
 }
 
-function addSearchResult(thumbnailSrc, titleText, descriptionText, videoId)
-{
+const addSearchResult = (thumbnailSrc, titleText, descriptionText, videoId) => {
 	if (!thumbnailSrc || !titleText || !descriptionText) {
 		return
 	}
@@ -88,35 +82,31 @@ function addSearchResult(thumbnailSrc, titleText, descriptionText, videoId)
 	searchResult.appendChild(queueImg)
 
 	// Add result to results
-	id("searchResults").appendChild(searchResult)
+	getById("searchResults").appendChild(searchResult)
 }
 
-function resetSearchResults()
-{
-	const results = id("searchResults")
+const resetSearchResults = () => {
+	const results = getById("searchResults")
 	while (results.firstChild) {
 		results.removeChild(results.firstChild)
 	}
 }
 
-function toggleVideoSize()
-{
-	const dropdown = id("videoSizeDropdown")
+const toggleVideoSize = () => {
+	const dropdown = getById("videoSizeDropdown")
 	const visible = dropdown.style.visibility === "visible"
 
 	dropdown.style.visibility = visible ? "hidden" : "visible"
 }
 
-function setVideoSize(width, height)
-{
-	id("video").style.width  = width + "px"
-	id("video").style.height = height + "px"
+const setVideoSize = (width, height) => {
+	getById("video").style.width = width + "px"
+	getById("video").style.height = height + "px"
 
-	id("videoSizeString").textContent = height
+	getById("videoSizeString").textContent = height
 }
 
-function addComment(type, message)
-{
+const addComment = (type, message) => {
 	const icon = type === "status"
 		? "1f4e2" : type === "error"
 			? "274c" : type === "message"
@@ -126,18 +116,17 @@ function addComment(type, message)
 	comment.className = "comment"
 
 	const img = document.createElement("img")
-	img.src = `/img//${icon}.svg`
+	img.src = `/watch/img/${icon}.svg`
 	comment.appendChild(img)
 
 	const msg = document.createElement("span")
 	msg.textContent = message
 	comment.appendChild(msg)
 
-	id("commentsContainer").appendChild(comment)
+	getById("commentsContainer").appendChild(comment)
 }
 
-function addTestComments()
-{
+const addTestComments = () => {
 	addComment("status", "User1 joined")
 	addComment("status", "User2 joined")
 	addComment("message", "User1: How exciting, some sample text")
@@ -145,10 +134,9 @@ function addTestComments()
 	addComment("playback", "User1 started playback")
 }
 
-function addQueueItem(thumbnailSrc, titleText, videoId)
-{
+const addQueueItem = (thumbnailSrc, titleText, videoId) => {
 	// Hide no queue message
-	id("noQueueItems").style.display = "none"
+	getById("noQueueItems").style.display = "none"
 
 	// Main item container
 	const item = document.createElement("div")
@@ -176,19 +164,18 @@ function addQueueItem(thumbnailSrc, titleText, videoId)
 	rem.src = "/img/icon/remove.png"
 	item.appendChild(rem)
 
-	id("queueContainer").appendChild(item)
+	getById("queueContainer").appendChild(item)
 }
 
 // Testing only, use array later
-function getQueuedItems()
-{
-	const children = id("queueContainer").children
+const getQueuedItems = () => {
+	const children = getById("queueContainer").children
 	for (let i = 0; i < children.length; i++) {
 		console.log(children[i].id)
 	}
 }
 
-const entry = id("commentEntry")
+const entry = getById("commentEntry")
 
 const video = document.querySelector("video")
 const audio = document.querySelector("audio")
@@ -199,8 +186,7 @@ audio.onplay = () =>
 
 audio.onpause = () => video.pause()
 
-entry.addEventListener("keypress", event =>
-{
+entry.addEventListener("keypress", event => {
 	if (event.key === "Enter") {
 		if (entry.value.length > 0 && entry.value.length < 256) {
 			socket.send(entry.value)
@@ -209,11 +195,11 @@ entry.addEventListener("keypress", event =>
 	}
 })
 
-const socket = new WebSocket(`ws://${location.host}/chat`)
+const socket = new WebSocket(`ws://${location.host}/chat/${RoomId}`)
 
 socket.onopen = () => {
 	addComment("status", "Connected")
-	id("commentEntry").disabled = false
+	getById("commentEntry").disabled = false
 }
 
 socket.onmessage = event => {
@@ -238,7 +224,7 @@ socket.onerror = event => {
 
 socket.onclose = () => {
 	addComment("status", "Disconnected")
-	id("commentEntry").disabled = true
+	getById("commentEntry").disabled = true
 }
 
 function addVideo(id, title) {
