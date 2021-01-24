@@ -59,7 +59,7 @@ const setName = () => {
 }
 
 const updateUserInfo = body =>
-	fetch("/api/user/set_info", {
+	fetch("/user/update", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -69,9 +69,15 @@ const updateUserInfo = body =>
 		.then(response => response.json())
 		.then(json => {
 			if (json.error) {
-				console.log(json.message)
+				showError(json.error)
 			} else {
 				console.log("Update successful")
 			}
 		})
-		.catch(err => console.log(err))
+		.catch(err => showError(err))
+
+const showError = err => {
+	const error = getById("error")
+	error.textContent = `error: ${err}`
+	error.style.display = "block"
+}
