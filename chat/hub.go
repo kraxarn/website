@@ -52,9 +52,14 @@ func (hub *Hub) Run() {
 			}
 
 		case message := <-hub.broadcast:
+			msg, err := json.Marshal(hub.getBroadcastMessage(message))
+			if err != nil {
+				break
+			}
+
 			for client := range hub.clients {
 				select {
-				case client.send <- message:
+				case client.send <- msg:
 				default:
 					close(client.send)
 					delete(hub.clients, client)
@@ -79,4 +84,22 @@ func (hub *Hub) Serve(ctx *gin.Context) {
 	client := NewClient(hub, connection, usr)
 	go client.Write()
 	go client.Read()
+}
+
+func (hub *Hub) getBroadcastMessage(message ClientMessage) Message {
+	sender := message.Sender.user
+	msg := strings.Split(string(message.Message), " ")
+
+	switch msg[0] {
+	case "/video":
+		if len(msg) >= 2 {
+			if msg, err := NewVideoMessage(sender, msg[1]); err == nil {
+				return msg
+			} else {
+				fmt.Println(err)
+			}
+		}
+	}
+
+	return NewMessage(sender, string(message.Message))
 }
