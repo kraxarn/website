@@ -23,7 +23,7 @@ func Route(router *gin.Engine, token *config.Token) {
 			"Gets info about a user from token, or from stored cookie",
 		},
 		{
-			http.MethodGet, "update", manager.update,
+			http.MethodPost, "update", manager.update,
 			"Update avatar and/or username of user from token or cookie",
 		},
 	}

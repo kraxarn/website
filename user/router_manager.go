@@ -6,7 +6,6 @@ import (
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"net/http"
-	"strconv"
 )
 
 type RouterManager struct {
@@ -84,20 +83,28 @@ func (manager *RouterManager) update(ctx *gin.Context) {
 		return
 	}
 
-	name := ctx.PostForm("name")
-	if len(name) > 0 {
-		currentUser.Name = name
+	var newUser User
+	if err := ctx.BindJSON(&newUser); err != nil {
+		ctx.JSON(http.StatusOK, common.NewError(err))
+		return
+	}
+	if len(newUser.Name) <= 0 && newUser.Avatar <= 0 {
+		ctx.JSON(http.StatusOK, common.NewError(fmt.Errorf("no changes made")))
+		return
 	}
 
-	avatar, err := strconv.ParseUint(ctx.PostForm("avatar"), 10, 32)
-	if err == nil && AvatarExists(uint32(avatar)) {
-		currentUser.Avatar = uint32(avatar)
+	if len(newUser.Name) > 0 {
+		currentUser.Name = newUser.Name
+	}
+
+	if newUser.Avatar > 0 && AvatarExists(newUser.Avatar) {
+		currentUser.Avatar = newUser.Avatar
 	}
 
 	// Only refresh cookie if we had one before
-	var newToken string
-	if _, err = ctx.Cookie("user"); err != nil {
-		newToken = currentUser.Refresh(ctx, manager.token)
+	newToken, _ := currentUser.ToToken(manager.token)
+	if _, err := ctx.Cookie("user"); len(newToken) > 0 && err == nil {
+		currentUser.RefreshWithToken(ctx, newToken)
 	}
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
