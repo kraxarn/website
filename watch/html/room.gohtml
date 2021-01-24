@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>{{.id}}</title>
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<link rel="stylesheet" type="text/css" href="/css/room.css">
+	<title>{{.room}}</title>
+	<link rel="stylesheet" type="text/css" href="/watch/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/watch/css/room.css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="watch-rs">
@@ -20,9 +20,7 @@
 	</div>
 	<audio id="videoAudio" class="dropShadow" controls></audio>
 	<div id="videoControls" class="dropShadow">
-		<div id="roomTitle">
-			{{.id}} - Video Name
-		</div>
+		<div id="roomTitle">{{.room}}</div>
 		<div id="videoSize" onclick="toggleVideoSize()">
 			Size: <span id="videoSizeString">540</span>p
 			<div id="videoSizeDropdown">
@@ -53,8 +51,13 @@
 	</div>
 </div>
 
+<script>
+	const RoomId = "{{.room}}"
+</script>
+
 <script src="/js/main.js"></script>
-<script src="/js/room.js"></script>
+<script src="/watch/js/main.js"></script>
+<script src="/watch/js/room.js"></script>
 
 </body>
 </html>
