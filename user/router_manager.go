@@ -75,3 +75,32 @@ func (manager *RouterManager) info(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, userInfo)
 	}
 }
+
+func (manager *RouterManager) update(ctx *gin.Context) {
+	currentUser := manager.getUser(ctx)
+	if currentUser == nil {
+		ctx.JSON(http.StatusOK, common.NewError(fmt.Errorf("no user found")))
+		return
+	}
+
+	name := ctx.PostForm("name")
+	if len(name) > 0 {
+		currentUser.Name = name
+	}
+
+	avatar, err := strconv.ParseUint(ctx.PostForm("avatar"), 10, 32)
+	if err == nil && AvatarExists(uint32(avatar)) {
+		currentUser.Avatar = uint32(avatar)
+	}
+
+	// Only refresh cookie if we had one before
+	var newToken string
+	if _, err = ctx.Cookie("user"); err != nil {
+		newToken = currentUser.Refresh(ctx, manager.token)
+	}
+
+	ctx.JSON(http.StatusOK, map[string]interface{}{
+		"token": newToken,
+		"user":  currentUser,
+	})
+}

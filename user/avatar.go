@@ -52,3 +52,8 @@ func AvatarName(id uint32) string {
 
 	return AvatarMap[id]
 }
+
+func AvatarExists(id uint32) bool {
+	_, ok := AvatarMap[id]
+	return ok
+}
