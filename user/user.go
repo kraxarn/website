@@ -58,6 +58,14 @@ func NewUserFromToken(tokenString string, tokenKey *config.Token) (*User, error)
 	return nil, fmt.Errorf("invalid token")
 }
 
+func NewUserFromCookie(ctx *gin.Context, tokenKey *config.Token) (*User, error) {
+	userCookie, err := ctx.Cookie("user")
+	if err != nil {
+		return nil, err
+	}
+	return NewUserFromToken(userCookie, tokenKey)
+}
+
 func (user *User) Valid(*jwt.ValidationHelper) error {
 	return nil
 }
