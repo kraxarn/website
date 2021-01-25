@@ -30,6 +30,7 @@
 # Custom static files
 files/
 # watch is in its own repository, but might still be here for convinience
-#watch/
+watch
+watch/
 # Built binary
 website
