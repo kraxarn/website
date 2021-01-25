@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/kraxarn/go-watch"
 	"github.com/kraxarn/website/chat"
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
-	"github.com/kraxarn/website/watch"
 	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
