@@ -15,8 +15,6 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 type FileInfo struct {
