@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/kraxarn/website/config"
 	"math/rand"
+	"net/http"
 )
 
 type User struct {
@@ -82,18 +83,25 @@ func (user *User) ToToken(token *config.Token) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, user).SignedString(token.GetKey())
 }
 
-func (user *User) Refresh(context *gin.Context, token *config.Token) string {
+func (user *User) Refresh(writer http.ResponseWriter, token *config.Token) string {
 	if cookie, err := user.ToToken(token); err == nil && len(cookie) > 0 {
-		user.RefreshWithToken(context, cookie)
+		user.RefreshWithToken(writer, cookie)
 		return cookie
 	}
 	return ""
 }
 
-func (user *User) RefreshWithToken(context *gin.Context, token string) {
-	// 1 month
-	context.SetCookie("user", token, 2_629_800,
-		"/", config.GetDomain(), config.IsSecure(), true)
+func (user *User) RefreshWithToken(writer http.ResponseWriter, token string) {
+	http.SetCookie(writer, &http.Cookie{
+		Name:     "user",
+		Value:    token,
+		MaxAge:   2_629_800, // 1 month
+		Path:     "/",
+		Domain:   config.GetDomain(),
+		Secure:   config.IsSecure(),
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
 }
 
 func (user *User) ToJson() map[string]string {

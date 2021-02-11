@@ -104,7 +104,7 @@ func (manager *RouterManager) update(ctx *gin.Context) {
 	// Only refresh cookie if we had one before
 	newToken, _ := currentUser.ToToken(manager.token)
 	if _, err := ctx.Cookie("user"); len(newToken) > 0 && err == nil {
-		currentUser.RefreshWithToken(ctx, newToken)
+		currentUser.RefreshWithToken(ctx.Writer, newToken)
 	}
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
