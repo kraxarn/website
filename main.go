@@ -60,6 +60,9 @@ func main() {
 		"currentVersion": func() string {
 			return config.CurrentVersion
 		},
+		"currentWatchVersion": func() string {
+			return watch.CurrentVersion
+		},
 	})
 
 	// Add all files in html folder as templates
