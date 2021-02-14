@@ -83,16 +83,16 @@ func (user *User) ToToken(token *config.Token) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, user).SignedString(token.GetKey())
 }
 
-func (user *User) Refresh(writer http.ResponseWriter, token *config.Token) string {
+func (user *User) Refresh(context *gin.Context, token *config.Token) string {
 	if cookie, err := user.ToToken(token); err == nil && len(cookie) > 0 {
-		user.RefreshWithToken(writer, cookie)
+		user.RefreshWithToken(context, cookie)
 		return cookie
 	}
 	return ""
 }
 
-func (user *User) RefreshWithToken(writer http.ResponseWriter, token string) {
-	http.SetCookie(writer, &http.Cookie{
+func (user *User) RefreshWithToken(context *gin.Context, token string) {
+	http.SetCookie(context.Writer, &http.Cookie{
 		Name:     "user",
 		Value:    token,
 		MaxAge:   2_629_800, // 1 month
