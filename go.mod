@@ -10,3 +10,5 @@ require (
 	github.com/kraxarn/go-watch v0.0.0-20210211220317-ad2780edf953
 	github.com/mattn/go-sqlite3 v1.14.6
 )
+
+replace github.com/kraxarn/go-watch => ../go-watch
