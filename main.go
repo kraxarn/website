@@ -63,7 +63,10 @@ func main() {
 	})
 
 	// Add all files in html folder as templates
-	router.LoadHTMLGlob("html/*.gohtml")
+	router.LoadHTMLFiles(append([]string{
+		"html/index.gohtml", "html/ls.gohtml",
+		"html/servers.gohtml", "html/ytdl.gohtml",
+	}, watch.HtmlFiles()...)...)
 
 	// Add all folders and files in static folder
 	staticFiles, _ := ioutil.ReadDir("static")
