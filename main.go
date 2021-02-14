@@ -78,18 +78,18 @@ func main() {
 
 	// Show index when loading root
 	router.GET("", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "index.html", nil)
+		context.HTML(http.StatusOK, "index.gohtml", nil)
 	})
 
 	// /servers
 	router.GET("servers/*app", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "servers.html", gin.H{
+		context.HTML(http.StatusOK, "servers.gohtml", gin.H{
 			"infos": GetServerInfo(),
 		})
 	})
 
 	router.GET("ytdl", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "ytdl.html", nil)
+		context.HTML(http.StatusOK, "ytdl.gohtml", nil)
 	})
 
 	router.GET("changes", func(context *gin.Context) {
