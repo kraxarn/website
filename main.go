@@ -25,15 +25,15 @@ type FileInfo struct {
 
 func FormatFileSize(size int64) string {
 	// gb
-	if size > 1_000_000_000 {
+	if size >= 1_000_000_000 {
 		return fmt.Sprintf("%dG", size/1_000_000_000)
 	}
 	// mb
-	if size > 1_000_000 {
+	if size >= 1_000_000 {
 		return fmt.Sprintf("%dM", size/1_000_000)
 	}
 	// kb
-	if size > 1_000 {
+	if size >= 1_000 {
 		return fmt.Sprintf("%dk", size/1_000)
 	}
 	// b
