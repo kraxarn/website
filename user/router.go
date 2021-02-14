@@ -19,6 +19,10 @@ func Route(router *gin.Engine, token *config.Token) {
 			"Create a new user",
 		},
 		{
+			http.MethodGet, "delete", manager.delete,
+			"Delete current user",
+		},
+		{
 			http.MethodPost, "info", manager.info,
 			"Gets info about a user from token, or from stored cookie",
 		},

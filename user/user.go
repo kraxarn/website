@@ -91,17 +91,29 @@ func (user *User) Refresh(context *gin.Context, token *config.Token) string {
 	return ""
 }
 
-func (user *User) RefreshWithToken(context *gin.Context, token string) {
-	http.SetCookie(context.Writer, &http.Cookie{
+func setCookie(context *gin.Context, value string) {
+	cookie := http.Cookie{
 		Name:     "user",
-		Value:    token,
+		Value:    value,
 		MaxAge:   2_629_800, // 1 month
 		Path:     "/",
 		Domain:   config.GetDomain(),
 		Secure:   config.IsSecure(),
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
-	})
+	}
+	if len(value) <= 0 {
+		cookie.MaxAge = -1
+	}
+	http.SetCookie(context.Writer, &cookie)
+}
+
+func (user *User) RefreshWithToken(context *gin.Context, token string) {
+	setCookie(context, token)
+}
+
+func (user *User) Delete(context *gin.Context) {
+	setCookie(context, "")
 }
 
 func (user *User) ToJson() map[string]string {

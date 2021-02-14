@@ -112,3 +112,16 @@ func (manager *RouterManager) update(ctx *gin.Context) {
 		"user":  currentUser,
 	})
 }
+
+func (manager *RouterManager) delete(ctx *gin.Context) {
+	user := manager.getUser(ctx)
+	var message string
+	if user == nil {
+		message = "no user found"
+	} else {
+		user.Delete(ctx)
+	}
+	ctx.JSON(http.StatusOK, map[string]interface{}{
+		"message": message,
+	})
+}
