@@ -104,10 +104,7 @@ func main() {
 	yt.Route(router)
 	sponsor.Route(router)
 	chat.Route(router, &token)
-
-	if err := watch.Route(&token); err != nil {
-		fmt.Printf("failed to load go-watch: %v\n", err)
-	}
+	watch.Route(router, &token)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
