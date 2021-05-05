@@ -10,8 +10,8 @@ import (
 )
 
 type KeyValue struct {
-	key   string
-	value string
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 func Route(router *gin.Engine) {
@@ -35,7 +35,7 @@ func Route(router *gin.Engine) {
 		if jsonData == nil {
 			jsonData = make(map[string]string)
 		}
-		jsonData[keyValue.key] = keyValue.value
+		jsonData[keyValue.Key] = keyValue.Value
 
 		var out []byte
 		if out, err = json.Marshal(&jsonData); err != nil {
