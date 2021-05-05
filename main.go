@@ -7,6 +7,7 @@ import (
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/sponsor"
+	"github.com/kraxarn/website/store"
 	"github.com/kraxarn/website/user"
 	"github.com/kraxarn/website/watch"
 	"github.com/kraxarn/website/yt"
@@ -111,6 +112,7 @@ func main() {
 	sponsor.Route(router)
 	chat.Route(router, &token)
 	watch.Route(router, &token)
+	store.Route(router)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
