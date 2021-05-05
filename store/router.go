@@ -37,11 +37,14 @@ func Route(router *gin.Engine) {
 		}
 		jsonData[keyValue.key] = keyValue.value
 
-		if out, err := json.Marshal(&jsonData); err != nil {
-			if err = ioutil.WriteFile(path, out, 0644); err != nil {
-				context.JSON(http.StatusOK, common.NewError(err))
-				return
-			}
+		var out []byte
+		if out, err = json.Marshal(&jsonData); err != nil {
+			context.JSON(http.StatusOK, common.NewError(err))
+			return
+		}
+		if err = ioutil.WriteFile(path, out, 0644); err != nil {
+			context.JSON(http.StatusOK, common.NewError(err))
+			return
 		}
 
 		context.JSON(http.StatusOK, map[string]interface{}{
