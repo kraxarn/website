@@ -38,7 +38,7 @@ func Route(router *gin.Engine) {
 		jsonData[keyValue.Key] = keyValue.Value
 
 		var out []byte
-		if out, err = json.Marshal(&jsonData); err != nil {
+		if out, err = json.Marshal(jsonData); err != nil {
 			context.JSON(http.StatusOK, common.NewError(err))
 			return
 		}
