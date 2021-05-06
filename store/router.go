@@ -2,6 +2,7 @@ package store
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
@@ -9,16 +10,17 @@ import (
 	"net/http"
 )
 
-type KeyValue struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
 func Route(router *gin.Engine) {
-	router.POST("/store/set", func(context *gin.Context) {
-		var keyValue KeyValue
-		if err := context.BindJSON(&keyValue); err != nil {
-			context.JSON(http.StatusOK, common.NewError(err))
+	router.GET("/store/set", func(context *gin.Context) {
+		key := context.Query("key")
+		if key == "" {
+			context.JSON(http.StatusOK, common.NewError(fmt.Errorf("no key")))
+			return
+		}
+
+		value := context.Query("value")
+		if value == "" {
+			context.JSON(http.StatusOK, common.NewError(fmt.Errorf("no value")))
 			return
 		}
 
@@ -35,7 +37,7 @@ func Route(router *gin.Engine) {
 		if jsonData == nil {
 			jsonData = make(map[string]string)
 		}
-		jsonData[keyValue.Key] = keyValue.Value
+		jsonData[key] = value
 
 		var out []byte
 		if out, err = json.Marshal(jsonData); err != nil {
