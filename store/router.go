@@ -53,4 +53,20 @@ func Route(router *gin.Engine) {
 			"error": "",
 		})
 	})
+
+	router.GET("/store/get", func(context *gin.Context) {
+		data, err := ioutil.ReadFile(config.GetPath("store.json"))
+		if err != nil {
+			context.JSON(http.StatusOK, common.NewError(err))
+			return
+		}
+
+		var jsonData map[string]string
+		if err = json.Unmarshal(data, &jsonData); err != nil {
+			context.JSON(http.StatusOK, common.NewError(err))
+			return
+		}
+
+		context.JSON(http.StatusOK, jsonData)
+	})
 }
