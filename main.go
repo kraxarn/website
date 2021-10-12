@@ -6,6 +6,7 @@ import (
 	"github.com/kraxarn/website/chat"
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/format"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
 	"github.com/kraxarn/website/watch"
@@ -21,23 +22,6 @@ type FileInfo struct {
 	Size               int64
 	DateModified, Name string
 	IsDirectory        bool
-}
-
-func FormatFileSize(size int64) string {
-	// gb
-	if size >= 1_000_000_000 {
-		return fmt.Sprintf("%dG", size/1_000_000_000)
-	}
-	// mb
-	if size >= 1_000_000 {
-		return fmt.Sprintf("%dM", size/1_000_000)
-	}
-	// kb
-	if size >= 1_000 {
-		return fmt.Sprintf("%dk", size/1_000)
-	}
-	// b
-	return fmt.Sprintf("%d", size)
 }
 
 func main() {
@@ -56,7 +40,7 @@ func main() {
 		"dateNow": func() string {
 			return time.Now().String()
 		},
-		"formatFileSize": FormatFileSize,
+		"formatFileSize": format.FileSize,
 		"currentVersion": func() string {
 			return config.CurrentVersion
 		},
