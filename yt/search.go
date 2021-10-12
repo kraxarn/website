@@ -2,7 +2,7 @@ package yt
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -61,7 +61,7 @@ func search(query string) ([]SearchResult, error) {
 		_ = result.Body.Close()
 	}()
 
-	bodyData, err := ioutil.ReadAll(result.Body)
+	bodyData, err := io.ReadAll(result.Body)
 	if err != nil {
 		return nil, err
 	}

@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math"
 	"math/rand"
+	"os"
 )
 
 type Token struct {
@@ -25,7 +25,7 @@ func getPath() string {
 func (token *Token) load() {
 	token.path = getPath()
 
-	if data, err := ioutil.ReadFile(token.path); err != nil && len(data) == 32 {
+	if data, err := os.ReadFile(token.path); err != nil && len(data) == 32 {
 		for i := range token.key {
 			token.key[i] = data[i]
 		}
@@ -33,7 +33,7 @@ func (token *Token) load() {
 		for i := range token.key {
 			token.key[i] = uint8(rand.Uint32() % math.MaxUint8)
 		}
-		if err := ioutil.WriteFile(token.path, token.key[:], 0644); err != nil {
+		if err := os.WriteFile(token.path, token.key[:], 0644); err != nil {
 			fmt.Println("error: failed to save key to file:", err)
 		}
 	}
