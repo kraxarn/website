@@ -108,7 +108,7 @@ func main() {
 
 	// When page is not found, redirect page to home
 	router.NoRoute(func(context *gin.Context) {
-		context.Redirect(http.StatusFound, "/")
+		context.HTML(http.StatusNotFound, "index.gohtml", nil)
 	})
 
 	// Start listening on port 8080
