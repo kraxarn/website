@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/gin"
 	"github.com/kraxarn/website/chat"
 	"github.com/kraxarn/website/common"
@@ -13,6 +14,7 @@ import (
 	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -111,8 +113,14 @@ func main() {
 		context.HTML(http.StatusNotFound, "index.gohtml", nil)
 	})
 
-	// Start listening on port 8080
-	if err := router.Run("127.0.0.1:5000"); err != nil {
-		fmt.Println(err)
+	// Run secure in release, or insecure when debugging
+	if config.IsSecure() {
+		err = autotls.Run(router, "kraxarn.com")
+	} else {
+		err = router.Run("127.0.0.1:5000")
+	}
+
+	if err != nil {
+		log.Fatal(err)
 	}
 }
