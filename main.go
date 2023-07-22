@@ -10,7 +10,6 @@ import (
 	"github.com/kraxarn/website/format"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
-	"github.com/kraxarn/website/watch"
 	"github.com/kraxarn/website/yt"
 	"html/template"
 	"io/ioutil"
@@ -46,16 +45,13 @@ func main() {
 		"currentVersion": func() string {
 			return config.CurrentVersion
 		},
-		"currentWatchVersion": func() string {
-			return watch.CurrentVersion
-		},
 	})
 
 	// Add all files in html folder as templates
 	router.LoadHTMLFiles(append([]string{
 		"html/index.gohtml", "html/ls.gohtml",
 		"html/servers.gohtml", "html/ytdl.gohtml",
-	}, watch.HtmlFiles()...)...)
+	})...)
 
 	// Add all folders and files in static folder
 	staticFiles, _ := ioutil.ReadDir("static")
@@ -96,7 +92,6 @@ func main() {
 	yt.Route(router)
 	sponsor.Route(router)
 	chat.Route(router, &token)
-	watch.Route(router, &token)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
