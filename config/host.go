@@ -10,5 +10,6 @@ func GetDomain() string {
 }
 
 func IsSecure() bool {
-	return gin.Mode() != gin.DebugMode
+	// return gin.Mode() != gin.DebugMode
+	return false
 }
