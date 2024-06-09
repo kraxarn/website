@@ -8,6 +8,7 @@ import (
 	"github.com/kraxarn/website/common"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/format"
+	"github.com/kraxarn/website/hitster"
 	"github.com/kraxarn/website/sponsor"
 	"github.com/kraxarn/website/user"
 	"github.com/kraxarn/website/yt"
@@ -51,6 +52,7 @@ func main() {
 	router.LoadHTMLFiles(append([]string{
 		"html/index.gohtml", "html/ls.gohtml",
 		"html/servers.gohtml", "html/ytdl.gohtml",
+		"html/hitster.gohtml",
 	})...)
 
 	// Add all folders and files in static folder
@@ -92,6 +94,7 @@ func main() {
 	yt.Route(router)
 	sponsor.Route(router)
 	chat.Route(router, &token)
+	hitster.Route(router)
 
 	// Add all folders in files
 	fileFiles, err := ioutil.ReadDir("files")
