@@ -63,6 +63,10 @@ func Route(router *gin.Engine) {
 			slice = append(slice, track)
 		}
 
+		if ctx.IsAborted() {
+			return
+		}
+
 		ctx.JSON(http.StatusOK, slice)
 	})
 }
