@@ -42,6 +42,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        font-family: monospace;
+        font-size: 1.1em;
         user-select: none;
 
         .wrong {
