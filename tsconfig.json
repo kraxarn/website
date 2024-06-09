@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "noImplicitAny": true,
+    "target": "ES2022",
+    "sourceMap": true
+  },
+  "files": [
+    "static/js/**/*.ts"
+  ]
+}
