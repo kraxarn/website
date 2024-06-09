@@ -67,7 +67,7 @@ class Hitster {
             const guess = this.score[i] ?? HitsterGuessResult.None;
             switch (guess) {
                 case HitsterGuessResult.None:
-                    score.textContent = "-";
+                    score.textContent = "--";
                     break;
                 case HitsterGuessResult.Wrong:
                     score.textContent = ":(";

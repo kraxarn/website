@@ -94,7 +94,7 @@ class Hitster {
 
             switch (guess) {
                 case HitsterGuessResult.None:
-                    score.textContent = "-";
+                    score.textContent = "--";
                     break
 
                 case HitsterGuessResult.Wrong:
