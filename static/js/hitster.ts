@@ -89,7 +89,7 @@ class Hitster {
         container.innerText = ""
 
         for (let i = 0; i < 10; i++) {
-            const score = document.createElement("span")
+            const score = document.createElement("a")
             const guess = this.score[i] ?? HitsterGuessResult.None;
 
             switch (guess) {
@@ -118,6 +118,7 @@ class Hitster {
                 const track = this.tracks[i]
                 const releaseDate = new Date(track.album_release_date)
                 score.title = `${track.artist_name} - ${track.name} (${releaseDate.getFullYear()})`
+                score.href = `https://open.spotify.com/track/${track.id}`
             }
 
             container.appendChild(score)

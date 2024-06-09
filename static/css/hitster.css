@@ -46,16 +46,21 @@
         font-size: 1.1em;
         user-select: none;
 
-        .wrong {
-            color: red;
-        }
+        a {
+            color: gray;
+            text-decoration: none;
 
-        .good {
-            color: green;
-        }
+            &.wrong {
+                color: red;
+            }
 
-        .perfect {
-            color: gold;
+            &.good {
+                color: green;
+            }
+
+            &.perfect {
+                color: gold;
+            }
         }
     }
 
