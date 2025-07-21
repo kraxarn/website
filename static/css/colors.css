@@ -1,0 +1,45 @@
+:root {
+	color-scheme: light dark;
+
+	--red: #cc241d;
+	--green: #98971a;
+	--yellow: #d79921;
+	--blue: #458588;
+	--purple: #b16286;
+	--aqua: #689d6a;
+	--gray: #928374;
+	--orange: #d65d0e;
+}
+
+/*
+ * Color palette:
+ * https://github.com/morhetz/gruvbox?tab=readme-ov-file#palette
+ */
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #282828;
+		--fg: #ebdbb2;
+		--gray: #a89984;
+
+		--bg0: #282828;
+		--bg1: #3c3836;
+		--bg2: #504945;
+		--bg3: #665c54;
+		--bg4: #7c6f64;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--bg: #fbf1c7;
+		--fg: #3c3836;
+		--gray: #928374;
+
+		--bg0: #fbf1c7;
+		--bg1: #dbdbb2;
+		--bg2: #d5c4a1;
+		--bg3: #bdae93;
+		--bg4: #a89984;
+	}
+}

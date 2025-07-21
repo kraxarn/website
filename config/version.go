@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	VersionMajor uint8 = 13
+	VersionMajor uint8 = 14
 	VersionMinor uint8 = 0
 	VersionPatch uint8 = 0
 )
