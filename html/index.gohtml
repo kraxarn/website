@@ -1,87 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Home Page</title>
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<link rel="stylesheet" type="text/css" href="/css/index.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- No icon, assume browser will use /favicon.ico -->
+    <meta charset="utf-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico">
 </head>
 
 <body>
 
 <div id="background"></div>
 
-<div id="warningBrowser" class="warning">
-	<b>Warning!</b><br>
-	It seems like you're using an old browser, consider updating or getting a better browser.
+<div id="menu">
+    <img src="img/logo.webp" alt="logo"/>
+    <div>
+        {{ template "icons/house" }}
+        <span>home</span>
+    </div>
+    <div>
+        {{ template "icons/info" }}
+        <span>about</span>
+    </div>
+    <div>
+        {{ template "icons/server" }}
+        <span>servers</span>
+    </div>
 </div>
 
 <div id="content">
-	<img id="logo" src="/img/logo_v5.webp" alt="logo with text that's an image for no reason" onclick="toggleLogo()">
-	<ul id="tabs">
-		<li><a href="/servers">My Servers</a></li>
-		<li><a href="https://kraxarn.github.io">My GitHub Page</a></li>
-		<li><a href="https://github.com/kraxarn/website">Source Code</a></li>
-	</ul>
-	<p>
-		Welcome to my website! My name is Kraxie (or kraxarn) and I am a software engineer from Sweden.<br/>
-		I mostly specialize in developing fast, efficient, open source and cross-platform software.
-		<br/> <br/>
-		This website is mostly just a playground for me to try out new things. There is really nothing
-		you can do here unless you came for a very specific purpose. In that case, see the above tabs for
-		the different pages available. Hopefully more tabs will be available as the website is further developed.
-		<br/> <br/>
-		This website collects no information, not requiring a privacy policy. It is also open source,
-		written in Go, and available under a AGPLv3 license.
-	</p>
+    Welcome to my website! My name is Kraxie (or kraxarn) and I am a software engineer from Sweden.<br/>
+    I mostly specialize in developing fast, efficient, open source and cross-platform software.
+    <br/> <br/>
+    This website is mostly just a playground for me to try out new things. There is really nothing
+    you can do here unless you came for a very specific purpose. In that case, see the above tabs for
+    the different pages available. Hopefully more tabs will be available as the website is further developed.
+    <br/> <br/>
+    This website collects no information, not requiring a privacy policy. It is also open source,
+    written in Go, and available under a AGPLv3 license.
 </div>
 
-<div id="debug" onclick="index.toggleDebug()">
-	v{{currentVersion}}
-</div>
-
-<div id="changelog">
-	<div id="latestChanges">Please wait...</div>
-	<div id="olderChanges"></div>
-	<p onclick="index.toggleOlderChanges()" id="showChanges"> Show all changes </p>
-</div>
-
-<div id="browserInfo">
-	<span id="debugUserAgent"></span>
-	<br>
-	<span id="debugDoNotTrack"></span>
-	<table>
-	</table>
-</div>
-
-<div id="links">
-	<a href="https://github.com/kraxarn">
-		<div id="linkGithub"></div>
-	</a>
-	<a href="https://twitter.com/kraxarn">
-		<div id="linkTwitter"></div>
-	</a>
-	<a href="https://steamcommunity.com/id/kraxarn">
-		<div id="linkSteam"></div>
-	</a>
-	<a href="https://t.me/Kraxie">
-		<div id="linkTelegram"></div>
-	</a>
-</div>
-
-<span id="browser" onclick="index.toggleDebug();"></span>
-
-<script src="/js/main.js"></script>
-<script src="/js/browsermediasupport.js"></script>
-<script src="/js/browserinfo.js"></script>
-<script src="/js/index.js"></script>
-
-<script>
-	new BrowserMediaSupport()
-	new BrowserInfo()
-	const index = new Index()
-</script>
+<script defer src="js/background.js"></script>
 
 </body>
 </html>
