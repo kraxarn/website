@@ -17,6 +17,7 @@ html, body {
 
 #content {
 	padding: 4rem;
+	font-size: 1.1em;
 }
 
 #menu {
@@ -26,6 +27,7 @@ html, body {
 	align-items: center;
 	align-self: center;
 	padding: 2rem;
+	font-size: 1.2em;
 
 	> a {
 		display: flex;
