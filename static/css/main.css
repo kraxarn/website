@@ -1,7 +1,7 @@
 body {
 	background: radial-gradient(var(--bg0), var(--bg1));
 	color: var(--fg);
-	font-family: sans-serif;
+	font-family: 'Fantasque Sans Mono', monospace;
 }
 
 html, body {
