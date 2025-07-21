@@ -24,6 +24,7 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 	_, err := templates.ParseFiles(
 		"html/icons/house.gohtml",
 		"html/icons/info.gohtml",
+		"html/icons/list_ul.gohtml",
 		"html/icons/server.gohtml",
 		"html/index.gohtml",
 		"html/partials/footer.gohtml",
