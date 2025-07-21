@@ -1,58 +1,50 @@
 package yt
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/kraxarn/website/common"
+	"errors"
+	"github.com/kraxarn/website/helper"
+	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
-func Route(router *gin.Engine) {
-	router.GET("/yt/search", func(context *gin.Context) {
-		q := context.Query("q")
+func Route(app *echo.Echo) {
+	app.GET("/yt/search", func(ctx echo.Context) error {
+		q := ctx.QueryParam("q")
 
 		if len(q) < 3 {
-			context.JSON(http.StatusOK, map[string]interface{}{
-				"error": "query required",
-			})
-			return
+			return errors.New("query required")
 		}
 
 		results, err := search(q)
 		if err != nil {
-			context.JSON(http.StatusOK, map[string]interface{}{
-				"error": err.Error(),
-			})
-			return
+			return err
 		}
 
-		context.JSON(http.StatusOK, results)
+		return ctx.JSON(http.StatusOK, results)
 	})
 
-	router.GET("/yt/info/:id", func(context *gin.Context) {
-		info, err := Info(context.Param("id"))
+	app.GET("/yt/info/:id", func(ctx echo.Context) error {
+		info, err := Info(ctx.Param("id"))
 
 		if err != nil {
-			context.JSON(http.StatusOK, common.NewError(err))
-			return
+			return err
 		}
 
-		context.JSON(http.StatusOK, info)
+		return ctx.JSON(http.StatusOK, info)
 	})
 
-	router.GET("/yt/audio/:id", func(context *gin.Context) {
-		info, err := Info(context.Param("id"))
+	app.GET("/yt/audio/:id", func(ctx echo.Context) error {
+		info, err := Info(ctx.Param("id"))
+		if err != nil {
+			return err
+		}
+
 		var data []byte
-
+		data, err = helper.Get(info.Audio.Url)
 		if err != nil {
-			fmt.Println("failed to fetch audio info:", err)
-		} else {
-			data, err = common.Get(info.Audio.Url)
-		}
-		if err != nil {
-			fmt.Println("failed to download audio:", err)
+			return err
 		}
 
-		context.Data(http.StatusOK, "audio/opus", data)
+		return ctx.Blob(http.StatusOK, "audio/opus", data)
 	})
 }
