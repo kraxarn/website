@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/group"
 	"github.com/kraxarn/website/helper"
 	"github.com/labstack/echo/v4"
@@ -25,6 +26,11 @@ func main() {
 
 	app.Renderer = renderer
 	app.HTTPErrorHandler = helper.HandleError
+
+	if err = db.Connect(); err != nil {
+		app.Logger.Fatal(err)
+	}
+	defer db.Close()
 
 	if err := app.Start("127.0.0.1:5000"); err != nil {
 		app.Logger.Fatal(err)
