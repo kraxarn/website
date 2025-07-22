@@ -22,12 +22,12 @@ func NewToken() (Token, error) {
 	}, nil
 }
 
-func path() string {
+func keyPath() string {
 	return GetPath("key.bin")
 }
 
 func loadKey() ([]byte, error) {
-	key, err := os.ReadFile(path())
+	key, err := os.ReadFile(keyPath())
 	if err == nil && len(key) == keySize {
 		return key, nil
 	}
@@ -35,7 +35,7 @@ func loadKey() ([]byte, error) {
 	key = make([]byte, keySize)
 	_, _ = rand.Read(key)
 
-	err = os.WriteFile(path(), key, 0644)
+	err = os.WriteFile(keyPath(), key, 0644)
 	if err != nil {
 		return nil, err
 	}
