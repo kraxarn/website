@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/group"
 	"github.com/kraxarn/website/helper"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"golang.org/x/time/rate"
@@ -17,7 +19,10 @@ import (
 func main() {
 	app := echo.New()
 
-	initMiddleware(app)
+	if err := initMiddleware(app); err != nil {
+		app.Logger.Fatal(err)
+	}
+
 	initGroups(app)
 
 	renderer, err := helper.NewTemplateRenderer()
@@ -38,7 +43,7 @@ func main() {
 	}
 }
 
-func initMiddleware(app *echo.Echo) {
+func initMiddleware(app *echo.Echo) error {
 	app.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 		LogStatus: true,
 		LogURI:    true,
@@ -94,7 +99,15 @@ func initMiddleware(app *echo.Echo) {
 		},
 	))
 
+	token, err := config.NewToken()
+	if err != nil {
+		return err
+	}
+	app.Use(echojwt.JWT(token.Key()))
+
 	app.Use(middleware.Recover())
+
+	return nil
 }
 
 func initGroups(app *echo.Echo) {
