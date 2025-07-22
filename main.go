@@ -80,4 +80,5 @@ func initMiddleware(app *echo.Echo) {
 
 func initGroups(app *echo.Echo) {
 	group.RegisterIndex(app)
+	group.RegisterAdmin(app)
 }

@@ -7,6 +7,8 @@ import (
 	"github.com/kraxarn/website/config"
 )
 
+type Id int
+
 var pool *pgxpool.Pool
 
 func Connect() error {
