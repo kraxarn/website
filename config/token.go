@@ -1,48 +1,48 @@
 package config
 
 import (
-	"fmt"
-	"math"
-	"math/rand"
+	"crypto/rand"
 	"os"
 )
 
+const keySize int = 32
+
 type Token struct {
-	key  [32]byte
-	path string
+	key []byte
 }
 
-func NewToken() Token {
-	t := Token{}
-	t.load()
-	return t
+func NewToken() (Token, error) {
+	key, err := loadKey()
+	if err != nil {
+		return Token{}, err
+	}
+
+	return Token{
+		key: key,
+	}, nil
 }
 
-func getPath() string {
+func path() string {
 	return GetPath("key.bin")
 }
 
-func (token *Token) load() {
-	token.path = getPath()
-
-	if data, err := os.ReadFile(token.path); err != nil && len(data) == 32 {
-		for i := range token.key {
-			token.key[i] = data[i]
-		}
-	} else {
-		for i := range token.key {
-			token.key[i] = uint8(rand.Uint32() % math.MaxUint8)
-		}
-		if err := os.WriteFile(token.path, token.key[:], 0644); err != nil {
-			fmt.Println("error: failed to save key to file:", err)
-		}
+func loadKey() ([]byte, error) {
+	key, err := os.ReadFile(path())
+	if err == nil && len(key) == keySize {
+		return key, nil
 	}
+
+	key = make([]byte, keySize)
+	_, _ = rand.Read(key)
+
+	err = os.WriteFile(path(), key, 0644)
+	if err != nil {
+		return nil, err
+	}
+
+	return key, nil
 }
 
-func (token *Token) GetKey() []byte {
-	return token.key[:]
-}
-
-func (token *Token) GetPath() string {
-	return token.path
+func (t Token) Key() []byte {
+	return t.key
 }
