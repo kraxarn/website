@@ -2,13 +2,17 @@ package group
 
 import (
 	"errors"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 	"net"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 func RegisterAdmin(app *echo.Echo) {
@@ -54,6 +58,40 @@ func login(ctx echo.Context) error {
 	if err != nil {
 		return render(http.StatusUnauthorized, err)
 	}
+
+	var userId db.Id
+	userId, err = users.Id(username)
+	if err != nil {
+		return render(http.StatusInternalServerError, err)
+	}
+
+	var token config.Token
+	token, err = config.NewToken()
+	if err != nil {
+		return render(http.StatusInternalServerError, err)
+	}
+
+	now := time.Now().UTC()
+
+	var jwtToken string
+	jwtToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour * 24)),
+		NotBefore: jwt.NewNumericDate(now),
+		Subject:   strconv.FormatInt(int64(userId), 10),
+	}).SignedString(token.Key())
+
+	if err != nil {
+		return render(http.StatusInternalServerError, err)
+	}
+
+	ctx.SetCookie(&http.Cookie{
+		Name:     "session",
+		Value:    jwtToken,
+		Path:     "/admin",
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
 
 	return ctx.Redirect(http.StatusFound, "/")
 }

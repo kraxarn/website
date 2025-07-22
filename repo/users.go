@@ -44,3 +44,13 @@ func (u Users) Password(username string) ([]byte, error) {
 
 	return password, err
 }
+
+func (u Users) Id(username string) (db.Id, error) {
+	var id db.Id
+
+	err := u.conn.QueryRow(context.Background(), `
+		select id from users where username = $1
+	`, username).Scan(&id)
+
+	return id, err
+}
