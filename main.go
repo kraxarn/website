@@ -10,6 +10,7 @@ import (
 	"golang.org/x/time/rate"
 	"io"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -69,10 +70,28 @@ func initMiddleware(app *echo.Echo) {
 		IgnoreBase: true,
 	}))
 
-	app.Use(middleware.RateLimiter(
-		middleware.NewRateLimiterMemoryStore(
-			rate.Limit(10),
-		),
+	// Default rate limiter
+	app.Use(middleware.RateLimiterWithConfig(
+		middleware.RateLimiterConfig{
+			Skipper: func(ctx echo.Context) bool {
+				return strings.HasPrefix(ctx.Path(), "/admin")
+			},
+			Store: middleware.NewRateLimiterMemoryStore(
+				rate.Limit(10),
+			),
+		},
+	))
+
+	// Admin rate limiter
+	app.Use(middleware.RateLimiterWithConfig(
+		middleware.RateLimiterConfig{
+			Skipper: func(ctx echo.Context) bool {
+				return !strings.HasPrefix(ctx.Path(), "/admin")
+			},
+			Store: middleware.NewRateLimiterMemoryStore(
+				rate.Limit(1),
+			),
+		},
 	))
 
 	app.Use(middleware.Recover())
