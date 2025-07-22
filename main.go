@@ -103,7 +103,14 @@ func initMiddleware(app *echo.Echo) error {
 	if err != nil {
 		return err
 	}
-	app.Use(echojwt.JWT(token.Key()))
+
+	app.Use(echojwt.WithConfig(echojwt.Config{
+		Skipper: func(ctx echo.Context) bool {
+			return ctx.Path() == "/admin" || !strings.HasPrefix(ctx.Path(), "/admin")
+		},
+		SigningKey:  token.Key(),
+		TokenLookup: "cookie:session",
+	}))
 
 	app.Use(middleware.Recover())
 
