@@ -15,7 +15,7 @@ func RegisterAdmin(app *echo.Echo) {
 	group := app.Group("/admin")
 
 	group.GET("", admin)
-	group.POST("/login", login)
+	group.POST("", login)
 	group.POST("/new", newUser)
 }
 
