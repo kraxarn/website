@@ -27,6 +27,7 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 		"html/icons/list_ul.gohtml",
 		"html/icons/server.gohtml",
 		"html/index.gohtml",
+		"html/login.gohtml",
 		"html/partials/footer.gohtml",
 		"html/partials/header.gohtml",
 		"html/partials/layout_begin.gohtml",

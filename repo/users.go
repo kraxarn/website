@@ -34,3 +34,13 @@ func (u Users) Insert(username string, password []byte, flags UserFlags) (db.Id,
 
 	return id, err
 }
+
+func (u Users) Password(username string) ([]byte, error) {
+	var password []byte
+
+	err := u.conn.QueryRow(context.Background(), `
+		select password from users where username = $1
+	`, username).Scan(&password)
+
+	return password, err
+}
