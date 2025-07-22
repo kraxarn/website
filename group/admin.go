@@ -45,6 +45,7 @@ func newUser(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusCreated, map[string]interface{}{
-		"id": userId,
+		"id":    userId,
+		"flags": repo.UserDefault,
 	})
 }
