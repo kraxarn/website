@@ -29,6 +29,8 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 		"html/index.gohtml",
 		"html/partials/footer.gohtml",
 		"html/partials/header.gohtml",
+		"html/partials/layout_begin.gohtml",
+		"html/partials/layout_end.gohtml",
 	)
 
 	if err != nil {

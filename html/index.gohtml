@@ -1,39 +1,17 @@
 {{ template "partials/header" }}
+{{ template "layout/begin" }}
 
-<div id="layout">
-    <div id="menu">
-        <img src="img/logo.webp" alt="logo"/>
-        <a href="/">
-            {{ template "icons/house" }}
-            <span>home</span>
-        </a>
-        <a href="/about">
-            {{ template "icons/info" }}
-            <span>about</span>
-        </a>
-        <a href="/servers">
-            {{ template "icons/server" }}
-            <span>servers</span>
-        </a>
-        <a href="/projects">
-            {{ template "icons/list-ul" }}
-            <span>projects</span>
-        </a>
-    </div>
+<span>
+    Welcome to my website! My name is Kraxie (or kraxarn) and I am a software engineer from Sweden.<br/>
+    I mostly specialize in developing fast, efficient, open source and cross-platform software.
+    <br/> <br/>
+    This website is mostly just a playground for me to try out new things. There is really nothing
+    you can do here unless you came for a very specific purpose. In that case, see the above tabs for
+    the different pages available. Hopefully more tabs will be available as the website is further developed.
+    <br/> <br/>
+    This website collects no information, not requiring a privacy policy. It is also open source,
+    written in Go, and available under a AGPLv3 license.
+</span>
 
-    <div id="content">
-        Welcome to my website! My name is Kraxie (or kraxarn) and I am a software engineer from Sweden.<br/>
-        I mostly specialize in developing fast, efficient, open source and cross-platform software.
-        <br/> <br/>
-        This website is mostly just a playground for me to try out new things. There is really nothing
-        you can do here unless you came for a very specific purpose. In that case, see the above tabs for
-        the different pages available. Hopefully more tabs will be available as the website is further developed.
-        <br/> <br/>
-        This website collects no information, not requiring a privacy policy. It is also open source,
-        written in Go, and available under a AGPLv3 license.
-    </div>
-</div>
-
-<script defer src="/js/highlight.js"></script>
-
+{{ template "layout/end" }}
 {{ template "partials/footer" }}

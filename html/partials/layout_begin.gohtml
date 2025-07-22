@@ -1,0 +1,23 @@
+{{ define "layout/begin" }}
+    <div id="layout">
+        <div id="menu">
+            <img src="img/logo.webp" alt="logo"/>
+            <a href="/">
+                {{ template "icons/house" }}
+                <span>home</span>
+            </a>
+            <a href="/about">
+                {{ template "icons/info" }}
+                <span>about</span>
+            </a>
+            <a href="/servers">
+                {{ template "icons/server" }}
+                <span>servers</span>
+            </a>
+            <a href="/projects">
+                {{ template "icons/list-ul" }}
+                <span>projects</span>
+            </a>
+        </div>
+        <div id="content">
+{{ end }}
