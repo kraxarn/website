@@ -23,7 +23,7 @@ func NewUsers(conn *pgxpool.Conn) Users {
 	}
 }
 
-func (u Users) Insert(username, password string, flags UserFlags) (db.Id, error) {
+func (u Users) Insert(username string, password []byte, flags UserFlags) (db.Id, error) {
 	var id db.Id
 
 	err := u.conn.QueryRow(context.Background(), `

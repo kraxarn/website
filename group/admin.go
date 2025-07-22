@@ -1,6 +1,7 @@
 package group
 
 import (
+	"crypto/sha3"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
@@ -30,6 +31,8 @@ func newUser(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "required fields missing")
 	}
 
+	passwordHashed := sha3.Sum512([]byte(password))
+
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -39,7 +42,7 @@ func newUser(ctx echo.Context) error {
 	users := repo.NewUsers(conn)
 
 	var userId db.Id
-	userId, err = users.Insert(username, password, repo.UserDefault)
+	userId, err = users.Insert(username, passwordHashed[:], repo.UserDefault)
 	if err != nil {
 		return err
 	}
