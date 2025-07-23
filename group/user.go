@@ -23,12 +23,12 @@ const (
 func RegisterUser(app *echo.Echo) {
 	group := app.Group("/user")
 
-	group.GET("/login", admin)
+	group.GET("/login", loginPage)
 	group.POST("/login", login)
 	group.POST("/new", newUser)
 }
 
-func admin(ctx echo.Context) error {
+func loginPage(ctx echo.Context) error {
 	return ctx.Render(http.StatusOK, "login.gohtml", nil)
 }
 
