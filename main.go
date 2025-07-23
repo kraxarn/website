@@ -91,7 +91,9 @@ func initMiddleware(app *echo.Echo) error {
 	app.Use(middleware.RateLimiterWithConfig(
 		middleware.RateLimiterConfig{
 			Skipper: func(ctx echo.Context) bool {
-				return !strings.HasPrefix(ctx.Path(), "/admin")
+				isAdmin := strings.HasPrefix(ctx.Path(), "/admin")
+				isUser := strings.HasPrefix(ctx.Path(), "/user")
+				return !isAdmin || !isUser
 			},
 			Store: middleware.NewRateLimiterMemoryStore(
 				rate.Limit(1),
@@ -106,7 +108,7 @@ func initMiddleware(app *echo.Echo) error {
 
 	app.Use(echojwt.WithConfig(echojwt.Config{
 		Skipper: func(ctx echo.Context) bool {
-			return ctx.Path() == "/admin" || !strings.HasPrefix(ctx.Path(), "/admin")
+			return !strings.HasPrefix(ctx.Path(), "/admin")
 		},
 		SigningKey:  token.Key(),
 		TokenLookup: "cookie:session",

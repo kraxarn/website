@@ -16,10 +16,10 @@ import (
 )
 
 func RegisterAdmin(app *echo.Echo) {
-	group := app.Group("/admin")
+	group := app.Group("/user")
 
-	group.GET("", admin)
-	group.POST("", login)
+	group.GET("/login", admin)
+	group.POST("/login", login)
 	group.POST("/new", newUser)
 }
 
