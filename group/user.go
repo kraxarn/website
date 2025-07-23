@@ -1,7 +1,6 @@
 package group
 
 import (
-	"errors"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/kraxarn/website/config"
@@ -13,6 +12,12 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+)
+
+const (
+	authMsgGeneric = "server error"
+	authMsgLogin   = "invalid username or password"
+	authMsgToken   = "invalid token"
 )
 
 func RegisterAdmin(app *echo.Echo) {
@@ -28,9 +33,12 @@ func admin(ctx echo.Context) error {
 }
 
 func login(ctx echo.Context) error {
-	render := func(code int, err error) error {
+	render := func(code int, message string, err error) error {
+		if err != nil {
+			ctx.Logger().Error(err)
+		}
 		return ctx.Render(code, "login.gohtml", map[string]interface{}{
-			"error": err,
+			"error": message,
 		})
 	}
 
@@ -39,7 +47,7 @@ func login(ctx echo.Context) error {
 
 	conn, err := db.Acquire()
 	if err != nil {
-		return render(http.StatusInternalServerError, err)
+		return render(http.StatusInternalServerError, authMsgGeneric, err)
 	}
 	defer conn.Release()
 
@@ -47,28 +55,25 @@ func login(ctx echo.Context) error {
 
 	var dbPassword []byte
 	dbPassword, err = users.Password(username)
-	if err != nil {
-		return render(http.StatusInternalServerError, err)
-	}
-	if dbPassword == nil {
-		return render(http.StatusUnauthorized, errors.New("no such user"))
+	if err != nil || dbPassword == nil {
+		return render(http.StatusUnauthorized, authMsgLogin, nil)
 	}
 
 	err = bcrypt.CompareHashAndPassword(dbPassword, []byte(password))
 	if err != nil {
-		return render(http.StatusUnauthorized, err)
+		return render(http.StatusUnauthorized, authMsgLogin, err)
 	}
 
 	var userId db.Id
 	userId, err = users.Id(username)
 	if err != nil {
-		return render(http.StatusInternalServerError, err)
+		return render(http.StatusInternalServerError, authMsgGeneric, err)
 	}
 
 	var token config.Token
 	token, err = config.NewToken()
 	if err != nil {
-		return render(http.StatusInternalServerError, err)
+		return render(http.StatusInternalServerError, authMsgToken, err)
 	}
 
 	now := time.Now().UTC()
@@ -81,7 +86,7 @@ func login(ctx echo.Context) error {
 	}).SignedString(token.Key())
 
 	if err != nil {
-		return render(http.StatusInternalServerError, err)
+		return render(http.StatusInternalServerError, authMsgToken, err)
 	}
 
 	ctx.SetCookie(&http.Cookie{
