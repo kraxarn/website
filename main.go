@@ -93,7 +93,7 @@ func initMiddleware(app *echo.Echo) error {
 			Skipper: func(ctx echo.Context) bool {
 				isAdmin := strings.HasPrefix(ctx.Path(), "/admin")
 				isUser := strings.HasPrefix(ctx.Path(), "/user")
-				return !isAdmin || !isUser
+				return !isAdmin && !isUser
 			},
 			Store: middleware.NewRateLimiterMemoryStore(
 				rate.Limit(1),
