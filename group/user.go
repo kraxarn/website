@@ -20,7 +20,7 @@ const (
 	authMsgToken   = "invalid token"
 )
 
-func RegisterAdmin(app *echo.Echo) {
+func RegisterUser(app *echo.Echo) {
 	group := app.Group("/user")
 
 	group.GET("/login", admin)
