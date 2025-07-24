@@ -123,4 +123,5 @@ func initGroups(app *echo.Echo) {
 	group.RegisterIndex(app)
 	group.RegisterUser(app)
 	group.RegisterAdmin(app)
+	group.RegisterServers(app)
 }
