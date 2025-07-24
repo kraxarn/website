@@ -3,6 +3,7 @@ package data
 type UserFlags uint
 
 const (
-	UserFlagsNone  UserFlags = 0
-	UserFlagsLogin UserFlags = 1
+	UserFlagsNone   UserFlags = 0
+	UserFlagsLogin  UserFlags = 1
+	UserFlagsEditor UserFlags = 2
 )
