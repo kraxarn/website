@@ -18,12 +18,18 @@
 			<td>
 				<textarea id="value" name="value" rows="40" cols="80">{{ .value }}</textarea>
 			</td>
+			<td>
+                {{ if .value }}
+                    {{ renderMarkdown .value }}
+                {{ end }}
+			</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td>
 				<input type="submit" name="type" value="Load">
 				<input type="submit" name="type" value="Save">
+				<input type="submit" name="type" value="Preview">
 			</td>
 		</tr>
 	</table>

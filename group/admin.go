@@ -80,6 +80,9 @@ func editorData(ctx echo.Context) error {
 		} else {
 			_, err = texts.Insert(content.Key, content.Value, userId)
 		}
+		value = content.Value
+	case "Preview":
+		value = content.Value
 	default:
 		err = echo.NewHTTPError(http.StatusNotFound)
 	}

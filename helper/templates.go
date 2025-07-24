@@ -1,8 +1,10 @@
 package helper
 
 import (
+	"bytes"
 	"github.com/kraxarn/website/config"
 	"github.com/labstack/echo/v4"
+	"github.com/yuin/goldmark"
 	"html/template"
 	"io"
 )
@@ -13,9 +15,7 @@ type TemplateRenderer struct {
 
 func NewTemplateRenderer() (*TemplateRenderer, error) {
 	funcMap := template.FuncMap{
-		"currentVersion": func() string {
-			return config.Version()
-		},
+		"renderMarkdown": renderMarkdown,
 	}
 
 	templates := template.New("")
@@ -46,4 +46,17 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 
 func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{}, _ echo.Context) error {
 	return r.templates.ExecuteTemplate(writer, name, data)
+}
+
+func renderMarkdown(content string) template.HTML {
+	var buf bytes.Buffer
+	err := goldmark.Convert([]byte(content), &buf)
+	if err != nil {
+		if config.Dev() {
+			return template.HTML(err.Error())
+		}
+		return "error: invalid template (this shouldn't happen!)"
+	}
+
+	return template.HTML(buf.String())
 }
