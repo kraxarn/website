@@ -76,7 +76,7 @@ func login(ctx echo.Context) error {
 
 	var userFlags data.UserFlags
 	userFlags, err = users.Flags(userId)
-	if err != nil || (userFlags&data.UserFlagsLogin) != data.UserFlagsLogin {
+	if err != nil || (userFlags&data.UserFlagsLogin) == 0 {
 		return render(http.StatusForbidden, authMsgFlag, err)
 	}
 
