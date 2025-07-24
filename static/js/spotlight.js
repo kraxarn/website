@@ -4,4 +4,4 @@
         body.style.backgroundPosition = `left ${event.clientX}px top ${event.clientY}px`;
     });
 })();
-//# sourceMappingURL=highlight.js.map
+//# sourceMappingURL=spotlight.js.map
