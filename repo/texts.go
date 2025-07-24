@@ -40,7 +40,9 @@ func (t Texts) Insert(key, value string, userId db.Id) (db.Id, error) {
 
 func (t Texts) Update(key, value string, userId db.Id) (int64, error) {
 	tag, err := t.conn.Exec(context.Background(), `
-		update texts set value = $2 where key = $1 and editor = $3
+		update texts 
+		set value = $2, timestamp = current_timestamp 
+		where key = $1 and editor = $3
 	`, key, value, userId)
 
 	if err != nil {
