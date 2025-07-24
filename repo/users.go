@@ -54,3 +54,13 @@ func (u Users) Id(username string) (db.Id, error) {
 
 	return id, err
 }
+
+func (u Users) Flag(userId db.Id) (UserFlags, error) {
+	var flags UserFlags
+
+	err := u.conn.QueryRow(context.Background(), `
+		select flags from users where id = $1
+	`, userId).Scan(&flags)
+
+	return flags, err
+}
