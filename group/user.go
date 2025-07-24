@@ -79,10 +79,10 @@ func login(ctx echo.Context) error {
 	now := time.Now().UTC()
 
 	var jwtToken string
-	jwtToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
-		ExpiresAt: jwt.NewNumericDate(now.Add(time.Hour * 24)),
-		NotBefore: jwt.NewNumericDate(now),
-		Subject:   strconv.FormatInt(int64(userId), 10),
+	jwtToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"exp": jwt.NewNumericDate(now.Add(time.Hour * 24)),
+		"nbf": jwt.NewNumericDate(now),
+		"sub": strconv.FormatInt(int64(userId), 10),
 	}).SignedString(token.Key())
 
 	if err != nil {
