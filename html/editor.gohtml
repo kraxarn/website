@@ -1,0 +1,33 @@
+{{ template "partials/header" }}
+{{ template "layout/begin" }}
+
+<form method="post">
+	<table>
+		<tr>
+			<td>
+				<label for="key">Key</label>
+			</td>
+			<td>
+				<input id="key" name="key" type="text" required>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="value">Value</label>
+			</td>
+			<td>
+				<textarea id="value" name="value" rows="40" cols="80"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" value="Refresh">
+				<input type="submit" value="Save">
+			</td>
+		</tr>
+	</table>
+</form>
+
+{{ template "layout/end" }}
+{{ template "partials/footer" }}

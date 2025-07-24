@@ -122,4 +122,5 @@ func initMiddleware(app *echo.Echo) error {
 func initGroups(app *echo.Echo) {
 	group.RegisterIndex(app)
 	group.RegisterUser(app)
+	group.RegisterAdmin(app)
 }

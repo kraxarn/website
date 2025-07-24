@@ -22,6 +22,7 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 	templates.Funcs(funcMap)
 
 	_, err := templates.ParseFiles(
+		"html/editor.gohtml",
 		"html/icons/house.gohtml",
 		"html/icons/info.gohtml",
 		"html/icons/list_ul.gohtml",
