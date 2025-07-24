@@ -3,14 +3,8 @@ package repo
 import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/kraxarn/website/data"
 	"github.com/kraxarn/website/db"
-)
-
-type UserFlags uint
-
-const (
-	UserDefault UserFlags = 0
-	UserLogin   UserFlags = 1
 )
 
 type Users struct {
@@ -23,7 +17,7 @@ func NewUsers(conn *pgxpool.Conn) Users {
 	}
 }
 
-func (u Users) Insert(username string, password []byte, flags UserFlags) (db.Id, error) {
+func (u Users) Insert(username string, password []byte, flags data.UserFlags) (db.Id, error) {
 	var id db.Id
 
 	err := u.conn.QueryRow(context.Background(), `
@@ -55,8 +49,8 @@ func (u Users) Id(username string) (db.Id, error) {
 	return id, err
 }
 
-func (u Users) Flag(userId db.Id) (UserFlags, error) {
-	var flags UserFlags
+func (u Users) Flags(userId db.Id) (data.UserFlags, error) {
+	var flags data.UserFlags
 
 	err := u.conn.QueryRow(context.Background(), `
 		select flags from users where id = $1
