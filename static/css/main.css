@@ -12,6 +12,7 @@ html, body {
 #layout {
 	display: flex;
 	flex-direction: row;
+	flex: 1;
 	height: 100%;
 }
 
