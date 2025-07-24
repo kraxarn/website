@@ -14,13 +14,13 @@ func RegisterIndex(app *echo.Echo) {
 }
 
 func index(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "home")
+	return helper.RenderPage(ctx, "home", nil)
 }
 
 func about(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "about")
+	return helper.RenderPage(ctx, "about", nil)
 }
 
 func projects(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "projects")
+	return helper.RenderPage(ctx, "projects", nil)
 }

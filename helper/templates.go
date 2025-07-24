@@ -49,7 +49,7 @@ func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{
 	return r.templates.ExecuteTemplate(writer, name, data)
 }
 
-func RenderPage(ctx echo.Context, key string) error {
+func RenderPage(ctx echo.Context, key string, data map[string]interface{}) error {
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -70,9 +70,12 @@ func RenderPage(ctx echo.Context, key string) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	return ctx.Render(http.StatusOK, "page.gohtml", map[string]interface{}{
-		"content": content,
-	})
+	if data == nil {
+		data = map[string]interface{}{}
+	}
+	data["content"] = content
+
+	return ctx.Render(http.StatusOK, "page.gohtml", data)
 }
 
 func RenderMarkdown(content string) (template.HTML, error) {

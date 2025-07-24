@@ -12,5 +12,5 @@ func RegisterServers(app *echo.Echo) {
 }
 
 func servers(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "servers")
+	return helper.RenderPage(ctx, "servers", nil)
 }
