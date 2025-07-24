@@ -50,12 +50,12 @@ func (t Texts) Update(key, value string, userId db.Id) (int64, error) {
 	return tag.RowsAffected(), nil
 }
 
-func (t Texts) Value(key string, userId db.Id) (string, error) {
+func (t Texts) Value(key string) (string, error) {
 	var value string
 
 	err := t.conn.QueryRow(context.Background(), `
-		select value from texts where key = $1 and editor = $2
-	`, key, userId).Scan(&value)
+		select value from texts where key = $1
+	`, key).Scan(&value)
 
 	return value, err
 }

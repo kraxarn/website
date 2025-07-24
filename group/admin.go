@@ -69,7 +69,7 @@ func editorData(ctx echo.Context) error {
 
 	switch content.Type {
 	case "Load":
-		value, err = texts.Value(content.Key, userId)
+		value, err = texts.Value(content.Key)
 	case "Save":
 		var exists bool
 		exists, err = texts.Exists(content.Key)
