@@ -1,4 +1,10 @@
 {{ define "partials/footer" }}
-    </body>
-    </html>
+	<script defer src="/js/spotlight.js"></script>
+    {{ if .scripts }}
+        {{ range .scripts }}
+			<script defer src="/js/{{ . }}.js"></script>
+        {{ end }}
+    {{ end}}
+	</body>
+	</html>
 {{ end }}
