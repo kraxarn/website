@@ -93,6 +93,7 @@ func login(ctx echo.Context) error {
 		"exp": jwt.NewNumericDate(now.Add(time.Hour * 24)),
 		"nbf": jwt.NewNumericDate(now),
 		"sub": strconv.FormatInt(int64(userId), 10),
+		"flg": strconv.FormatUint(uint64(userFlags), 10),
 	}).SignedString(token.Key())
 
 	if err != nil {
