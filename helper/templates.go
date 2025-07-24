@@ -3,10 +3,13 @@ package helper
 import (
 	"bytes"
 	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/db"
+	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/yuin/goldmark"
 	"html/template"
 	"io"
+	"net/http"
 )
 
 type TemplateRenderer struct {
@@ -27,8 +30,8 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 		"html/icons/info.gohtml",
 		"html/icons/list_ul.gohtml",
 		"html/icons/server.gohtml",
-		"html/index.gohtml",
 		"html/login.gohtml",
+		"html/page.gohtml",
 		"html/partials/footer.gohtml",
 		"html/partials/header.gohtml",
 		"html/partials/layout_begin.gohtml",
@@ -46,6 +49,26 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 
 func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{}, _ echo.Context) error {
 	return r.templates.ExecuteTemplate(writer, name, data)
+}
+
+func RenderPage(ctx echo.Context, key string) error {
+	conn, err := db.Acquire()
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	texts := repo.NewTexts(conn)
+
+	var val string
+	val, err = texts.Value(key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, err)
+	}
+
+	return ctx.Render(http.StatusOK, "page.gohtml", map[string]interface{}{
+		"content": renderMarkdown(val),
+	})
 }
 
 func renderMarkdown(content string) template.HTML {

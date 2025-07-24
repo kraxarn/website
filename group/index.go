@@ -1,8 +1,8 @@
 package group
 
 import (
+	"github.com/kraxarn/website/helper"
 	"github.com/labstack/echo/v4"
-	"net/http"
 )
 
 func RegisterIndex(app *echo.Echo) {
@@ -12,5 +12,5 @@ func RegisterIndex(app *echo.Echo) {
 }
 
 func index(ctx echo.Context) error {
-	return ctx.Render(http.StatusOK, "index.gohtml", nil)
+	return helper.RenderPage(ctx, "home")
 }
