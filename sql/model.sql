@@ -12,5 +12,5 @@ create table texts
     key       text        not null unique,
     value     text        not null,
     editor    serial      not null references users (id),
-    timestamp timestamptz not null
+    timestamp timestamptz not null default current_timestamp
 );
