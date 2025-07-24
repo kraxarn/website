@@ -9,7 +9,7 @@ create table users
 create table texts
 (
     id        serial      not null primary key,
-    key       text        not null,
+    key       text        not null unique,
     value     text        not null,
     editor    serial      not null references users (id),
     timestamp timestamptz not null
