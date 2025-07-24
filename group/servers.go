@@ -12,5 +12,8 @@ func RegisterServers(app *echo.Echo) {
 }
 
 func servers(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "servers", nil)
+	return helper.RenderPage(ctx, "servers", map[string]interface{}{
+		"styles":  []string{"servers"},
+		"scripts": []string{"servers"},
+	})
 }
