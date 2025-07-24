@@ -6,7 +6,7 @@ import (
 	"github.com/kraxarn/website/db"
 )
 
-type UserFlags int
+type UserFlags uint
 
 const (
 	UserDefault UserFlags = 0
