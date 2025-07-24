@@ -9,8 +9,8 @@ import (
 type UserFlags int
 
 const (
-	UserDefault UserFlags = iota
-	UserAdmin
+	UserDefault UserFlags = 0
+	UserLogin   UserFlags = 1
 )
 
 type Users struct {
