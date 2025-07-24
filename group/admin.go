@@ -1,10 +1,13 @@
 package group
 
 import (
+	"fmt"
 	"github.com/kraxarn/website/data"
 	"github.com/kraxarn/website/db"
+	"github.com/kraxarn/website/helper"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
+	"html/template"
 	"net/http"
 )
 
@@ -91,8 +94,15 @@ func editorData(ctx echo.Context) error {
 		return err
 	}
 
-	return ctx.Render(http.StatusOK, "editor.gohtml", map[string]string{
-		"key":   content.Key,
-		"value": value,
+	var preview template.HTML
+	preview, err = helper.RenderMarkdown(value)
+	if err != nil {
+		preview = template.HTML(fmt.Sprintf("<pre>%s</pre>", value))
+	}
+
+	return ctx.Render(http.StatusOK, "editor.gohtml", map[string]interface{}{
+		"key":     content.Key,
+		"value":   value,
+		"preview": preview,
 	})
 }

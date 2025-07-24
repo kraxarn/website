@@ -2,7 +2,6 @@ package helper
 
 import (
 	"bytes"
-	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
@@ -17,9 +16,7 @@ type TemplateRenderer struct {
 }
 
 func NewTemplateRenderer() (*TemplateRenderer, error) {
-	funcMap := template.FuncMap{
-		"renderMarkdown": renderMarkdown,
-	}
+	funcMap := template.FuncMap{}
 
 	templates := template.New("")
 	templates.Funcs(funcMap)
@@ -66,20 +63,23 @@ func RenderPage(ctx echo.Context, key string) error {
 		return echo.NewHTTPError(http.StatusNotFound, err)
 	}
 
+	var content template.HTML
+	content, err = RenderMarkdown(val)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
+	}
+
 	return ctx.Render(http.StatusOK, "page.gohtml", map[string]interface{}{
-		"content": renderMarkdown(val),
+		"content": content,
 	})
 }
 
-func renderMarkdown(content string) template.HTML {
+func RenderMarkdown(content string) (template.HTML, error) {
 	var buf bytes.Buffer
 	err := goldmark.Convert([]byte(content), &buf)
 	if err != nil {
-		if config.Dev() {
-			return template.HTML(err.Error())
-		}
-		return "error: invalid template (this shouldn't happen!)"
+		return "", err
 	}
 
-	return template.HTML(buf.String())
+	return template.HTML(buf.String()), nil
 }

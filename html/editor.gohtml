@@ -19,9 +19,7 @@
 				<textarea id="value" name="value" rows="40" cols="80">{{ .value }}</textarea>
 			</td>
 			<td>
-                {{ if .value }}
-                    {{ renderMarkdown .value }}
-                {{ end }}
+                {{ .preview }}
 			</td>
 		</tr>
 		<tr>
