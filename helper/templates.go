@@ -6,6 +6,7 @@ import (
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"html/template"
 	"io"
 	"net/http"
@@ -75,8 +76,12 @@ func RenderPage(ctx echo.Context, key string) error {
 }
 
 func RenderMarkdown(content string) (template.HTML, error) {
+	markdown := goldmark.New(
+		goldmark.WithExtensions(extension.Table),
+	)
+
 	var buf bytes.Buffer
-	err := goldmark.Convert([]byte(content), &buf)
+	err := markdown.Convert([]byte(content), &buf)
 	if err != nil {
 		return "", err
 	}
