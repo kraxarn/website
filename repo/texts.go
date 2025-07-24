@@ -30,8 +30,8 @@ func (t Texts) Insert(key, value string, userId db.Id) (db.Id, error) {
 	var id db.Id
 
 	err := t.conn.QueryRow(context.Background(), `
-		insert into texts (key, value, editor)
-		values ($1, $2, $3)
+		insert into texts (key, value, editor, timestamp)
+		values ($1, $2, $3, current_timestamp)
 		returning id
 	`, key, value, userId).Scan(&id)
 
