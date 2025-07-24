@@ -142,14 +142,10 @@ func newUser(ctx echo.Context) error {
 
 	users := repo.NewUsers(conn)
 
-	var userId db.Id
-	userId, err = users.Insert(username, passwordHashed[:], data.UserFlagsNone)
+	_, err = users.Insert(username, passwordHashed[:], data.UserFlagsNone)
 	if err != nil {
 		return err
 	}
 
-	return ctx.JSON(http.StatusCreated, map[string]interface{}{
-		"id":    userId,
-		"flags": data.UserFlagsNone,
-	})
+	return ctx.NoContent(http.StatusCreated)
 }
