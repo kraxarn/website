@@ -4,6 +4,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/data"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
@@ -18,6 +19,7 @@ const (
 	authMsgGeneric = "server error"
 	authMsgLogin   = "invalid username or password"
 	authMsgToken   = "invalid token"
+	authMsgFlag    = "invalid user"
 )
 
 func RegisterUser(app *echo.Echo) {
@@ -68,6 +70,14 @@ func login(ctx echo.Context) error {
 	userId, err = users.Id(username)
 	if err != nil {
 		return render(http.StatusInternalServerError, authMsgGeneric, err)
+	}
+
+	// TODO: Maybe fetch both id and user flags at the same time
+
+	var userFlags data.UserFlags
+	userFlags, err = users.Flags(userId)
+	if err != nil || (userFlags&data.UserFlagsLogin) != data.UserFlagsLogin {
+		return render(http.StatusForbidden, authMsgFlag, err)
 	}
 
 	var token config.Token
