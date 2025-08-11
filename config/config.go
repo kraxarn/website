@@ -1,7 +1,7 @@
 package config
 
 import (
-	"errors"
+	"fmt"
 	"os"
 )
 
@@ -10,11 +10,23 @@ func Dev() bool {
 	return ok && val == "1"
 }
 
-func DatabaseUrl() (string, error) {
-	val, ok := os.LookupEnv("DATABASE_URL")
+func lookupEnv(key string) (string, error) {
+	val, ok := os.LookupEnv(key)
 	if !ok {
-		return "", errors.New("no database url set")
+		return "", fmt.Errorf("missing key: %s", key)
 	}
 
 	return val, nil
+}
+
+func DatabaseUrl() (string, error) {
+	return lookupEnv("DATABASE_URL")
+}
+
+func TeamSpeakUrl() (string, error) {
+	return lookupEnv("TEAMSPEAK_URL")
+}
+
+func TeamSpeakApiKey() (string, error) {
+	return lookupEnv("TEAMSPEAK_API_KEY")
 }
