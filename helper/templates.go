@@ -2,14 +2,15 @@ package helper
 
 import (
 	"bytes"
+	"html/template"
+	"io"
+	"net/http"
+
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
-	"html/template"
-	"io"
-	"net/http"
 )
 
 type TemplateRenderer struct {
@@ -24,6 +25,7 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 
 	_, err := templates.ParseFiles(
 		"html/editor.gohtml",
+		"html/error.gohtml",
 		"html/icons/house.gohtml",
 		"html/icons/info.gohtml",
 		"html/icons/list_ul.gohtml",
