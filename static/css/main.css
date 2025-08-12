@@ -13,12 +13,14 @@ html, body {
 	display: flex;
 	flex-direction: row;
 	height: 100%;
+	overflow-y: hidden;
 }
 
 #content {
 	padding: 4rem;
 	font-size: 1.1em;
 	flex: 1;
+	overflow-y: auto;
 }
 
 #menu {
