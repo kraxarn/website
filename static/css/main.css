@@ -63,3 +63,18 @@ html, body {
 		}
 	}
 }
+
+@media screen and (width < 80rem) {
+	#layout {
+		flex-direction: column;
+	}
+
+	#menu {
+		flex-direction: row;
+		column-gap: 0.75rem;
+
+		> a {
+			max-width: 8rem;
+		}
+	}
+}
