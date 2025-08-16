@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Home Page</title>
-		<link rel="stylesheet" type="text/css" href="/css/fantasque.css">
-		<link rel="stylesheet" type="text/css" href="/css/colors.css">
-		<link rel="stylesheet" type="text/css" href="/css/main.css">
+		<link rel="stylesheet" type="text/css" href="{{ static "/css/fantasque.css" }}">
+		<link rel="stylesheet" type="text/css" href="{{ static "/css/colors.css" }}">
+		<link rel="stylesheet" type="text/css" href="{{ static "/css/main.css" }}">
         {{ if .styles }}
             {{ range .styles }}
 				<link rel="stylesheet" type="text/css" href="/css/{{ . }}.css">

@@ -18,7 +18,9 @@ type TemplateRenderer struct {
 }
 
 func NewTemplateRenderer() (*TemplateRenderer, error) {
-	funcMap := template.FuncMap{}
+	funcMap := template.FuncMap{
+		"static": staticFileVersion,
+	}
 
 	templates := template.New("")
 	templates.Funcs(funcMap)

@@ -1,5 +1,5 @@
 {{ define "partials/footer" }}
-	<script defer src="/js/spotlight.js"></script>
+	<script defer src="{{ static "/js/spotlight.js" }}"></script>
     {{ if .scripts }}
         {{ range .scripts }}
 			<script defer src="/js/{{ . }}.js"></script>
