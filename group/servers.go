@@ -31,7 +31,7 @@ func teamSpeakStatus(ctx echo.Context) error {
 		return err
 	}
 
-	var resp teamspeak.ApiResponse[teamspeak.HostInfo]
+	var resp teamspeak.ApiResponse[[]teamspeak.HostInfo]
 	resp, err = api.HostInfo()
 	if err != nil {
 		return err
@@ -42,9 +42,13 @@ func teamSpeakStatus(ctx echo.Context) error {
 		return err
 	}
 
+	if len(resp.Body) < 1 {
+		return ctx.NoContent(http.StatusNotFound)
+	}
+
 	str := fmt.Sprintf("%s/%s",
-		resp.Body.VirtualServersTotalClientsOnline,
-		resp.Body.VirtualServersTotalMaxClients,
+		resp.Body[0].VirtualServersTotalClientsOnline,
+		resp.Body[0].VirtualServersTotalMaxClients,
 	)
 	return ctx.String(http.StatusOK, str)
 }

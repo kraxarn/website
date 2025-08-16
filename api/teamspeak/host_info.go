@@ -9,8 +9,8 @@ type HostInfo struct {
 	VirtualServersTotalMaxClients     string `json:"virtualservers_total_maxclients"`
 }
 
-func (a Api) HostInfo() (ApiResponse[HostInfo], error) {
-	var response ApiResponse[HostInfo]
+func (a Api) HostInfo() (ApiResponse[[]HostInfo], error) {
+	var response ApiResponse[[]HostInfo]
 	err := a.get("/hostinfo", &response)
 	return response, err
 }
