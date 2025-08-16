@@ -31,7 +31,7 @@ func HandleError(err error, ctx echo.Context) {
 
 		builder.WriteString(fmt.Sprintf("%d: %s", code, http.StatusText(code)))
 
-		if err != nil && config.Dev() {
+		if err != nil {
 			builder.WriteRune('\n')
 			builder.WriteString(err.Error())
 		}
