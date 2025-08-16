@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/config"
 	"os"
 	"path"
 )
@@ -9,6 +10,10 @@ import (
 var fileVersions map[string]int64
 
 func staticFileVersion(url string) string {
+	if config.Dev() {
+		return url
+	}
+
 	var version int64
 
 	if fileVersions == nil {
