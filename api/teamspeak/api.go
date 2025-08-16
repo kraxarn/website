@@ -27,18 +27,31 @@ func NewApi() (Api, error) {
 }
 
 func (a Api) get(path string, value any) error {
-	response, err := a.httpClient.Get(fmt.Sprintf("%s%s", a.baseUrl, path))
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", a.baseUrl, path), nil)
+	if err != nil {
+		return err
+	}
+
+	var apiKey string
+	apiKey, err = config.TeamSpeakApiKey()
+	if err != nil {
+		return err
+	}
+	req.Header.Add("x-api-key", apiKey)
+
+	var resp *http.Response
+	resp, err = a.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
 
 	var data []byte
-	data, err = io.ReadAll(response.Body)
+	data, err = io.ReadAll(resp.Body)
 	if err != nil {
-		return errors.Join(err, response.Body.Close())
+		return errors.Join(err, resp.Body.Close())
 	}
 
-	err = response.Body.Close()
+	err = resp.Body.Close()
 	if err != nil {
 		return err
 	}
