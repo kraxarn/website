@@ -21,6 +21,9 @@ func HandleError(err error, ctx echo.Context) {
 		code = httpErr.Code
 	} else {
 		code = http.StatusInternalServerError
+		if err != nil {
+			ctx.Logger().Error(err)
+		}
 	}
 
 	if config.Dev() {
