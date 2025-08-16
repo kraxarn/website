@@ -69,6 +69,12 @@ html, body {
 @media screen and (width < 80rem) {
 	#layout {
 		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	#content {
+		overflow-y: visible;
+		padding-top: 0;
 	}
 
 	#menu {
