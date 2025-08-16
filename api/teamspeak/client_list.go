@@ -10,6 +10,6 @@ type Client struct {
 
 func (a Api) ClientList() (ApiResponse[[]Client], error) {
 	var response ApiResponse[[]Client]
-	err := a.get("/clientlist", &response)
+	err := a.get("/1/clientlist", &response)
 	return response, err
 }
