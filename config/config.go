@@ -30,3 +30,7 @@ func TeamSpeakUrl() (string, error) {
 func TeamSpeakApiKey() (string, error) {
 	return lookupEnv("TEAMSPEAK_API_KEY")
 }
+
+func MumbleUrl() (string, error) {
+	return lookupEnv("MUMBLE_URL")
+}

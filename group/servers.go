@@ -2,6 +2,7 @@ package group
 
 import (
 	"fmt"
+	"github.com/kraxarn/website/api/mumble"
 	"github.com/kraxarn/website/api/teamspeak"
 	"github.com/kraxarn/website/helper"
 	"github.com/labstack/echo/v4"
@@ -16,6 +17,8 @@ func RegisterServers(app *echo.Echo) {
 
 	group.GET("/teamspeak/status", teamSpeakStatus)
 	group.GET("/teamspeak/clients", teamSpeakClients)
+
+	group.GET("/mumble/status", mumbleStatus)
 }
 
 func servers(ctx echo.Context) error {
@@ -75,4 +78,27 @@ func teamSpeakClients(ctx echo.Context) error {
 		builder.WriteString(fmt.Sprintf("%s\n", client.ClientNickname))
 	}
 	return ctx.String(http.StatusOK, builder.String())
+}
+
+func mumbleStatus(ctx echo.Context) error {
+	api, err := mumble.NewApi()
+	if err != nil {
+		return err
+	}
+
+	err = api.Dial()
+	var s string
+
+	if err != nil {
+		s = "DOWN"
+	} else {
+		s = "UP"
+	}
+
+	err = api.Close()
+	if err != nil {
+		return err
+	}
+
+	return ctx.String(http.StatusOK, s)
 }
