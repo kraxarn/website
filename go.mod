@@ -1,10 +1,10 @@
 module github.com/kraxarn/website
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
-	github.com/jackc/pgx/v5 v5.8.0
+	github.com/jackc/pgx/v5 v5.9.0
 	github.com/labstack/echo-jwt/v4 v4.4.0
 	github.com/labstack/echo/v4 v4.15.0
 	github.com/yuin/goldmark v1.7.16
