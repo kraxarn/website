@@ -9,18 +9,14 @@ func RegisterIndex(app *echo.Echo) {
 	group := app.Group("")
 
 	group.GET("/", index)
-	group.GET("/about", about)
-	group.GET("/projects", projects)
+	group.GET("/:page", page)
 }
 
 func index(ctx echo.Context) error {
 	return helper.RenderPage(ctx, "home", nil)
 }
 
-func about(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "about", nil)
-}
-
-func projects(ctx echo.Context) error {
-	return helper.RenderPage(ctx, "projects", nil)
+func page(ctx echo.Context) error {
+	key := ctx.Param("page")
+	return helper.RenderPage(ctx, key, nil)
 }
