@@ -12,12 +12,18 @@ type Items struct {
 	conn *pgx.Conn
 }
 
-type Item struct {
+type EditItem struct {
 	Key      string
 	Username string
 	Value    *string
 	Icon     *string
 	Priority *int
+}
+
+type Item struct {
+	Key   string
+	Value string
+	Icon  string
 }
 
 // Could just have one NewItems for pgx.Conn, but I like this better
@@ -34,7 +40,7 @@ func NewItemsFromTx(tx pgx.Tx) Items {
 	}
 }
 
-func (i Items) SelectAll() ([]Item, error) {
+func (i Items) SelectAllForEdit() ([]EditItem, error) {
 	rows, err := i.conn.Query(context.Background(), `
 		select texts.key, users.username, items.value, items.icon, items.priority
 		from texts
@@ -47,12 +53,40 @@ func (i Items) SelectAll() ([]Item, error) {
 		return nil, err
 	}
 
+	var items []EditItem
+
+	for rows.Next() {
+		item := EditItem{}
+
+		err = rows.Scan(&item.Key, &item.Username, &item.Value, &item.Icon, &item.Priority)
+		if err != nil {
+			rows.Close()
+			return nil, err
+		}
+
+		items = append(items, item)
+	}
+
+	return items, err
+}
+
+func (i Items) SelectAll() ([]Item, error) {
+	rows, err := i.conn.Query(context.Background(), `
+		select key, value, icon
+		from items
+		order by priority desc
+	`)
+
+	if err != nil {
+		return nil, err
+	}
+
 	var items []Item
 
 	for rows.Next() {
 		item := Item{}
 
-		err = rows.Scan(&item.Key, &item.Username, &item.Value, &item.Icon, &item.Priority)
+		err = rows.Scan(&item.Key, &item.Value, &item.Icon)
 		if err != nil {
 			rows.Close()
 			return nil, err

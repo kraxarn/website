@@ -126,8 +126,8 @@ func items(ctx echo.Context) error {
 
 	itemRepo := repo.NewItemsFromPool(conn)
 
-	var rows []repo.Item
-	rows, err = itemRepo.SelectAll()
+	var rows []repo.EditItem
+	rows, err = itemRepo.SelectAllForEdit()
 	if err != nil {
 		return err
 	}
