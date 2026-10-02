@@ -14,3 +14,12 @@ create table texts
     editor    serial      not null references users (id),
     timestamp timestamptz not null default current_timestamp
 );
+
+create table items
+(
+    id       serial  not null primary key,
+    key      text    not null references texts (key),
+    value    text    not null,
+    icon     text    not null,
+    priority integer not null
+);

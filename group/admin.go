@@ -1,14 +1,17 @@
 package group
 
 import (
+	"context"
 	"fmt"
+	"html/template"
+	"net/http"
+	"strconv"
+
 	"github.com/kraxarn/website/data"
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/helper"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
-	"html/template"
-	"net/http"
 )
 
 type editorContent struct {
@@ -17,11 +20,18 @@ type editorContent struct {
 	Type  string `form:"type"`
 }
 
+type itemsContent struct {
+	Items []string `form:"items"`
+}
+
 func RegisterAdmin(app *echo.Echo) {
 	group := app.Group("/admin")
 
 	group.GET("/editor", editor)
 	group.POST("/editor", editorData)
+
+	group.GET("/items", items)
+	group.POST("/items", itemsData)
 }
 
 func editor(ctx echo.Context) error {
@@ -105,4 +115,81 @@ func editorData(ctx echo.Context) error {
 		"value":   value,
 		"preview": preview,
 	})
+}
+
+func items(ctx echo.Context) error {
+	conn, err := db.Acquire()
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	itemRepo := repo.NewItemsFromPool(conn)
+
+	var rows []repo.Item
+	rows, err = itemRepo.SelectAll()
+	if err != nil {
+		return err
+	}
+
+	return ctx.Render(http.StatusOK, "items.gohtml", map[string]any{
+		"items": rows,
+	})
+}
+
+func itemsData(ctx echo.Context) error {
+	var content itemsContent
+	if err := ctx.Bind(&content); err != nil {
+		return err
+	}
+
+	conn, err := db.Acquire()
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		return err
+	}
+
+	itemsRepo := repo.NewItemsFromTx(tx)
+
+	rollback := func() error {
+		if txErr := tx.Rollback(context.Background()); txErr != nil {
+			return txErr
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	if err = itemsRepo.DeleteAll(); err != nil {
+		return rollback()
+	}
+
+	for _, item := range content.Items {
+		priorityValue := ctx.FormValue(fmt.Sprintf("%s/priority", item))
+		var priority int64
+		priority, err = strconv.ParseInt(priorityValue, 10, 32)
+		if err != nil {
+			return rollback()
+		}
+
+		value := ctx.FormValue(fmt.Sprintf("%s/value", item))
+		icon := ctx.FormValue(fmt.Sprintf("%s/icon", item))
+		if len(value) == 0 || len(icon) == 0 {
+			return rollback()
+		}
+
+		_, err = itemsRepo.Insert(item, value, icon, int(priority))
+		if err != nil {
+			return rollback()
+		}
+	}
+
+	if err = tx.Commit(context.Background()); err != nil {
+		return err
+	}
+
+	return items(ctx)
 }

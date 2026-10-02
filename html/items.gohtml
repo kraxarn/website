@@ -1,0 +1,39 @@
+{{ template "partials/header" }}
+{{ template "layout/begin" }}
+
+<form method="post">
+    <table>
+        <tr>
+            <th>Enabled</th>
+            <th>Key</th>
+            <th>Value</th>
+            <th>Icon</th>
+            <th>Priority</th>
+        </tr>
+        {{ range .items }}
+            <tr>
+                <td>
+                    <input type="checkbox" id="item-{{ .Key }}" name="items" value="{{ .Key }}" {{ if .Value }}checked{{ end }}/>
+                </td>
+                <td>
+                    <label for="item-{{ .Key }}">
+                        {{ .Username }}/{{ .Key }}
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="{{ .Key }}/value" value="{{ .Value }}"/>
+                </td>
+                <td>
+                    <input type="text" name="{{ .Key }}/icon" value="{{ .Icon }}"/>
+                </td>
+                <td>
+                    <input type="number" name="{{ .Key }}/priority" value="{{ .Priority }}"/>
+                </td>
+            </tr>
+        {{ end }}
+    </table>
+    <input type="submit" value="Save"/>
+</form>
+
+{{ template "layout/end" }}
+{{ template "partials/footer" }}
