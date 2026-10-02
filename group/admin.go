@@ -35,7 +35,7 @@ func RegisterAdmin(app *echo.Echo) {
 }
 
 func editor(ctx echo.Context) error {
-	return ctx.Render(http.StatusOK, "editor.gohtml", nil)
+	return helper.Render(ctx, http.StatusOK, "editor.gohtml", nil)
 }
 
 func userIdFromContext(ctx echo.Context) (db.Id, error) {
@@ -110,7 +110,7 @@ func editorData(ctx echo.Context) error {
 		preview = template.HTML(fmt.Sprintf("<pre>%s</pre>", value))
 	}
 
-	return ctx.Render(http.StatusOK, "editor.gohtml", map[string]interface{}{
+	return helper.Render(ctx, http.StatusOK, "editor.gohtml", map[string]interface{}{
 		"key":     content.Key,
 		"value":   value,
 		"preview": preview,
@@ -132,7 +132,7 @@ func items(ctx echo.Context) error {
 		return err
 	}
 
-	return ctx.Render(http.StatusOK, "items.gohtml", map[string]any{
+	return helper.Render(ctx, http.StatusOK, "items.gohtml", map[string]any{
 		"items": rows,
 	})
 }

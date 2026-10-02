@@ -54,6 +54,14 @@ func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{
 	return r.templates.ExecuteTemplate(writer, name, data)
 }
 
+func Render(ctx echo.Context, code int, name string, data any) error {
+	if data == nil {
+		data = map[string]any{}
+	}
+
+	return ctx.Render(code, name, data)
+}
+
 func RenderPage(ctx echo.Context, key string, data map[string]interface{}) error {
 	conn, err := db.Acquire()
 	if err != nil {
@@ -80,7 +88,7 @@ func RenderPage(ctx echo.Context, key string, data map[string]interface{}) error
 	}
 	data["content"] = content
 
-	return ctx.Render(http.StatusOK, "page.gohtml", data)
+	return Render(ctx, http.StatusOK, "page.gohtml", data)
 }
 
 func RenderMarkdown(content string) (template.HTML, error) {

@@ -1,18 +1,20 @@
 package group
 
 import (
+	"net"
+	"net/http"
+	"strconv"
+	"time"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/kraxarn/website/config"
 	"github.com/kraxarn/website/data"
 	"github.com/kraxarn/website/db"
+	"github.com/kraxarn/website/helper"
 	"github.com/kraxarn/website/repo"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
-	"net"
-	"net/http"
-	"strconv"
-	"time"
 )
 
 const (
@@ -31,7 +33,7 @@ func RegisterUser(app *echo.Echo) {
 }
 
 func loginPage(ctx echo.Context) error {
-	return ctx.Render(http.StatusOK, "login.gohtml", nil)
+	return helper.Render(ctx, http.StatusOK, "login.gohtml", nil)
 }
 
 func login(ctx echo.Context) error {
@@ -39,7 +41,7 @@ func login(ctx echo.Context) error {
 		if err != nil {
 			ctx.Logger().Error(err)
 		}
-		return ctx.Render(code, "login.gohtml", map[string]interface{}{
+		return helper.Render(ctx, code, "login.gohtml", map[string]interface{}{
 			"error": message,
 		})
 	}
