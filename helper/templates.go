@@ -18,11 +18,15 @@ type TemplateRenderer struct {
 }
 
 func NewTemplateRenderer() (*TemplateRenderer, error) {
+	templates := template.New("")
+
 	funcMap := template.FuncMap{
 		"static": staticFileVersion,
+		"icon": func(name string) (template.HTML, error) {
+			return icon(templates, name)
+		},
 	}
 
-	templates := template.New("")
 	templates.Funcs(funcMap)
 
 	_, err := templates.ParseFiles(
