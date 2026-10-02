@@ -10,7 +10,7 @@
             <th>Icon</th>
             <th>Priority</th>
         </tr>
-        {{ range .items }}
+        {{ range .editItems }}
             <tr>
                 <td>
                     <input type="checkbox" id="item-{{ .Key }}" name="items" value="{{ .Key }}" {{ if .Value }}checked{{ end }}/>

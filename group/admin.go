@@ -133,7 +133,7 @@ func items(ctx echo.Context) error {
 	}
 
 	return helper.Render(ctx, http.StatusOK, "items.gohtml", map[string]any{
-		"items": rows,
+		"editItems": rows,
 	})
 }
 
