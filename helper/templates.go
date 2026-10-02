@@ -54,15 +54,30 @@ func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{
 	return r.templates.ExecuteTemplate(writer, name, data)
 }
 
-func Render(ctx echo.Context, code int, name string, data any) error {
+func Render(ctx echo.Context, code int, name string, data map[string]any) error {
+	conn, err := db.Acquire()
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	itemsRepo := repo.NewItemsFromPool(conn)
+
+	var items []repo.Item
+	items, err = itemsRepo.SelectAll()
+	if err != nil {
+		return err
+	}
+
 	if data == nil {
 		data = map[string]any{}
 	}
+	data["items"] = items
 
 	return ctx.Render(code, name, data)
 }
 
-func RenderPage(ctx echo.Context, key string, data map[string]interface{}) error {
+func RenderPage(ctx echo.Context, key string, data map[string]any) error {
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -84,7 +99,7 @@ func RenderPage(ctx echo.Context, key string, data map[string]interface{}) error
 	}
 
 	if data == nil {
-		data = map[string]interface{}{}
+		data = map[string]any{}
 	}
 	data["content"] = content
 

@@ -2,22 +2,12 @@
     <div id="layout">
         <div id="menu">
             <img src="{{ static "/img/logo.webp" }}" alt="logo"/>
-            <a href="/">
-                {{ template "icons/house" }}
-                <span>home</span>
-            </a>
-            <a href="/about">
-                {{ template "icons/info" }}
-                <span>about</span>
-            </a>
-            <a href="/servers">
-                {{ template "icons/server" }}
-                <span>servers</span>
-            </a>
-            <a href="/projects">
-                {{ template "icons/list-ul" }}
-                <span>projects</span>
-            </a>
+            {{ range .items }}
+                <a href="/{{ .Key }}">
+                    {{ template "icons/list-ul" }}
+                    <span>{{ .Value }}</span>
+                </a>
+            {{ end }}
         </div>
         <div id="content">
 {{ end }}
