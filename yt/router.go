@@ -2,13 +2,14 @@ package yt
 
 import (
 	"errors"
-	"github.com/kraxarn/website/helper"
-	"github.com/labstack/echo/v4"
 	"net/http"
+
+	"github.com/kraxarn/website/helper"
+	"github.com/labstack/echo/v5"
 )
 
 func Route(app *echo.Echo) {
-	app.GET("/yt/search", func(ctx echo.Context) error {
+	app.GET("/yt/search", func(ctx *echo.Context) error {
 		q := ctx.QueryParam("q")
 
 		if len(q) < 3 {
@@ -23,7 +24,7 @@ func Route(app *echo.Echo) {
 		return ctx.JSON(http.StatusOK, results)
 	})
 
-	app.GET("/yt/info/:id", func(ctx echo.Context) error {
+	app.GET("/yt/info/:id", func(ctx *echo.Context) error {
 		info, err := Info(ctx.Param("id"))
 
 		if err != nil {
@@ -33,7 +34,7 @@ func Route(app *echo.Echo) {
 		return ctx.JSON(http.StatusOK, info)
 	})
 
-	app.GET("/yt/audio/:id", func(ctx echo.Context) error {
+	app.GET("/yt/audio/:id", func(ctx *echo.Context) error {
 		info, err := Info(ctx.Param("id"))
 		if err != nil {
 			return err

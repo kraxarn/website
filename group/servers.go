@@ -2,12 +2,13 @@ package group
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/kraxarn/website/api/mumble"
 	"github.com/kraxarn/website/api/teamspeak"
 	"github.com/kraxarn/website/helper"
-	"github.com/labstack/echo/v4"
-	"net/http"
-	"strings"
+	"github.com/labstack/echo/v5"
 )
 
 func RegisterServers(app *echo.Echo) {
@@ -21,14 +22,14 @@ func RegisterServers(app *echo.Echo) {
 	group.GET("/mumble/status", mumbleStatus)
 }
 
-func servers(ctx echo.Context) error {
+func servers(ctx *echo.Context) error {
 	return helper.RenderPage(ctx, "servers", map[string]interface{}{
 		"styles":  []string{"servers"},
 		"scripts": []string{"servers"},
 	})
 }
 
-func teamSpeakStatus(ctx echo.Context) error {
+func teamSpeakStatus(ctx *echo.Context) error {
 	api, err := teamspeak.NewApi()
 	if err != nil {
 		return err
@@ -56,7 +57,7 @@ func teamSpeakStatus(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, str)
 }
 
-func teamSpeakClients(ctx echo.Context) error {
+func teamSpeakClients(ctx *echo.Context) error {
 	api, err := teamspeak.NewApi()
 	if err != nil {
 		return err
@@ -80,7 +81,7 @@ func teamSpeakClients(ctx echo.Context) error {
 	return ctx.String(http.StatusOK, builder.String())
 }
 
-func mumbleStatus(ctx echo.Context) error {
+func mumbleStatus(ctx *echo.Context) error {
 	api, err := mumble.NewApi()
 	if err != nil {
 		return err

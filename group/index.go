@@ -2,7 +2,7 @@ package group
 
 import (
 	"github.com/kraxarn/website/helper"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 func RegisterIndex(app *echo.Echo) {
@@ -12,11 +12,11 @@ func RegisterIndex(app *echo.Echo) {
 	group.GET("/:page", page)
 }
 
-func index(ctx echo.Context) error {
+func index(ctx *echo.Context) error {
 	return helper.RenderPage(ctx, "home", nil)
 }
 
-func page(ctx echo.Context) error {
+func page(ctx *echo.Context) error {
 	key := ctx.Param("page")
 	return helper.RenderPage(ctx, key, nil)
 }

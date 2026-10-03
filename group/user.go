@@ -13,7 +13,7 @@ import (
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/helper"
 	"github.com/kraxarn/website/repo"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -32,14 +32,14 @@ func RegisterUser(app *echo.Echo) {
 	group.POST("/new", newUser)
 }
 
-func loginPage(ctx echo.Context) error {
+func loginPage(ctx *echo.Context) error {
 	return helper.Render(ctx, http.StatusOK, "login.gohtml", nil)
 }
 
-func login(ctx echo.Context) error {
+func login(ctx *echo.Context) error {
 	render := func(code int, message string, err error) error {
 		if err != nil {
-			ctx.Logger().Error(err)
+			ctx.Logger().Error("render failed", "error", err)
 		}
 		return helper.Render(ctx, code, "login.gohtml", map[string]interface{}{
 			"error": message,
@@ -114,14 +114,14 @@ func login(ctx echo.Context) error {
 	return ctx.Redirect(http.StatusFound, "/")
 }
 
-func newUser(ctx echo.Context) error {
+func newUser(ctx *echo.Context) error {
 	ip := net.ParseIP(ctx.RealIP())
 	if ip == nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid ip")
 	}
 
 	if !ip.IsLoopback() {
-		return echo.NewHTTPError(http.StatusUnauthorized)
+		return echo.NewHTTPError(http.StatusUnauthorized, "invalid ip")
 	}
 
 	username := ctx.FormValue("username")

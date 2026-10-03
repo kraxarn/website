@@ -8,7 +8,7 @@ import (
 
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/repo"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 )
@@ -54,11 +54,11 @@ func NewTemplateRenderer() (*TemplateRenderer, error) {
 	}, nil
 }
 
-func (r *TemplateRenderer) Render(writer io.Writer, name string, data interface{}, _ echo.Context) error {
+func (r *TemplateRenderer) Render(_ *echo.Context, writer io.Writer, name string, data any) error {
 	return r.templates.ExecuteTemplate(writer, name, data)
 }
 
-func Render(ctx echo.Context, code int, name string, data map[string]any) error {
+func Render(ctx *echo.Context, code int, name string, data map[string]any) error {
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func Render(ctx echo.Context, code int, name string, data map[string]any) error 
 	return ctx.Render(code, name, data)
 }
 
-func RenderPage(ctx echo.Context, key string, data map[string]any) error {
+func RenderPage(ctx *echo.Context, key string, data map[string]any) error {
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -93,13 +93,13 @@ func RenderPage(ctx echo.Context, key string, data map[string]any) error {
 	var val string
 	val, err = texts.Value(key)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, err)
+		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}
 
 	var content template.HTML
 	content, err = RenderMarkdown(val)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return err
 	}
 
 	if data == nil {

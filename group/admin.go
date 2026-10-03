@@ -11,7 +11,7 @@ import (
 	"github.com/kraxarn/website/db"
 	"github.com/kraxarn/website/helper"
 	"github.com/kraxarn/website/repo"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 )
 
 type editorContent struct {
@@ -34,11 +34,11 @@ func RegisterAdmin(app *echo.Echo) {
 	group.POST("/items", itemsData)
 }
 
-func editor(ctx echo.Context) error {
+func editor(ctx *echo.Context) error {
 	return helper.Render(ctx, http.StatusOK, "editor.gohtml", nil)
 }
 
-func userIdFromContext(ctx echo.Context) (db.Id, error) {
+func userIdFromContext(ctx *echo.Context) (db.Id, error) {
 	claims, err := data.ParseUserClaims(ctx)
 	if err != nil {
 		return 0, err
@@ -47,7 +47,13 @@ func userIdFromContext(ctx echo.Context) (db.Id, error) {
 	var userFlags data.UserFlags
 	userFlags, err = claims.UserFlags()
 	if err != nil || (userFlags&data.UserFlagsEditor) == 0 {
-		return 0, echo.NewHTTPError(http.StatusForbidden, err)
+		var message string
+		if err != nil {
+			message = err.Error()
+		} else {
+			message = "invalid flag"
+		}
+		return 0, echo.NewHTTPError(http.StatusForbidden, message)
 	}
 
 	var userId db.Id
@@ -59,7 +65,7 @@ func userIdFromContext(ctx echo.Context) (db.Id, error) {
 	return userId, nil
 }
 
-func editorData(ctx echo.Context) error {
+func editorData(ctx *echo.Context) error {
 	var content editorContent
 	if err := ctx.Bind(&content); err != nil {
 		return err
@@ -97,7 +103,7 @@ func editorData(ctx echo.Context) error {
 	case "Preview":
 		value = content.Value
 	default:
-		err = echo.NewHTTPError(http.StatusNotFound)
+		err = echo.NewHTTPError(http.StatusNotFound, "invalid type")
 	}
 
 	if err != nil {
@@ -117,7 +123,7 @@ func editorData(ctx echo.Context) error {
 	})
 }
 
-func items(ctx echo.Context) error {
+func items(ctx *echo.Context) error {
 	conn, err := db.Acquire()
 	if err != nil {
 		return err
@@ -137,7 +143,7 @@ func items(ctx echo.Context) error {
 	})
 }
 
-func itemsData(ctx echo.Context) error {
+func itemsData(ctx *echo.Context) error {
 	var content itemsContent
 	if err := ctx.Bind(&content); err != nil {
 		return err
@@ -160,7 +166,7 @@ func itemsData(ctx echo.Context) error {
 		if txErr := tx.Rollback(context.Background()); txErr != nil {
 			return txErr
 		}
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	if err = itemsRepo.DeleteAll(); err != nil {

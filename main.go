@@ -2,44 +2,44 @@ package main
 
 import (
 	"fmt"
-	"github.com/kraxarn/website/config"
-	"github.com/kraxarn/website/db"
-	"github.com/kraxarn/website/group"
-	"github.com/kraxarn/website/helper"
-	echojwt "github.com/labstack/echo-jwt/v4"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"golang.org/x/time/rate"
 	"io"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/kraxarn/website/config"
+	"github.com/kraxarn/website/db"
+	"github.com/kraxarn/website/group"
+	"github.com/kraxarn/website/helper"
+	echojwt "github.com/labstack/echo-jwt/v5"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
 )
 
 func main() {
 	app := echo.New()
 
 	if err := initMiddleware(app); err != nil {
-		app.Logger.Fatal(err)
+		panic(err)
 	}
 
 	initGroups(app)
 
 	renderer, err := helper.NewTemplateRenderer()
 	if err != nil {
-		app.Logger.Fatal(err)
+		panic(err)
 	}
 
 	app.Renderer = renderer
 	app.HTTPErrorHandler = helper.HandleError
 
 	if err = db.Connect(); err != nil {
-		app.Logger.Fatal(err)
+		panic(err)
 	}
 	defer db.Close()
 
-	if err := app.Start("127.0.0.1:5000"); err != nil {
-		app.Logger.Fatal(err)
+	if err = app.Start("127.0.0.1:5000"); err != nil {
+		panic(err)
 	}
 }
 
@@ -47,7 +47,7 @@ func initMiddleware(app *echo.Echo) error {
 	app.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 		LogStatus: true,
 		LogURI:    true,
-		LogValuesFunc: func(ctx echo.Context, val middleware.RequestLoggerValues) error {
+		LogValuesFunc: func(ctx *echo.Context, val middleware.RequestLoggerValues) error {
 			var writer io.Writer
 			if val.Error != nil {
 				writer = os.Stderr
@@ -78,26 +78,22 @@ func initMiddleware(app *echo.Echo) error {
 	// Default rate limiter
 	app.Use(middleware.RateLimiterWithConfig(
 		middleware.RateLimiterConfig{
-			Skipper: func(ctx echo.Context) bool {
+			Skipper: func(ctx *echo.Context) bool {
 				return strings.HasPrefix(ctx.Path(), "/admin")
 			},
-			Store: middleware.NewRateLimiterMemoryStore(
-				rate.Limit(10),
-			),
+			Store: middleware.NewRateLimiterMemoryStore(10),
 		},
 	))
 
 	// Admin rate limiter
 	app.Use(middleware.RateLimiterWithConfig(
 		middleware.RateLimiterConfig{
-			Skipper: func(ctx echo.Context) bool {
+			Skipper: func(ctx *echo.Context) bool {
 				isAdmin := strings.HasPrefix(ctx.Path(), "/admin")
 				isUser := strings.HasPrefix(ctx.Path(), "/user")
 				return !isAdmin && !isUser
 			},
-			Store: middleware.NewRateLimiterMemoryStore(
-				rate.Limit(1),
-			),
+			Store: middleware.NewRateLimiterMemoryStore(1),
 		},
 	))
 
@@ -107,7 +103,7 @@ func initMiddleware(app *echo.Echo) error {
 	}
 
 	app.Use(echojwt.WithConfig(echojwt.Config{
-		Skipper: func(ctx echo.Context) bool {
+		Skipper: func(ctx *echo.Context) bool {
 			return !strings.HasPrefix(ctx.Path(), "/admin")
 		},
 		SigningKey:  token.Key(),

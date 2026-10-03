@@ -3,15 +3,18 @@ package helper
 import (
 	"errors"
 	"fmt"
-	"github.com/kraxarn/website/config"
-	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
+
+	"github.com/kraxarn/website/config"
+	"github.com/labstack/echo/v5"
 )
 
-func HandleError(err error, ctx echo.Context) {
-	if ctx.Response().Committed {
-		return
+func HandleError(ctx *echo.Context, err error) {
+	if resp, uwErr := echo.UnwrapResponse(ctx.Response()); uwErr == nil {
+		if resp.Committed {
+			return
+		}
 	}
 
 	var code int
@@ -22,7 +25,7 @@ func HandleError(err error, ctx echo.Context) {
 	} else {
 		code = http.StatusInternalServerError
 		if err != nil {
-			ctx.Logger().Error(err)
+			ctx.Logger().Error("request failed", "error", err)
 		}
 	}
 
@@ -38,7 +41,7 @@ func HandleError(err error, ctx echo.Context) {
 
 		err = ctx.String(code, builder.String())
 		if err != nil {
-			ctx.Logger().Error(err)
+			ctx.Logger().Error("string failed", "error", err)
 		}
 
 		return
@@ -49,6 +52,6 @@ func HandleError(err error, ctx echo.Context) {
 		"StatusText": http.StatusText(code),
 	})
 	if err != nil {
-		ctx.Logger().Error(err)
+		ctx.Logger().Error("render failed", "error", err)
 	}
 }

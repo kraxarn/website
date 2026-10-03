@@ -2,10 +2,11 @@ package data
 
 import (
 	"errors"
+	"strconv"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/kraxarn/website/db"
-	"github.com/labstack/echo/v4"
-	"strconv"
+	"github.com/labstack/echo/v5"
 )
 
 type UserFlags uint
@@ -20,7 +21,7 @@ type UserClaims struct {
 	claims jwt.MapClaims
 }
 
-func ParseUserClaims(ctx echo.Context) (UserClaims, error) {
+func ParseUserClaims(ctx *echo.Context) (UserClaims, error) {
 	token, ok := ctx.Get("user").(*jwt.Token)
 	if !ok {
 		return UserClaims{}, errors.New("no token")
