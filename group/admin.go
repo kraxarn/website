@@ -2,6 +2,7 @@ package group
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -46,14 +47,11 @@ func userIdFromContext(ctx *echo.Context) (db.Id, error) {
 
 	var userFlags data.UserFlags
 	userFlags, err = claims.UserFlags()
-	if err != nil || (userFlags&data.UserFlagsEditor) == 0 {
-		var message string
-		if err != nil {
-			message = err.Error()
-		} else {
-			message = "invalid flag"
-		}
-		return 0, echo.NewHTTPError(http.StatusForbidden, message)
+	if err != nil {
+		return 0, err
+	}
+	if (userFlags & data.UserFlagsEditor) == 0 {
+		return 0, errors.New("invalid flag")
 	}
 
 	var userId db.Id
@@ -73,7 +71,7 @@ func editorData(ctx *echo.Context) error {
 
 	userId, err := userIdFromContext(ctx)
 	if err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusForbidden, err.Error())
 	}
 
 	conn, err := db.Acquire()
@@ -147,6 +145,10 @@ func itemsData(ctx *echo.Context) error {
 	var content itemsContent
 	if err := ctx.Bind(&content); err != nil {
 		return err
+	}
+
+	if _, err := userIdFromContext(ctx); err != nil {
+		return echo.NewHTTPError(http.StatusForbidden, err.Error())
 	}
 
 	conn, err := db.Acquire()
